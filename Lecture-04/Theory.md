@@ -26,7 +26,7 @@
 
 ###### Note: To export your variables, functions or classes, you need to write `module.exports` at the end of your file and pass your variables, functions or classes inside curly braces. We will use the `require` keyword at the top of the file to import functions, variables or classes from another module. The result of require is then stored in a variable which is used to invoke the functions using the dot notation.
 
-#### Calculation.js
+### Calculation.js
 ```javascript
 
 // Addition
@@ -44,7 +44,7 @@ function subtract(a, b)
 module.exports = { add, subtract };
 ```
 
-#### main.js
+### main.js
 ```javascript
 
 // Import functions from Calculation
@@ -57,7 +57,7 @@ console.log("Subtraction result is: " + lib.subtract(20, 10));
 
 • 2nd way of exporting functions or variables:
 
-#### Calculation.js
+### Calculation.js
 ```javascript
 module.exports = {
 
@@ -79,7 +79,7 @@ module.exports = {
 ```
 
 • Third way of exporting functions or variables:
-#### Calculation.js
+### Calculation.js
 ```javascript
 // Addition
 module.exports.add = function(a, b)
@@ -97,10 +97,10 @@ module.exports.subtract = function(a, b)
 module.exports.email = 'usmanhameed1790@gmail.com';
 ```
 
-##### Destructuring Syntax
+#### Destructuring Syntax
 • You can also use the destructuring syntax to unpack the properties of the object returned by require and store them in variables.
 
-#### main.js
+### main.js
 ```javascript
 const { add, subtract, email } = require("./Calculation.js");
 
