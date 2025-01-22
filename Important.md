@@ -18,3 +18,11 @@
 • Node.js was developed by `Ryan Dahl` in 2009.
 
 • Node JS is associated with `Walmart`, `PayPal`, `Netflix`, `Uber`, `LinkedIn`, `ebay` etc.
+
+• When your application starts getting larger, maintaining a single file becomes a difficult task.
+
+• It is easy to get lost in the codebase and lose track of what a particular piece of code is doing.
+
+• To make it easier to maintain, reuse and organize code, you need to split the code into multiple files.
+
+• This process is called `modularization`.
