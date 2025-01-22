@@ -7,8 +7,6 @@
 4. Postman
 
 ## Install Node JS & NPM
-###### NODE JS 
-• Node.js is an open-source and cross-platform JavaScript runtime environment.
+###### NODE JS: Node.js is an open-source and cross-platform JavaScript runtime environment.
 
-###### NPM
-• `npm` is a package manager for Node.js with hundreds of thousands of packages.
+###### NPM: `npm` is a package manager for Node.js with hundreds of thousands of packages.
