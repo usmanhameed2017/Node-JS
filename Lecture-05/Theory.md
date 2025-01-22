@@ -9,7 +9,7 @@
 • To import a local module, you have to use the `require()` method with the local module's name passed as the argument.
 
 ## Core Modules
-• These are modules that come with Node.js by default.
+• These are the modules that come with Node.js by default.
 
 • You do not have to download them in your project.
 
