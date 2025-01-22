@@ -27,9 +27,9 @@
 • That's why Google Chrome is faster than other browsers because it has a faster v8 JavaScript Engine.
 
 # Node JS
-• By using `Node JS`, we can run the JavaScript code on the machine, not on the web browser.
-
 • Node.js is an open-source and cross-platform `JavaScript Runtime Environment`.
+
+• By using `Node JS`, we can run the JavaScript code on the machine, not on the web browser.
 
 • It is a powerful tool suitable for a wide range of projects.
 
