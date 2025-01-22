@@ -25,11 +25,13 @@
 ## Third-Party Modules (External Modules)
 • Third-party modules are the modules that are downloaded with a package manager such as npm.
 
-• These modules are usually stored in the `node modules` folder.
+• These modules are usually stored in the `node_modules` folder.
 
-• You can install third-party modules globally or locally in your project.
+• To import a third-party module, you have to use the `require()` method that takes the third-party module's name as an argument.
 
 • Examples of third party modules are `express`, `mongoose`, `react` etc.
+
+• You can install third-party modules globally or locally in your project.
 
 ### Command to install third-party module `locally`
 ```
@@ -42,5 +44,3 @@ npm i module_name -g
 ```
 
 ###### Note: `-g` stands for globally.
-
-• To import a third-party module, you have to use the require() method that takes the third-party module's name as an argument.
