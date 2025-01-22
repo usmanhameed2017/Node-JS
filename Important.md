@@ -1,4 +1,4 @@
-# Important Points
+# IMPORTANT POINTS
 • When we write code in JavaScript, it converts into a machine language, then our machine understands the code of JavaScript.
 
 • The `JavaScript Engine` is used to convert JS code into a machine language.
@@ -26,3 +26,11 @@
 • To make it easier to maintain, reuse and organize code, you need to split the code into multiple files.
 
 • This process is called `modularization`.
+
+• There are three types of modules, including; `Local Modules`, `Core Modules`, `Third-Party Modules (External Modules)`.
+
+• Local module is a file with `js` extension, having some chunk of javascript code.
+
+• Core modules are come with the Node.js by default.
+
+• Third-party modules are downloaded with a package manager such as `npm`.
