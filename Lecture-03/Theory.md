@@ -14,8 +14,8 @@
 • Create a new file named as `main.js`.
 
 ## main.js
-```
 javascript
+```
 let a = 20;
 let b = 50;
 let sum = a + b;
