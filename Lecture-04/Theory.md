@@ -1,4 +1,4 @@
-# Modules In Node JS
+# MODULES IN NODE JS
 
 • In Node.js, any file that consists of JavaScript code in a file ending with `.js` is a module.
 
