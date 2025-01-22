@@ -10,8 +10,7 @@
 
 • JavaScript runs on a web browser.
 
-• When we write code in JavaScript, it converts into a machine language, 
-  then our machine understands the code of JavaScript.
+• When we write code in JavaScript, it converts into a machine language, then our machine understands the code of JavaScript.
 
 • The `JavaScript Engine` is used to convert JS code into a machine language.
 
