@@ -44,6 +44,6 @@
 
 • By using Node JS, we can work with APIs by using the `HTTP Module`.
 
-• In fact, by using Node.js we can use JavaScript everywhere, like, Frontend, backend and database.
+• In fact, by using Node.js we can use JavaScript everywhere, like, frontend, backend and database.
 
 • Node JS is associated with `Walmart`, `PayPal`, `Netflix`, `Uber`, `LinkedIn`, `ebay` etc.
