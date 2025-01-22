@@ -23,7 +23,7 @@
 • `FS (FileSystem)` is non-global core module it means we have to import it before use.
 
 ## Third-Party Modules (External Modules)
-• Third-party modules are modules that are downloaded with a package manager such as npm.
+• Third-party modules are the modules that are downloaded with a package manager such as npm.
 
 • These modules are usually stored in the `node modules` folder.
 
