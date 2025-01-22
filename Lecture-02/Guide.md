@@ -1,4 +1,4 @@
-# Installation & Environment Setup For Node JS
+# INSTALLATION & ENVIRONMENT SETUP FOR NODE JS
 
 #### Things To Install
 1. NodeJS
