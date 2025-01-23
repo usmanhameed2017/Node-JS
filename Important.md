@@ -62,3 +62,7 @@
 • File handling refers to the process by which data is stored and retrieved from `files` using a program.
 
 • Whether you need to read configuration files, write `log files`, the fs module provides the necessary tools to interact with the file system efficiently.
+
+• `copyFileSync` is limited to copying files; does not support copying directories.
+
+• `cpSync` copies files and directories recursively and is suitable for copying both individual files and entire directories.
