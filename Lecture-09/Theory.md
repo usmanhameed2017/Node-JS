@@ -19,14 +19,13 @@
 
 • The File System module has methods for creating new files:
 
-#### `writeFileSync`
+#### writeFileSync
 ```javascript
 const fs = require("fs");
-
 fs.writeFileSync("info.txt", "My name is Usman Hameed");
 ```
 
-#### `writeFile`
+#### writeFile
 ```javascript
 const fs = require("fs");
 fs.writeFile("info.txt", "My name is Usman Hameed", (error) => {
