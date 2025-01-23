@@ -23,4 +23,4 @@ npm i nodemon -g
 
 • With the introduction of the built-in feature in Node.js `18.11`, we can achieve hot reload without need of nodemon.
 
-• Node.js 18.11 brings a new feature called `--watch` that allows hot reloading without relying on nodemon.
+• Node.js version `18.11` brings a new feature called `--watch` that allows hot reloading without relying on nodemon.
