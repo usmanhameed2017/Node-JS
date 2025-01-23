@@ -75,7 +75,7 @@ fs.appendFile("info.txt", " and age is 24", (error) => {
 
 ### Delete Files Using FS Module
 
-• To delete a file with the File System module, use the `unlink()` or `unlinkSync` method.
+• To delete a file with the File System module, use the `unlink()` or `unlinkSync()` method.
 
 #### unlinkSync
 ```javascript
@@ -92,39 +92,50 @@ fs.unlink("info.txt", (error) => {
 });
 ```
 
+### Rename Files Using FS Module
 
+• To rename a file with the File System module, use the `rename()` or `renameSync()` method.
 
+#### renameSync
+```javascript
+const fs = require("fs");
+fs.renameSync("info.txt", "bio.txt");
+```
 
+#### rename
+```javascript
+const fs = require("fs");
+fs.rename("info.txt", "bio.txt", (error) => {
+    if(error) console.log(error);
+    console.log("File has been renamed successfully!");
+});
+```
 
+###### Note: We can also move file by using `rename()` or `renameSync()` method, providing a specific directory path.
 
+### Copying Files Using FS Module
 
+• To copy a file with the File System module, use the `cp()` or `cpSync()` method.
 
+• The `fs.cp()` and `fs.cpSync()` method copy the specified file.
 
+#### cpSync
+```javascript
+const fs = require("fs");
+fs.cpSync("info.txt", "infoCopy.txt");
+```
 
+#### cp
+```javascript
+const fs = require("fs");
+fs.cp("info.txt", "infoCopy.txt", (error) => {
+    if(error) console.log(error);
+    console.log("The copy of a file has been generated!");
+});
+```
 
+## Use of FS Module In Real World Applications
 
+• The fs module is essential for performing `file system operations` in Node. js applications.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+• Whether you need to read configuration files, write `log files`, the fs module provides the necessary tools to interact with the file system efficiently.
