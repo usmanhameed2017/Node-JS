@@ -34,6 +34,66 @@ fs.writeFile("info.txt", "My name is Usman Hameed", (error) => {
 });
 ```
 
+### Read Files Using FS Module
+
+• The File System module has methods for reading files:
+
+#### readFileSync
+```javascript
+const fs = require("fs");
+const data = fs.readFileSync("info.txt", "utf-8");
+console.log(data);
+```
+
+#### readFile
+```javascript
+const fs = require("fs");
+fs.readFile("info.txt", "utf-8", (error, data) => {
+    if(error) console.log(error);
+    console.log(data);
+});
+```
+
+### Update Files Using FS Module
+
+• The File System module has methods for updating files:
+
+#### appendFileSync
+```javascript
+const fs = require("fs");
+fs.appendFileSync("info.txt", " and age is 24");
+```
+
+#### appendFile
+```javascript
+const fs = require("fs");
+fs.appendFile("info.txt", " and age is 24", (error) => {
+    if(error) console.log(error);
+    console.log("Data has been updated successfully");
+});
+```
+
+### Delete Files Using FS Module
+
+• To delete a file with the File System module, use the `unlink()` or `unlinkSync` method.
+
+#### unlinkSync
+```javascript
+const fs = require("fs");
+fs.unlinkSync("info.txt");
+```
+
+#### unlink
+```javascript
+const fs = require("fs");
+fs.unlink("info.txt", (error) => {
+    if(error) console.log(error);
+    console.log("File has been deleted successfully!");
+});
+```
+
+
+
 
 
 
