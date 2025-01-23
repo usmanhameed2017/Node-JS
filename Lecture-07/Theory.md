@@ -16,7 +16,7 @@ npm i nodemon -g
 • If nodemon gives an error for disable scripts, then follow these steps:
 ###### 1. Open Windows PowerShell with Run as Administrator
 ###### 2. Run this command: `get-executionpolicy` to check current execution policy in your system.
-###### 3. Run this command: `set-executionpolicy unrestricted` to unrestricted it.
+###### 3. Run this command: `set-executionpolicy unrestricted` to unrestrict it.
 
 ### Alternate of Nodemon
 • Type this command in terminal to watch live changes in your file/module: `node --watch fileName.js`.
