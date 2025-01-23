@@ -1,6 +1,6 @@
 # Package.json & Package-lock.json
 ### Two ways Of Creating `package.json` file.
-1. By initialzing project with the command: `npm init`
+1. By initializing project with the command: `npm init`
 2. When we install any module or library using npm then `package.json` file is created automatically.
 
 ###### Note: we don't create or modify `package-lock.json` file manually because this file is automatically created and managed by the npm.
