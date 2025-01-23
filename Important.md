@@ -42,3 +42,17 @@
 • `package-lock.json` file is generated and updated automatically by npm when installing or updating packages. It is used to lock the exact versions of dependencies installed in the project, ensuring reproducibility and consistent installations across different environments.
 
 • Node.js version `18.11` brings a new feature called `--watch` that allows hot reloading without relying on nodemon.
+
+• `Synchronous` is a sequential & blocking architecture, so the execution of each operation depends on completing the one before it.
+
+• `Sync` is a single-thread, so only one operation or program will run at a time.
+
+• `Sync` is a blocking model and it will only send the server one request at a time and wait for that request to be answered by the server.
+
+• `Asynchronous` is a non-blocking architecture, so the execution of one task isn't dependent on another.
+
+• `Async` is a multi-thread, which means operations or programs can run in parallel.
+
+• `Async` is non-blocking, which means it will send multiple requests to a server.
+
+• Node JS follows `Asynchronous`, but Node JS also have `synchronous methods` to perform synchronous specific tasks.
