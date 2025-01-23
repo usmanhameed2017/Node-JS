@@ -36,3 +36,7 @@
 • Third-party modules are downloaded with a package manager such as `npm`.
 
 • Initialize Node.js project with the command: `npm init`.
+
+• `package.json` file is primarily used for managing and documenting `metadata` about the project, including its `name`, `version`, `author`, `dependencies`, `scripts`, and other configuration details within json format.
+
+• `package-lock.json` file is generated and updated automatically by npm when installing or updating packages. It is used to lock the exact versions of dependencies installed in the project, ensuring reproducibility and consistent installations across different environments.
