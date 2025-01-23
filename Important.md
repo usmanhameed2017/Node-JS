@@ -34,3 +34,5 @@
 • Core modules are come with the Node.js by default.
 
 • Third-party modules are downloaded with a package manager such as `npm`.
+
+• Initialize Node.js project with the command: `npm init`.
