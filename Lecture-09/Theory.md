@@ -14,6 +14,7 @@
 3. Update files
 4. Delete files
 5. Rename files
+6. Copy files
 
 ### Create Files Using FS Module
 
