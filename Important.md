@@ -56,3 +56,9 @@
 • `Async` is non-blocking, which means it will send multiple requests to a server.
 
 • Node JS follows `Asynchronous`, but Node JS also have `synchronous methods` to perform synchronous specific tasks.
+
+• Fs module is used to provide `file handling`.
+
+• File handling refers to the process by which data is stored and retrieved from `files` using a program.
+
+• Whether you need to read configuration files, write `log files`, the fs module provides the necessary tools to interact with the file system efficiently.
