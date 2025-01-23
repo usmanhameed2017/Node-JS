@@ -40,3 +40,5 @@
 • `package.json` file is primarily used for managing and documenting `metadata` about the project, including its `name`, `version`, `author`, `dependencies`, `scripts`, and other configuration details within json format.
 
 • `package-lock.json` file is generated and updated automatically by npm when installing or updating packages. It is used to lock the exact versions of dependencies installed in the project, ensuring reproducibility and consistent installations across different environments.
+
+• Node.js version `18.11` brings a new feature called `--watch` that allows hot reloading without relying on nodemon.
