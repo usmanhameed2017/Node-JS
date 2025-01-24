@@ -18,7 +18,7 @@
 
 ## Node JS Web Server
 
-• Node js web server works as a `single-thread`, but its single thread will not be blocked .
+• Node js web server works as a `single-thread`, but its single thread will not be blocked.
 
 • It means the single thread of Node.js will not be blocked, nor it stay in pending state.
 
