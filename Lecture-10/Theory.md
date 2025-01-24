@@ -40,7 +40,7 @@
 
 • There is a library called `libuv` specifically designed for Node.js. 
 
-• Node use libuv for `workers` concept.
+• Node.js use libuv for `workers` concept.
 
 • Libuv provides you the concept of Non-Blocking I/O.
 
