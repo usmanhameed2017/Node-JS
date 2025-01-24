@@ -66,3 +66,23 @@
 • `copyFileSync` is limited to copying files; does not support copying directories.
 
 • `cpSync` copies files and directories recursively and is suitable for copying both individual files and entire directories.
+
+• Node js web server works as a `single-thread`, but its single thread will not be blocked.
+
+• It means the single thread of Node.js will not be blocked, nor it stay in pending state.
+
+• To handle multiple request with single thread, Node.js have two concepts:
+1. Non-Blocking I/O
+2. Asynchronous
+
+• There is a library called `libuv` specifically designed for Node.js. 
+
+• Libuv provides you the concept of Non-Blocking I/O.
+
+• Libuv is built in `C Language`.
+
+• C language uses `System Kernel`.
+
+• System Kernel has `Multiple Threads`.
+
+• It means in Node JS, we are not using multiple threads but behind the scenes Kernel is implementing multiple threads.
