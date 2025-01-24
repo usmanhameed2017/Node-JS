@@ -86,3 +86,17 @@
 • System Kernel has `Multiple Threads`.
 
 • It means in Node JS, we are not using multiple threads but behind the scenes Kernel is implementing multiple threads.
+
+• When a client sends a request to a server, the server listens for it on a specific port number.
+
+• However, ensure that the port number is not already in use by another application.
+
+• Node JS applications often listen on port 3000 or 4000, but those are just conventions, and you don't have to follow them.
+
+• When a client sends a request to a server, it is referred to as an `HTTP Request Header`. 
+
+• When the server processes the request and sends back a response, it is known as an `HTTP Response Header`.
+
+• Node JS has a built-in module called `HTTP`, which allows Node JS to transfer data over the Hyper Text Transfer Protocol (HTTP).
+
+• The HTTP module allows you to create a server using the `http.createServer()` method, which listens for incoming requests and handles them using a `callback` function.
