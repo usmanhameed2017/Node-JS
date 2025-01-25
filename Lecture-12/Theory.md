@@ -29,7 +29,7 @@
 
 - The URL module splits up a web address into a readable parts.
 
-- The Node JS URL module provides us with utilities for parsing of the URL.
+- The Node JS `URL module` provides us with utilities for parsing of the URL.
 
 - `Parsing` is the process of transforming an unstructured data into a tree or parse tree (structured data) that's easier to read, understand and use.
 
