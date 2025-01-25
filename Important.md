@@ -1,102 +1,125 @@
 # IMPORTANT POINTS
-• When we write code in JavaScript, it converts into a machine language, then our machine understands the code of JavaScript.
+- When we write code in JavaScript, it converts into a machine language, then our machine understands the code of JavaScript.
 
-• The `JavaScript Engine` is used to convert JS code into a machine language.
+- The `JavaScript Engine` is used to convert JS code into a machine language.
 
-• The JavaScript Engine is basically a medium between Javascript code and a machine, which transforms the code into a machine readable language.
+- The JavaScript Engine is basically a medium between Javascript code and a machine, which transforms the code into a machine readable language.
 
-• The first JavaScript Engine called `SpiderMonkey` was created by Netscape.
+- The first JavaScript Engine called `SpiderMonkey` was created by Netscape.
 
-• Netscape introduced this SpiderMonkey engine in their web browser called `Netscape Navigator`.
+- Netscape introduced this SpiderMonkey engine in their web browser called `Netscape Navigator`.
 
-• Google introduced the fastest JavaScript engine called the `V8 engine` for their Chrome browser.
+- Google introduced the fastest JavaScript engine called the `V8 engine` for their Chrome browser.
 
-• JavaScript v8 engine is written in C++.
+- JavaScript v8 engine is written in C++.
 
-• Node.js is an open-source and cross-platform `JavaScript Runtime Environment`.
+- Node.js is an open-source and cross-platform `JavaScript Runtime Environment`.
 
-• Node.js was developed by `Ryan Dahl` in 2009.
+- Node.js was developed by `Ryan Dahl` in 2009.
 
-• Node JS is associated with `Walmart`, `PayPal`, `Netflix`, `Uber`, `LinkedIn`, `ebay` etc.
+- Node JS is associated with `Walmart`, `PayPal`, `Netflix`, `Uber`, `LinkedIn`, `ebay` etc.
 
-• When your application starts getting larger, maintaining a single file becomes a difficult task.
+- When your application starts getting larger, maintaining a single file becomes a difficult task.
 
-• It is easy to get lost in the codebase and lose track of what a particular piece of code is doing.
+- It is easy to get lost in the codebase and lose track of what a particular piece of code is doing.
 
-• To make it easier to maintain, reuse and organize code, you need to split the code into multiple files.
+- To make it easier to maintain, reuse and organize code, you need to split the code into multiple files.
 
-• This process is called `modularization`.
+- This process is called `modularization`.
 
-• There are three types of modules, including; `Local Modules`, `Core Modules`, `Third-Party Modules (External Modules)`.
+- There are three types of modules, including; `Local Modules`, `Core Modules`, `Third-Party Modules (External Modules)`.
 
-• Local module is a file with `js` extension, having some chunk of javascript code.
+- Local module is a file with `js` extension, having some chunk of javascript code.
 
-• Core modules are come with the Node.js by default.
+- Core modules are come with the Node.js by default.
 
-• Third-party modules are downloaded with a package manager such as `npm`.
+- Third-party modules are downloaded with a package manager such as `npm`.
 
-• Initialize Node.js project with the command: `npm init`.
+- Initialize Node.js project with the command: `npm init`.
 
-• `package.json` file is primarily used for managing and documenting `metadata` about the project, including its `name`, `version`, `author`, `dependencies`, `scripts`, and other configuration details within json format.
+- `package.json` file is primarily used for managing and documenting `metadata` about the project, including its `name`, `version`, `author`, `dependencies`, `scripts`, and other configuration details within json format.
 
-• `package-lock.json` file is generated and updated automatically by npm when installing or updating packages. It is used to lock the exact versions of dependencies installed in the project, ensuring reproducibility and consistent installations across different environments.
+- `package-lock.json` file is generated and updated automatically by npm when installing or updating packages. It is used to lock the exact versions of dependencies installed in the project, ensuring reproducibility and consistent installations across different environments.
 
-• Node.js version `18.11` brings a new feature called `--watch` that allows hot reloading without relying on nodemon.
+- Node.js version `18.11` brings a new feature called `--watch` that allows hot reloading without relying on nodemon.
 
-• `Synchronous` is a sequential & blocking architecture, so the execution of each operation depends on completing the one before it.
+- `Synchronous` is a sequential & blocking architecture, so the execution of each operation depends on completing the one before it.
 
-• `Sync` is a single-thread, so only one operation or program will run at a time.
+- `Sync` is a single-thread, so only one operation or program will run at a time.
 
-• `Sync` is a blocking model and it will only send the server one request at a time and wait for that request to be answered by the server.
+- `Sync` is a blocking model and it will only send the server one request at a time and wait for that request to be answered by the server.
 
-• `Asynchronous` is a non-blocking architecture, so the execution of one task isn't dependent on another.
+- `Asynchronous` is a non-blocking architecture, so the execution of one task isn't dependent on another.
 
-• `Async` is a multi-thread, which means operations or programs can run in parallel.
+- `Async` is a multi-thread, which means operations or programs can run in parallel.
 
-• `Async` is non-blocking, which means it will send multiple requests to a server.
+- `Async` is non-blocking, which means it will send multiple requests to a server.
 
-• Node JS follows `Asynchronous`, but Node JS also have `synchronous methods` to perform synchronous specific tasks.
+- Node JS follows `Asynchronous`, but Node JS also have `synchronous methods` to perform synchronous specific tasks.
 
-• Fs module is used to provide `file handling`.
+- Fs module is used to provide `file handling`.
 
-• File handling refers to the process by which data is stored and retrieved from `files` using a program.
+- File handling refers to the process by which data is stored and retrieved from `files` using a program.
 
-• Whether you need to read configuration files, write `log files`, the fs module provides the necessary tools to interact with the file system efficiently.
+- Whether you need to read configuration files, write `log files`, the fs module provides the necessary tools to interact with the file system efficiently.
 
-• `copyFileSync` is limited to copying files; does not support copying directories.
+- `copyFileSync` is limited to copying files; does not support copying directories.
 
-• `cpSync` copies files and directories recursively and is suitable for copying both individual files and entire directories.
+- `cpSync` copies files and directories recursively and is suitable for copying both individual files and entire directories.
 
-• Node js web server works as a `single-thread`, but its single thread will not be blocked.
+- Node js web server works as a `single-thread`, but its single thread will not be blocked.
 
-• It means the single thread of Node.js will not be blocked, nor it stay in pending state.
+- It means the single thread of Node.js will not be blocked, nor it stay in pending state.
 
-• To handle multiple request with single thread, Node.js have two concepts:
+- To handle multiple request with single thread, Node.js have two concepts:
 1. Non-Blocking I/O
 2. Asynchronous
 
-• There is a library called `libuv` specifically designed for Node.js. 
+- There is a library called `libuv` specifically designed for Node.js. 
 
-• Libuv provides you the concept of Non-Blocking I/O.
+- Libuv provides you the concept of Non-Blocking I/O.
 
-• Libuv is built in `C Language`.
+- Libuv is built in `C Language`.
 
-• C language uses `System Kernel`.
+- C language uses `System Kernel`.
 
-• System Kernel has `Multiple Threads`.
+- System Kernel has `Multiple Threads`.
 
-• It means in Node JS, we are not using multiple threads but behind the scenes Kernel is implementing multiple threads.
+- It means in Node JS, we are not using multiple threads but behind the scenes Kernel is implementing multiple threads.
 
-• When a client sends a request to a server, the server listens for it on a specific port number.
+- When a client sends a request to a server, the server listens for it on a specific port number.
 
-• However, ensure that the port number is not already in use by another application.
+- However, ensure that the port number is not already in use by another application.
 
-• Node JS applications often listen on port 3000 or 4000, but those are just conventions, and you don't have to follow them.
+- Node JS applications often listen on port 3000 or 4000, but those are just conventions, and you don't have to follow them.
 
-• When a client sends a request to a server, it is referred to as an `HTTP Request Header`. 
+- When a client sends a request to a server, it is referred to as an `HTTP Request Header`. 
 
-• When the server processes the request and sends back a response, it is known as an `HTTP Response Header`.
+- When the server processes the request and sends back a response, it is known as an `HTTP Response Header`.
 
-• Node JS has a built-in module called `HTTP`, which allows Node JS to transfer data over the Hyper Text Transfer Protocol (HTTP).
+- Node JS has a built-in module called `HTTP`, which allows Node JS to transfer data over the Hyper Text Transfer Protocol (HTTP).
 
-• The HTTP module allows you to create a server using the `http.createServer()` method, which listens for incoming requests and handles them using a `callback` function.
+- The HTTP module allows you to create a server using the `http.createServer()` method, which listens for incoming requests and handles them using a `callback` function.
+
+- A hash sign `#` in a URL is referred to as a fragment.
+
+- Historically, URL fragments have been used to automatically set the browser's scroll position to a predefined location in the web page.
+
+- In that sense, if a URL refers to a `document`, then the `fragment` refers to a `specific subsection` of that document.
+
+- The URL module splits up a web address into a readable parts.
+
+- The Node JS `URL module` provides us with utilities for parsing of the URL.
+
+- `Parsing` is the process of transforming an unstructured data into a tree or parse tree (structured data) that's easier to read, understand and use.
+
+###### https://www.example.com/category/shirts?name=Usman&age=24#section7
+
+- The segments of the above URL are:
+>1. `https`: Protocol 
+>2. `www.example.com`: Domain/Host name
+>3. `category`: Path 
+>4. `category/shirts`: Nested Path 
+>5. `?`: Query String Separator
+>6. `?name=Usman&age=24`: Query String Parameters 
+>7. `#section7`: Fragment 
