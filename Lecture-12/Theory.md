@@ -15,7 +15,7 @@
 >2. `www.example.com`: Domain/Host name
 >3. `category`: Path 
 >4. `category/shirts`: Nested Path 
->5. `?`: Query String Separator. 
+>5. `?`: Query String Separator
 >6. `?name=Usman&age=24`: Query String Parameters 
 >7. `#section7`: Fragment 
 
