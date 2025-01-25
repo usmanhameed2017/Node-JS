@@ -11,13 +11,13 @@
 ###### https://www.example.com/category/shirts?name=Usman&age=24#section7
 
 - The segments of the above URL are:
-> `https`: Protocol 
-> `www.example.com`: Domain/Host name
-> `category`: Path 
-> `category/shirts`: Nested Path 
-> `?`: Query String Separator. 
-> `?name=Usman&age=24`: Query String Parameters 
-> `#section7`: Fragment 
+>1. `https`: Protocol 
+>2. `www.example.com`: Domain/Host name
+>3. `category`: Path 
+>4. `category/shirts`: Nested Path 
+>5. `?`: Query String Separator. 
+>6. `?name=Usman&age=24`: Query String Parameters 
+>7. `#section7`: Fragment 
 
 - A hash sign `#` in a URL is referred to as a fragment.
 
