@@ -162,3 +162,31 @@ else
 
 - `Absolute Path`: `E:\\Usman\\Node-JS\\Lectures\\Lecture-01\\Theory.md`
 - `Relative Path`: `Usman\\Node-JS\\Lectures\\Lecture-01\\Theory.md`
+
+### __filename
+
+- The `__filename` is an environment variable in the Node.js that returns the file name of the code which is executed.
+
+- It gives the absolute path of the code file.
+
+#### main.js
+```javascript
+// Import Path Module
+const path = require("path");
+
+// Get The Complete Path Of Currently Executed File
+console.log(__filename);
+```
+
+### __dirname
+
+- `__dirname` is an environment variable that tells you the absolute path of the directory containing the currently executing file.
+
+#### main.js
+```javascript
+// Import Path Module
+const path = require("path");
+
+// Get The Complete Absolute Path Of The Directory Containing The Currently Executing File
+console.log(__dirname);
+```
