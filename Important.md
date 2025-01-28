@@ -137,3 +137,13 @@
 - Behind the scenes, Node.js does not run our code directly, it wraps the entire code inside a `Module Wrapper Function` before execution. This is why, in every file, you have access to seemingly global variables like `exports`, `require`, `module`, `__filename`, and `__dirname`.
 
 - The `Module Wrapper Function` provides a proper encapsulation and code reusability.
+
+- JSON is a standard text-based and human readable data interchange format used to exchange data between `web clients` and `web servers`.
+
+- JSON is a collection of `key-value` pairs where the key must be a string and the value can be any of following types: Number, String, Boolean, Array, Object and NULL.
+
+- `JSON.parse()` takes a JSON string and converts it into a JavaScript object.
+
+- `JSON.stringify()` converts a JavaScript object into a JSON string.
+
+- `require` method automatically converts JSON string into a Javascript object. So, you don't need to use `JSON.parse()` method for it.
