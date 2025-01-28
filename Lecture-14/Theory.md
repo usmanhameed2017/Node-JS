@@ -160,6 +160,5 @@ else
 }
 ```
 
-> `Absolute Path`: `E:\\Usman\\Node-JS\\Lectures\\Lecture-01\\Theory.md`
-
-> `Relative Path`: `Usman\\Node-JS\\Lectures\\Lecture-01\\Theory.md`
+- `Absolute Path`: `E:\\Usman\\Node-JS\\Lectures\\Lecture-01\\Theory.md`
+- `Relative Path`: `Usman\\Node-JS\\Lectures\\Lecture-01\\Theory.md`
