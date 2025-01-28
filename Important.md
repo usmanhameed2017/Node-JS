@@ -127,3 +127,13 @@
 - The path module in Node JS is a core module that offers utilities for managing file and directory paths.
 
 - It helps handle and transform paths across different operating systems, ensuring platform independence.
+
+- In Node.js, when we create a module and add code to it, Node.js automatically wraps the entire file's code in a `Module Wrapper Function` behind the scenes.
+
+- The `Module Wrapper Function` creates a `block scope`, ensuring that variables or functions with the same name do not conflict.
+
+- Additionally, the Module Wrapper Function provides some seemingly global variables as its parameters, including `exports`, `require`, `module`, `__filename`, and `__dirname`. These variables are accessible in every file and can be used as needed based on your work requirements.
+
+- Behind the scenes, Node.js does not run our code directly, it wraps the entire code inside a `Module Wrapper Function` before execution. This is why, in every file, you have access to seemingly global variables like `exports`, `require`, `module`, `__filename`, and `__dirname`.
+
+- The `Module Wrapper Function` provides a proper encapsulation and code reusability.
