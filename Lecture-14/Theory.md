@@ -111,11 +111,11 @@ console.log(path.normalize(url));
 #### Parse
 
 - The `parse()` method is used to return an object whose properties represent the given path. The method returns the following properties:
-> - root (root name)
-> - dir (directory name)
-> - base (filename with extension)
-> - ext (only extension)
-> - name (only filename)
+> 1. root (root name)
+> 2. dir (directory name)
+> 3. base (filename with extension)
+> 4. ext (only extension)
+> 5. name (only filename)
 
 #### main.js
 ```javascript
@@ -160,7 +160,5 @@ else
 }
 ```
 
-```t
-`Absolute Path`: `E:\\Usman\\Node-JS\\Lectures\\Lecture-01\\Theory.md`
-`Relative Path`: `Usman\\Node-JS\\Lectures\\Lecture-01\\Theory.md`
-``` 
+> `Absolute Path`: `E:\\Usman\\Node-JS\\Lectures\\Lecture-01\\Theory.md`
+> `Relative Path`: `Usman\\Node-JS\\Lectures\\Lecture-01\\Theory.md`
