@@ -123,3 +123,7 @@
 >5. `?`: Query String Separator
 >6. `?name=Usman&age=24`: Query String Parameters 
 >7. `#section7`: Fragment 
+
+- The path module in Node JS is a core module that offers utilities for managing file and directory paths.
+
+- It helps handle and transform paths across different operating systems, ensuring platform independence.
