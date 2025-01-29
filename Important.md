@@ -147,3 +147,13 @@
 - `JSON.stringify()` converts a JavaScript object into a JSON string.
 
 - `require` method automatically converts JSON string into a Javascript object. So, you don't need to use `JSON.parse()` method for it.
+
+- A callback is a function passed as an argument to another function.
+
+- This technique allows a function to call another function.
+
+- A callback function which is executed immediately is called a `Synchronous Callback`.
+
+- A callback function that is often used to continue code execution after an Asynchronous operation has completed in a High Order Function is called `Asynchronous Callback`.
+
+- `Asynchronous Callbacks` are used to delay the execution of a function until a particular event has occurred such as; reading file, fetching data from a server, updating a data etc.
