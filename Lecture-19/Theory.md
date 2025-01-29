@@ -6,7 +6,7 @@
 
 ##### Increase The Number Of Threads In A Thread Pool
 ```javascript
-process.env.UV.THREAD_POOL_SIZE = 8;
+process.env.UV_THREADPOOL_SIZE = 8;
 ```
 
 - By increasing the thread pool size, we are able to improve the total time taken to run multiple calls of an asynchronous method like `pbkdf2()` for hashing.
