@@ -170,6 +170,8 @@
 
 - The `Thread Pool` consists of multiple threads. By default, it has four threads, but the number can be increased using an environment variable.
 
+- Increase thread pool size: `process.env.UV_THREADPOOL_SIZE = 8;`
+
 - When the threads in a `Thread Pool` complete their assigned tasks, they return the response via a `callback` function.
 
 - The concept of a thread pool is provided by the `libuv` library, which was initially built for Node.js.
