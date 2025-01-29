@@ -157,3 +157,11 @@
 - A callback function that is often used to continue code execution after an Asynchronous operation has completed in a High Order Function is called `Asynchronous Callback`.
 
 - `Asynchronous Callbacks` are used to delay the execution of a function until a particular event has occurred such as; reading file, fetching data from a server, updating a data etc.
+
+- An event is an `action` that has happened in our application we can respond to.
+
+- By using the events module, we can create our own custom events and respond to those custom events in a `non-blocking` manner.
+
+- Node.js has a built-in module, called `events`, where you can create, fire, and listen for your own events.
+
+- We can attach multiple `Event Handlers` to a single `Event`.
