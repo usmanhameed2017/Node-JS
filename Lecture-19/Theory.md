@@ -4,6 +4,17 @@
 
 - The `Thread Pool` consists of multiple threads. By default, it has four threads, but the number can be increased using an environment variable.
 
+##### Increase The Number Of Threads In A Thread Pool
+```javascript
+process.env.UV.THREAD_POOL_SIZE = 8;
+```
+
+- By increasing the thread pool size, we are able to improve the total time taken to run multiple calls of an asynchronous method like `pbkdf2()` for hashing.
+
+- Increasing the thread pool size can help with performance but that is limited by the number of available CPU cores.
+
+- The total number of threads depends on the `CPU cores`. We cannot just increase the thread pool size by assigning some extremely high number. If our system has 8 CPU cores, we can increase the thread pool size up to 8 or beyond but, then the threads will be divided among 8 CPU cores.
+
 - When the threads in a `Thread Pool` complete their assigned tasks, they return the response via a `callback` function.
 
 - The concept of a thread pool is provided by the `libuv` library, which was initially built for Node.js.
