@@ -68,8 +68,7 @@ function Show1(name)
 // Function 2
 function Show2(Show1) // Here Show1 is a callback function, and Show2 is a High Order Function
 {
-    const name = "Usman Hameed";
-    Show1(name); // Call Function 1
+    Show1("Usman Hameed"); // Call Function 1
 }
 
 // Call Function 2
