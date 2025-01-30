@@ -191,3 +191,29 @@
 - Increasing the thread pool size can help with performance but that is limited by the number of available CPU cores.
 
 - The total number of threads depends on the `CPU cores`. We cannot just increase the thread pool size by assigning some extremely high number. If our system has 8 CPU cores, we can increase the thread pool size up to 8 or beyond but, then the threads will be divided among 8 CPU cores.
+
+- In Node JS, the term `I/0` often refers to reading/writing files or network operations.
+
+- Network operations get `external information` into your application, or send data from your application to somewhere else.
+
+- Libuv's thread pool helps execute some of the async methods but, not all async methods.
+
+- Although both `fs.readFile()` and `https.request()` are asynchronous, but `https.request()` method does not seem to use the thread pool.
+
+- `https.request()` does not seem to be affected by the number of CPU cores either.
+
+- `https.request` is a network `input/output` operation and not a CPU bound operation.
+
+- A kernel is a `core component` of an operating system that manages the operations of computers and hardware.
+
+- It basically manages operations of memory and CPU time.
+
+- It acts as a bridge between `software applications` and the `hardware` of a computer.
+
+- In Node JS, async methods are handled by Libuv, but are handled in 2 different ways.
+1. Native Async Mechanism
+2. Thread Pool
+
+- Whenever possible, Libuv will use native async mechanisms in the OS so as avoid blocking the main thread.
+
+- Relying on `Native Async Mechanisms` makes `Node.js` scalable as the only limitation is the `operating system kernel`.
