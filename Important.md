@@ -217,3 +217,47 @@
 - Whenever possible, Libuv will use native async mechanisms in the OS so as avoid blocking the main thread.
 
 - Relying on `Native Async Mechanisms` makes `Node.js` scalable as the only limitation is the `operating system kernel`.
+
+- `V8 Engine` consist of two memories:
+1. Memory Heap
+2. Call Stack
+
+- All declared variables and functions resides in `Memory Heap`.
+
+- Whenever we execute the code, functions are pushed into the `Call Stack` memory.
+
+- Call stack basically provides the code execution environment.
+
+- The sequence of code execution in `Call Stack` is `LIFO (Last In First Out)`.
+
+- JavaScript is a `synchronous`, `blocking`, `single-threaded` by default, meaning it executes the code line by line, blocking further execution until the current operation completes.
+
+- However, JavaScript also supports `asynchronous` behavior using mechanisms like: `Callbacks`, `Promises`, `async & await`.
+
+- To make `async` programming possible in `Node.js`, we need the help of `Libuv`.
+
+- Whenever an `asynchronous` function pushed into the `Call Stack` memory, `Libuv` have two ways to handle that function.
+1. Native Async Mechanism
+2. Thread Pool
+
+- In `Call Stack` memory, the `global()` function is the first one to be executed.
+
+- `Global` function refers to the global scope.
+
+#### Event Loop Phases
+1. Timers - setTimeout(), setInterval()   
+2. Pending Callbacks - This phase executes callbacks for some system operations such as types of TCP errors.
+3. Idle, Prepare - Used Internally
+4. Poll - I/O Events (FS) Read File
+5. Check - setImmediate()
+6. Close Callbacks - Socket Close
+
+- The order sequence of execution is always set inside `Event Queue`.
+
+- The order sequence in `Event Queue` is `FIFO (First In First Out)`.
+
+- Callback functions are executed only when the call stack is empty. So that the flow of `synchronous` code execution will not be interrupted to run a callback function.
+
+- An event loop is an `endless loop`, which waits for tasks, executes them, and then sleeps until it receives more callbacks.
+
+- The event loop is a `fundamental mechanism` that enables the asynchronous execution of code.
