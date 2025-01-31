@@ -56,7 +56,7 @@
 
 - Any callbacks in the `micro task queues` (if present) are executed. First, `nextTick queue` and after that `promise queue`.
 
-- All callbacks within the 1/0 queue (Poll) are executed.
+- All callbacks within the I/O queue (Poll) are executed.
 
 - Any callbacks in the `micro task queues` (if present) are executed. First, `nextTick queue` and after that `promise queue`.
 
