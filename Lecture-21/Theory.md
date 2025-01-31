@@ -66,7 +66,7 @@
 
 - All callbacks in the close queue are executed.
 
-- For one final time in the same loop, the `micro task queue`s are executed. `nextTick queue` followed by `promise queue`.
+- For one final time in the same loop, the `micro task queue` are executed. `nextTick queue` followed by `promise queue`.
 
 > Note: `Timers` & `Poll` are `Macro Task Queues`.
 
