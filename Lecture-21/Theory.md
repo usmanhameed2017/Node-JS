@@ -10,7 +10,7 @@
 
 #### Memory Heap
 
-- All declared variables and functions resides in `Memory Heap.`
+- All declared variables and functions resides in `Memory Heap`.
 
 #### Call Stack
 
@@ -96,7 +96,7 @@ UI rendering
 
 - The order sequence of execution is always set inside `Event Queue`.
 
-- The order sequence in `Event Queue` is `FIFI (First In First Out)`.
+- The order sequence in `Event Queue` is `FIFO (First In First Out)`.
 
 ### Important Notes
 
