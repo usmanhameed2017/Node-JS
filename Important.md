@@ -261,3 +261,5 @@
 - An event loop is an `endless loop`, which waits for tasks, executes them, and then sleeps until it receives more callbacks.
 
 - The event loop is a `fundamental mechanism` that enables the asynchronous execution of code.
+
+> Note: The `priority` sequence of code execution applies only when all callbacks are ready at the exact same time. Otherwise, if a higher-priority callback takes slightly longer to complete, it will be executed later accordingly. 
