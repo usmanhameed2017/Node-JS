@@ -20,7 +20,7 @@
 
 - The sequence of code execution in `Call Stack` is `LIFO (Last In First Out)`.
 
-### Async Code Execution In Node JS
+### Asynchronous Code Execution In Node JS
 
 - JavaScript is a `synchronous`, `blocking`, `single-threaded` by default, meaning it executes the code line by line, blocking further execution until the current operation completes.
 
