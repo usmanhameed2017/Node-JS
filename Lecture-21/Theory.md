@@ -18,7 +18,7 @@
 
 - Call stack basically provides the code execution environment.
 
-- The code sequence of execution in `Call Stack` is `LIFO (Last In First Out)`.
+- The sequence of code execution in `Call Stack` is `LIFO (Last In First Out)`.
 
 ### Async Code Execution In Node JS
 
