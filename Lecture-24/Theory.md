@@ -2,7 +2,7 @@
 
 - Create a file named as `main.js`.
 
-- Import `express` and store the reference of express into variable. 
+- Import `express` and store the reference of express into a variable. 
 
 #### main.js
 ```javascript
@@ -27,4 +27,4 @@ app.listen(8000, "localhost", () => console.log("Server is started and running a
 
 - This `response.send()` function takes an object as input and it sends this to the `requesting client`. Here we are sending the string "Response From A Server"
 
-- This `app.listen()` function binds and listens for connections on the specified `host` and `por`t. Port is the only required parameter here.
+- This `app.listen()` function binds and listens for connections on the specified `host` and `port`. Port is the only required parameter here.
