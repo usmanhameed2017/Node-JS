@@ -10,7 +10,7 @@
 // Import express
 const express = require("express");
 
-// Initilaize express app
+// Initialize express app
 const app = express();
 
 // Define Routes //
