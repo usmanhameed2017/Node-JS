@@ -62,3 +62,19 @@
 - With its various features and flexibility, it is widely used for `server-side applications` and `APIs`.
 
 - As you gain more experience, you can explore its extensive middleware support and routing capabilities to build more complex applications.
+
+## INSTALLATION OF EXPRESS JS
+
+- Open new terminal and write `npm init` command to create a package.json file for your application.
+
+- Now, write command to install `Express.js`.
+
+```
+npm i express
+```
+
+- To install Express temporarily and not add it to the dependencies list:
+
+```
+npm i express --no-save
+```
