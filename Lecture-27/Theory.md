@@ -26,7 +26,7 @@ npm i ejs
 
 - Now, call `render()` function to display pages that created inside `views` folder.
 
-> Note: To write your Javascript expression inside HTML, use EJS placeholder syntax: `<%= %>`
+> Note: To write your Javascript expression inside HTML, use EJS placeholder syntax like this: `<% %>` and to print any value, use EJS placeholder with `is equal` sign like: `<%= name %>`.
 
 ## PRACTICAL IMPLEMENTATION
 
