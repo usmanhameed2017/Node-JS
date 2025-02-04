@@ -263,3 +263,11 @@
 - The event loop is a `fundamental mechanism` that enables the asynchronous execution of code.
 
 > Note: The `priority` sequence of code execution applies only when all callbacks are ready at the exact same time. Otherwise, if a higher-priority callback takes slightly longer to complete, it will be executed later accordingly. 
+
+- `app.use()` is used to define middleware that executes on every request, regardless of the HTTP method (GET, POST, PUT, DELETE).
+
+- `express.static()` middleware serves static files like HTML, CSS, JavaScript, and images from a specified directory on the server.
+
+- `express.static()` automates the process of `serving static files` by mapping URLs directly to files in the specified directory, simplifying configuration and reducing development effort.
+
+- When a client requests a static file, Express.js uses `express.static` to locate and deliver the file directly to the client's browser without additional routing logic.
