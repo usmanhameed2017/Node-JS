@@ -4,7 +4,7 @@
 
 - Bootstrap 5 is the newest version of Bootstrap.
 
-- Install Bootstrap using `npm i bootstrap`.
+- Install Bootstrap using the command: `npm i bootstrap`.
 
 - Now, register the bootstrap path in your express app using `__dirname` and `path` module.
 
