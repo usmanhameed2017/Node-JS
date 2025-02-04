@@ -281,3 +281,5 @@
 - It is specifically useful for creating `dynamic web pages`, as it enables you to embedded JavaScript logic directly within your HTML.
 
 - Template engine helps to create an HTML template with minimal code. Also, it can `inject data` into an HTML template on the client side and produce the final HTML.
+
+- To write your Javascript expression inside HTML, use EJS placeholder syntax like this: `<% %>` and to print any value, use EJS placeholder with `is equal` sign like: `<%= name %>`.
