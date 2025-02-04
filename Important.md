@@ -271,3 +271,13 @@
 - `express.static()` automates the process of `serving static files` by mapping URLs directly to files in the specified directory, simplifying configuration and reducing development effort.
 
 - When a client requests a static file, Express.js uses `express.static` to locate and deliver the file directly to the client's browser without additional routing logic.
+
+- EJS (`Embedded JavaScript`) is a popular template engine for Node JS.
+
+- A template engine in web development is a tool that helps you create `dynamic HTML pages`.
+
+- EJS `Embedded JavaScript` is a popular template engine for Node.js that allows you to generate HTML markup with `plain JavaScript`.
+
+- It is specifically useful for creating `dynamic web pages`, as it enables you to embed JavaScript logic directly within your HTML.
+
+- Template engine helps to create an HTML template with minimal code. Also, it can `inject data` into an HTML template on the client side and produce the final HTML.
