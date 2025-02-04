@@ -85,7 +85,7 @@ const public = path.join(__dirname, "public");
 // Serve static files
 app.use(express.static(public));
 
-//  Define Routes
+//  Define routes to remove file's extension from URL
 app.get('/', (request, response) => response.sendFile(`${public}/index.html`));
 app.get('/about', (request, response) => response.sendFile(`${public}/about.html`));
 app.get('*', (request, response) => response.sendFile(`${public}/404.html`));
