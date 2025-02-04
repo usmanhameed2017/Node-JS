@@ -283,3 +283,7 @@
 - Template engine helps to create an HTML template with minimal code. Also, it can `inject data` into an HTML template on the client side and produce the final HTML.
 
 - To write your Javascript expression inside HTML, use EJS placeholder syntax like this: `<% %>` and to print any value, use EJS placeholder with `is equal` sign like this: `<%= name %>`.
+
+- To share and include common code in multiple files, you need to use Hyphen `-` signature with `%` followed by `include()` method.
+
+- Syntax: <%- include('filename') %>
