@@ -20,11 +20,11 @@ const app = express();
 // Set view engine to `EJS`
 app.set("view engine", "ejs");
 
-// Register Bootstrap's Css & Js path.
+// Get bootstrap's css & js file directory
 const css = path.join(__dirname, "node_modules", "bootstrap", "dist", "css");
 const js = path.join(__dirname, "node_modules", "bootstrap", "dist", "js");
 
-// Serve Bootstrap's Css & Js files
+// Register bootstrap's css and js path
 app.use('/css', express.static(css));
 app.use('/js', express.static(js));
 
