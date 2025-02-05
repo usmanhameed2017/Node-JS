@@ -10,7 +10,7 @@
 
 - `Middleware` is just like a `handler function` that take three parameters:
 1. `Request object` to perform manipulation with client request.
-2. `Response object` to perform manipulation with the final response.
+2. `Response object` to perform manipulation with response and to add custom properties inside response object.
 3. `Next() method` to forward the client request to another middleware or route.
 
 - `Middleware` executes right before routing, meaning it receives the client request before it reaches the intended route.
