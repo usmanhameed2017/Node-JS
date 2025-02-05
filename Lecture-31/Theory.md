@@ -120,7 +120,6 @@ app.use((request, response, next) => {
 // Define Route
 app.get("/", (request, response) => response.send("Home Page " + request.msg));
 
-
 // Listen on port 8000
 app.listen(8000, "localhost", () => console.log("Server is started and running at http://localhost:8000"));
 ```
