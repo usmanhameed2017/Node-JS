@@ -287,3 +287,22 @@
 - To share and include common code in multiple files, you need to use Hyphen `-` signature with `%` followed by `include()` method.
 
 - Syntax: <%- include('filename') %>
+
+- `Middleware` is a request handler that allows you to intercept and manipulate requests and responses before they reach `route handlers`.
+
+- `Middleware` is just like a `handler function` that take three parameters:
+1. `Request object` to perform manipulation with client request.
+2. `Response object` to perform manipulation with response and to add custom properties inside response object.
+3. `Next() method` to forward the client request to another middleware or route.
+
+- `Middleware` executes right before routing, meaning it receives the client request before it reaches the intended route.
+
+- Middleware functions can perform the following tasks: 
+1. Execute any code.
+2. Make changes to the request and the response objects.
+3. End the request-response cycle.
+4. Call the next middleware function in the stack.
+
+- `Middleware` is a flexible tool that helps add functionalities like `logging`, `authentication`, `error handling`, and more to Express applications.
+
+- If the current middleware function does not end the request-response cycle, it must call `next()` to pass control to the next middleware function. Otherwise, the request will be left hanging.
