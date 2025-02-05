@@ -107,7 +107,7 @@ const app = express();
 // Middleware:01
 app.use((request, response, next) => {
     console.log("This is 1st Middleware");
-    request.msg = "Message added my Middleware :01";
+    request.msg = "Message added my Middleware:01";
     next();
 });
 
