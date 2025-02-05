@@ -67,7 +67,7 @@ const app = express();
 // Router instance
 const router = express.Router();
 
-// Store the reference of router-level middleware in `request_filter` variable.
+// Use Router-Level Middleware
 router.use((request, response, next) => {
     const age = request.query.age;
     if(!age)
