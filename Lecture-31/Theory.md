@@ -44,7 +44,6 @@ app.use((request, response, next) => {
 // Define Route
 app.get("/", (request, response) => response.send("Home Page"));
 
-
 // Listen on port 8000
 app.listen(8000, "localhost", () => console.log("Server is started and running at http://localhost:8000"));
 ```
@@ -66,12 +65,11 @@ app.use((request, response, next) => {
 // Middleware 02
 app.use((request, response, next) => {
     console.log("This is 2nd Middleware");
-    response.end("Invalid or suspecious request");
+    return response.end("Invalid or suspecious request");
 });
 
 // Define Route
 app.get("/", (request, response) => response.send("Home Page"));
-
 
 // Listen on port 8000
 app.listen(8000, "localhost", () => console.log("Server is started and running at http://localhost:8000"));
@@ -91,10 +89,8 @@ app.use((request, response, next) => {
     return response.json({ data: 'Response From Middleware' });
 });
 
-
 // Define Route
 app.get("/", (request, response) => response.send("Home Page"));
-
 
 // Listen on port 8000
 app.listen(8000, "localhost", () => console.log("Server is started and running at http://localhost:8000"));
