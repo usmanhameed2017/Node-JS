@@ -320,3 +320,9 @@
 - When we pass four parameters in the `handler function`, Express treats it as an `error-handling middleware`.
 
 - This Error Handling Middleware also known as `Global Error Handling Middleware`.
+
+- MongoDB is a `document-oriented` NoSQL database system.
+
+- Collection is a group of documents.
+
+- The best thing about MongoDB is that it follows a `nested-document` structure, meaning you don't need to establish `primary and foreign key relationships` like in SQL Server or MySQL. Instead, related data can be stored within a single document, reducing the need for complex joins.
