@@ -326,3 +326,17 @@
 - Collection is a group of documents.
 
 - The best thing about MongoDB is that it follows a `nested-document` structure, meaning you don't need to establish `primary and foreign key relationships` like in SQL Server or MySQL. Instead, related data can be stored within a single document, reducing the need for complex joins.
+
+- BSON (Binary JSON) is a `binary representation` of JSON like documents.
+
+- JSON data converts into `BSON` and then store into MongoDB.
+
+- It is designed to be efficient in terms of both storage space and speed of scan and traversal.
+
+- It was developed in 2009 by MongoDB.
+
+- It is a `binary-encoded serialization` of JSON documents.
+
+- BSON compresses and optimizes data storage and retrieval.
+
+- BSON is faster than JSON.
