@@ -306,3 +306,17 @@
 - `Middleware` is a flexible tool that helps add functionalities like `logging`, `authentication`, `error handling`, and more to Express applications.
 
 - If the current middleware function does not end the request-response cycle, it must call `next()` to pass control to the next middleware function. Otherwise, the request will be left hanging.
+
+- Operational errors are the problems that we can predict that will happen at some point in future. We need to handle them in advance.
+
+- Programming errors are simply bugs that we programmers, by mistake, introduces them in our code.
+
+- In Express.js, `error-handling middleware` is a function designed to catch and manage errors occurring in your `routes` or other `middleware`.
+
+- When we pass an argument to the `next()` method, Express treats it as an error and skips all the regular middlewares, executing the `error-handling middleware` instead.
+
+- In Express, an `error-handling middleware` function is defined similarly to other middleware, but with `four parameters`.
+
+- When we pass four parameters in the `handler function`, Express treats it as an `error-handling middleware`.
+
+- This Error Handling Middleware also known as `Global Error Handling Middleware`.
