@@ -61,3 +61,19 @@ db.collection_name.insertMany([
     { name:"Raheel", age:23, email:"raheel@gmail.com" }
 ])
 ```
+
+- Update single document in a collection.
+```shell
+db.users.updateOne(
+    { _id: ObjectId('67a55470c58c6b3b90576cb4') },
+    { $set: { designation: "Manager" } }
+)
+```
+
+- Update multiple documents in a collection.
+```shell
+db.users.updateMany(
+    { age: 18 },
+    { $set: { category: "Adult" } }
+)
+```
