@@ -18,7 +18,7 @@ show dbs
 db.dropDatabase()
 ```
 
-- Create a new collection.
+- Create a new collection. 
 ```shell
 db.createCollection("collection_name")
 ```
