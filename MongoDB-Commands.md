@@ -27,3 +27,8 @@ show collections
 ```shell
 db.old_collection_name.renameCollection("new_collection_name")
 ```
+
+- Check all command lists.
+```shell
+db.help()
+```
