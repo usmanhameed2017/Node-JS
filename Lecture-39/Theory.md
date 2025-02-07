@@ -23,7 +23,7 @@ db.users.updateOne(
 
 ### updateMany()
 
-- The `updateOne()` method will update all the documents that is matching with the provided query object.
+- The `updateMany()` method will update all the documents that is matching with the provided query object.
 
 #### Syntax
 ```shell
