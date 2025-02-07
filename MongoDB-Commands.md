@@ -1,60 +1,60 @@
 - Create new database or activate an existing database
-```javascript
+```shell
 use database_name
 ```
 
 - Show current selected database.
-```javascript
+```shell
 db
 ```
 
 - Show all databases.
-```javascript
+```shell
 show dbs
 ```
 
 - Delete database.
-```javascript
+```shell
 db.dropDatabase()
 ```
 
 - Create a new collection. 
-```javascript
+```shell
 db.createCollection("collection_name")
 ```
 
 - Show all collections in current selected database.
-```javascript
+```shell
 show collections
 ```
 
 - Change collection name.
-```javascript
+```shell
 db.old_collection_name.renameCollection("new_collection_name")
 ```
 
 - Delete a collection.
-```javascript
+```shell
 db.collection_name.drop()
 ```
 
 - View all commands to manipulate database.
-```javascript
+```shell
 db.help()
 ```
 
 - View all commands to manipulate collection.
-```javascript
+```shell
 db.collection_name.help()
 ```
 
 - Insert one document into a collection.
-```javascript
+```shell
 db.collection_name.insertOne({ name:"Usman", age:24, email:"usman@gmail.com" })
 ```
 
 - Insert many documents into a collection.
-```javascript
+```shell
 db.collection_name.insertMany([
     { name:"Usman", age:21, email:"usman@gmail.com" },
     { name:"Bilal", age:24, email:"bilal@gmail.com" },
