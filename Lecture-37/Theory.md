@@ -33,11 +33,3 @@
 - Type `show collections` to view all collections within selected database.
 
 - Type `db.old_collection.renameCollection("new_collection")` to rename your collection.
-
--
-
--
-
--
-
--
