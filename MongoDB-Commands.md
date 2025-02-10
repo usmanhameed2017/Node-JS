@@ -77,3 +77,22 @@ db.users.updateMany(
     { $set: { category: "Adult" } }
 )
 ```
+
+- Delete single document in a collection.
+```shell
+db.users.deleteOne(
+    { _id: ObjectId('67aa8ec388515978b42724a2') }
+)
+```
+
+- Delete multiple documents in a collection.
+```shell
+db.users.deleteMany(
+    { _id: ObjectId('67aa8ec388515978b42724a2') }
+)
+```
+
+- Delete all documents in a collection.
+```shell
+db.users.deleteMany({})
+```
