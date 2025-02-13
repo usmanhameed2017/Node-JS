@@ -30,7 +30,7 @@ db.collection_name.findOne(
 
 - Both find methods accept a second parameter called projection.
 
-- This parameter is an Object that describes which fields to include in the results.
+- This parameter is an object that describes which fields to include in the results.
 
 #### Syntax
 ```shell
