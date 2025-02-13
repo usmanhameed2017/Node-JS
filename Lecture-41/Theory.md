@@ -1,6 +1,6 @@
 # SELECT DOCUMENTS FROM COLLECTION
 
-- There are 2 methods to find and select data from a MongoDB collection, `find()` and ``findOne()`.
+- There are 2 methods to find and select data from a MongoDB collection, `find()` and `findOne()`.
 
 ### find()
 
