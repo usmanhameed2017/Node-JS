@@ -4,7 +4,7 @@
 
 ### find()
 
-- This method accepts a query Object. If left empty, all documents will be returned.
+- This method accepts a query object. If left empty, all documents will be returned.
 
 #### Syntax
 ```shell
@@ -15,7 +15,7 @@ db.collection_name.find(
 
 ### findOne()
 
-- This method accepts a query Object. If left empty, it will return the first document it finds.
+- This method accepts a query object. If left empty, it will return the first document it finds.
 
 - To select only one document, we can use the `findOne()` method.
 
