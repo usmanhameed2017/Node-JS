@@ -96,3 +96,28 @@ db.users.deleteMany(
 ```shell
 db.users.deleteMany({})
 ```
+
+- Count the number of documents in a collection
+```shell
+db.users.find({}).count()
+```
+
+- Sort documents in a collection
+```shell
+db.users.find({}).sort({ name:1 })
+```
+
+- Retrieve limited documents from a collection
+```shell
+db.users.find({}).limit(10)
+```
+
+- Skip documents in a collection
+```shell
+db.users.find({}).skip(5)
+```
+
+- Retrieve documents with selective and specific fields only
+```shell
+db.users.find({}).projection({ name:1, age:1, _id:0 })
+```
