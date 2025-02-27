@@ -1,11 +1,11 @@
 # FS MODULE
-• Fs module is used to provide `file handling`.
+- Fs module is used to provide `file handling`.
 
-• File handling refers to the process by which data is stored and retrieved from `files` using a program.
+- File handling refers to the process by which data is stored and retrieved from `files` using a program.
 
-• The Node.js file system module allows you to work with the file system on your computer.
+- The Node.js file system module allows you to work with the file system on your computer.
 
-• To include the File System module, use the `require()` method.
+- To include the File System module, use the `require()` method.
 
 ### Common Use For The File System Module:
 
@@ -18,7 +18,7 @@
 
 ### Create Files Using FS Module
 
-• The File System module has methods for creating new files:
+- The File System module has methods for creating new files:
 
 #### writeFileSync
 ```javascript
@@ -37,7 +37,7 @@ fs.writeFile("info.txt", "My name is Usman Hameed", (error) => {
 
 ### Read Files Using FS Module
 
-• The File System module has methods for reading files:
+- The File System module has methods for reading files:
 
 #### readFileSync
 ```javascript
@@ -57,7 +57,7 @@ fs.readFile("info.txt", "utf-8", (error, data) => {
 
 ### Update Files Using FS Module
 
-• The File System module has methods for updating files:
+- The File System module has methods for updating files:
 
 #### appendFileSync
 ```javascript
@@ -76,7 +76,7 @@ fs.appendFile("info.txt", " and age is 24", (error) => {
 
 ### Delete Files Using FS Module
 
-• To delete a file with the File System module, use the `unlink()` or `unlinkSync()` method.
+- To delete a file with the File System module, use the `unlink()` or `unlinkSync()` method.
 
 #### unlinkSync
 ```javascript
@@ -95,7 +95,7 @@ fs.unlink("info.txt", (error) => {
 
 ### Rename Files Using FS Module
 
-• To rename a file with the File System module, use the `rename()` or `renameSync()` method.
+- To rename a file with the File System module, use the `rename()` or `renameSync()` method.
 
 #### renameSync
 ```javascript
@@ -116,9 +116,9 @@ fs.rename("info.txt", "bio.txt", (error) => {
 
 ### Copying Files Using FS Module
 
-• To copy a file with the File System module, use the `cp()` or `cpSync()` method.
+- To copy a file with the File System module, use the `cp()` or `cpSync()` method.
 
-• The `fs.cp()` and `fs.cpSync()` method copy the specified file.
+- The `fs.cp()` and `fs.cpSync()` method copy the specified file.
 
 #### cpSync
 ```javascript
@@ -137,6 +137,22 @@ fs.cp("info.txt", "infoCopy.txt", (error) => {
 
 ## Use of FS Module In Real World Applications
 
-• The fs module is essential for performing `file system operations` in Node. js applications.
+- The fs module is essential for performing `file system operations` in Node. js applications.
 
-• Whether you need to read configuration files, write `log files`, the fs module provides the necessary tools to interact with the file system efficiently.
+- Whether you need to read configuration files, write `log files`, the fs module provides the necessary tools to interact with the file system efficiently.
+
+- To check if a file exists, you can use the `existsSync` method from the fs module. 
+
+- `existsSync` method takes a file path as a parameter and returns a boolean value indicating whether the file exists or not.
+
+#### existsSync
+```javascript
+if(fs.existsSync("./info.txt"))
+{
+    console.log("File exists");
+}
+else
+{
+    console.log("File does not exist");
+}
+```
