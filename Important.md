@@ -355,3 +355,24 @@
 - `Socket.IO` is a JavaScript library that helps in live notifications, perfect for real-time communication between a server and clients (like web browsers or apps).
 
 - WebSocket relies on the `HTTP protocol` internally, so you need to use the `HTTP module` to create a server. This means you must bind your `Express server` with the `Socket.IO server` to ensure proper communication.
+
+- JWT (JSON Web Token) is a secure way to transfer information between a client and a server.
+
+- It is a token (a string of characters) that carries user data securely between a client and a server.
+
+- It helps in verifying a user’s identity without needing to store session data on the server.
+
+### JWT Structure 
+
+-  It has three parts:
+1. `Header` – Contains the algorithm used (like HS256).
+2. `Payload` – Stores user data (like ID, role, email).
+3. `Signature` – Ensures the token is valid.
+
+- When signing (creating) a JWT, the server uses a secret key.
+
+- When verifying the JWT, the same secret key must be used.
+
+- If the secret key is different, the token will be invalid.
+
+- The `sign` method encrypts user data using a secret key, while the `verify` method decrypts it after validating it with the same key.
