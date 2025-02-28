@@ -96,7 +96,7 @@ io.on("connection", (socket) => {
 server.listen(8000, () => console.log("Server is started and running at http://localhost:8000"));
 ```
 
-### Home.ejs
+#### home.ejs
 ```html
 <!DOCTYPE html>
 <html lang="en">
