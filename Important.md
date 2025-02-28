@@ -351,3 +351,7 @@
 ```
 
 - Bearer authentication is also known as `token-based authentication`.
+
+- `Socket.IO` is a JavaScript library that helps in live notifications, perfect for real-time communication between a server and clients (like web browsers or apps).
+
+- WebSocket relies on the `HTTP protocol` internally, so you need to use the `HTTP module` to create a server. This means you must bind your `Express server` with the `Socket.IO server` to ensure proper communication.
