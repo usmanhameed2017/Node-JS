@@ -381,6 +381,6 @@
 
 - Instead of waiting for the entire file to load, streams processess the data in small parts.
 
-- They improve performance and memory usage, especially for large files or real-time data.
+- Streams improve performance and memory usage, especially for large files or real-time data.
 
 - You can connect streams together using `.pipe()`, like reading from a file and writing to another file in one step.
