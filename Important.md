@@ -376,3 +376,11 @@
 - If the secret key is different, the token will be invalid.
 
 - The `sign` method encrypts user data using a secret key, while the `verify` method decrypts it after validating it with the same key.
+
+- Streams allow data to be read or written in small chunks rather than loading the entire data at once.
+
+- Instead of waiting for the entire file to load, streams processess the data in small parts.
+
+- They improve performance and memory usage, especially for large files or real-time data.
+
+- You can connect streams together using `.pipe()`, like reading from a file and writing to another file in one step.
