@@ -4,7 +4,7 @@
 
 - Streams allow data to be read or written in small chunks rather than loading the entire data at once.
 
-- Instead of waiting for the entire file to load, streams process data in small parts.
+- Instead of waiting for the entire file to load, streams processess the data in small parts.
 
 - They improve performance and memory usage, especially for large files or real-time data.
 
