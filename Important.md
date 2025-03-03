@@ -384,3 +384,13 @@
 - Streams improve performance and memory usage, especially for large files or real-time data.
 
 - You can connect streams together using `.pipe()`, like reading from a file and writing to another file in one step.
+
+- Clusters of `Node.js` processes can be used to run multiple instances of Node.js that can distribute workloads among their application threads.
+
+- `Node.js` clusters allow you to take advantage of multi-core processors by running multiple instances of your Node.js application in parallel.
+
+- Node.js runs on a `single-threaded` event loop, so clustering helps utilize multiple CPU cores for better performance.
+
+- The cluster module balances incoming requests across worker processes and work as a load balancer.
+
+- Cluster in Node.js basically balances the work load so that we can handle more traffic.
