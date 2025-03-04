@@ -14,8 +14,8 @@
 
 - Act as Load Balancer.
 
-- Act as an API Gateway
+- Act as an API Gateway.
 
 - Serve & Cache static files like images, videos etc.
 
-- Handle SSL certificates
+- Handle SSL certificates.
