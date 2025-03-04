@@ -1,21 +1,45 @@
-# NGINX
+# BCRYPT
 
-- `NGINX` is a powerful web server and uses a `non-threaded`, event-driven architecture.
+- `Bcrypt` is a hashing algorithm used to securely store passwords by converting them into an encrypted format that cannot be easily reversed. 
 
-- It can also do other important things, such as `load balancing`, and `HTTP caching`, or be used as a `reverse proxy`.
+- It helps protect user passwords from being stolen in case of a data breach.
 
-### Advantages
+- It adds a salt (a random value) to make each hash unique.
 
-- Can Handle 10,000 Concurrent Requests.
+- It uses multiple rounds of encryption to slow down brute-force attacks.
 
-- Cache HTTP Requests.
+- Bcrypt hashes cannot be `decrypted` back into the original password. Instead, it compares the hashed password with a newly entered password during login.
 
-- Act as Reverse Proxy. 
+### Built-in Methods
 
-- Act as Load Balancer.
+- `bcrypt.hash(password, 10)` - Encrypts a password with 10 rounds of salting.
 
-- Act as an API Gateway.
+- `bcrypt.compare("User input value", hashedPassword)` - Compares a plain password with a hashed password.
 
-- Serve & Cache static files like images, videos etc.
+- Both `bcrypt.hash()` and `bcrypt.compare()` methods returns a promise.
 
-- Handle SSL certificates.
+- The `bcrypt.compare()` method returns a boolean value after completing the process; `true` if the plain password matches the hashed password, otherwise `false`.
+
+## PRACTICAL IMPLEMENTATION
+
+- Install bcrypt using the command:
+
+```javascript
+npm i bcrypt
+```
+
+#### index.js
+```javascript
+const bcrypt = require("bcrypt");
+const password = "abc";
+
+// Encrypt password
+bcrypt.hash(password, 10)
+.then(hash => console.log(hash))
+.catch(error => console.log(error));
+
+// Match password
+bcrypt.compare("abc", "hashedValue")
+.then(result => console.log(result))
+.catch(error => console.log(error));
+```
