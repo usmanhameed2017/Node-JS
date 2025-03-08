@@ -37,15 +37,22 @@
 
 - If the secret key is different, the token will be invalid.
 
+### Built-in Methods
+
+- JWT includes three built-in methods:
+1. `sign()` - Generates a token.
+2. `verify()` - Validates the token and checks its expiration before returning the decoded payload.
+3. `decode()` - Returns the decoded payload without verifying the signature.
+
 ### Generating a Token
 
-- JWT provides a built-in method `sign` that takes two arguments
+- JWT provides a built-in method `sign` that takes two required arguments:
 1. `Payload` (user data to store in the token).
 2. `Secret Signature` (a private key used for signing).
 
 ### Validating a Token
 
-- JWT provides a built-in method `verify` that takes two arguments:
+- JWT provides a built-in method `verify` that takes two required arguments:
 1. `Token` (the JWT string received from the client)
 2. `Secret Signature` (the same key used during signing).
 
