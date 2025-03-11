@@ -394,3 +394,13 @@
 - The cluster module balances incoming requests across worker processes and work as a load balancer.
 
 - Cluster in Node.js basically balances the work load so that we can handle more traffic.
+
+- `Mongoose` is a MongoDB `Object Data Modeling` (ODM) library for Node.js that helps developers interact with MongoDB databases easily.
+
+- It provides a structured way to define and manage data using schemas and built-in validation.
+
+- Mongoose simplifies working with MongoDB by providing a structured way to define data models.
+
+- It ensures data integrity by allowing constraints (e.g. `required fields`, `data types`).
+
+- It provides easy-to-use methods for `Create`, `Read`, `Update`, and `Delete` (CRUD) operations.
