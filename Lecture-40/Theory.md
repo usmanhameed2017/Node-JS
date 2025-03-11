@@ -165,6 +165,11 @@ const schema = new Schema({
     price:{
         type:Number,
         required:true
+    },
+    isPaid:{
+        type:Boolean,
+        required:true,
+        default: false
     }
 }, { timestamps:true });
 
