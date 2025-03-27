@@ -44,11 +44,11 @@
 
 ### HTTP Status Codes
 
-- `100 - 199`: Information messages
+- `100 - 199`: Informational messages
 
 - `200 - 299`: Success messages
 
-- `300 - 399`: redirectional messages
+- `300 - 399`: Redirectional messages
 
 - `400 - 499`: Client-side error messages
 
