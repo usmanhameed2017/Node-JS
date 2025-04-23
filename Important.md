@@ -404,3 +404,7 @@
 - It ensures data integrity by allowing constraints (e.g. `required fields`, `data types`).
 
 - It provides easy-to-use methods for `Create`, `Read`, `Update`, and `Delete` (CRUD) operations.
+
+- `Multer` is a Node.js middleware primarily used for file uploads.
+
+- It is commonly used with `Express.js` and allows us to upload single or multiple files to the server.
