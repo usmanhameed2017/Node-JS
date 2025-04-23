@@ -67,8 +67,8 @@ app.get('/download', (request, response) => {
 ### 7. response.sendFile()
 Sends a file as a response to the client.
 ```javascript
-app.get('/file', (request, response) => {
-    response.sendFile(__dirname + '/files/sample.pdf');
+app.get('/', (request, response) => {
+    response.sendFile(__dirname + '/public/index.html');
 });
 ```
 
@@ -85,7 +85,7 @@ app.get('/end', (request, response) => {
 ---
 
 ### 9. response.sendStatus()
-Sets the response HTTP status code and sends its string representation.
+Sets the HTTP response status code and sends its string representation.
 ```javascript
 app.get('/not-found', (request, response) => {
     response.sendStatus(404); // Sends "Not Found"
