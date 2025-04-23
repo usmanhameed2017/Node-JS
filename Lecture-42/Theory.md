@@ -1,14 +1,18 @@
 # MULTER - FILE UPLOAD MIDDLEWARE IN NODE.JS
 
-- `Multer` is a Node.js middleware used for handling `multipart/form-data`, which is used to upload files.
+- `Multer` is a Node.js middleware used for handling `multipart/form-data`, primarily used for file uploads.
 
 - It is commonly used with `Express.js` and allows us to upload single or multiple files to the server.
 
-- It helps you upload files like images, PDFs, etc.
+- You can upload images, PDFs, documents, and more.
 
-- It stores files in memory or on disk like `uploads/` folder.
+- Files can be stored either in memory or on disk, eg: in an `uploads/` folder.
 
-- It enables us to set file name, folder location, file type check, and file limits easily.
+- Multer allows easy control over:
+  - file storage location
+  - file naming
+  - file type validation
+  - size limits
 
 ### Install Multer
 ```javascript
@@ -39,9 +43,28 @@ const upload = multer({ storage: storage });
 module.exports = upload;
 ```
 
+### File Path Accessibility
+
+- You can access uploaded file paths like this:
+
+1. `For single file`
+```javascript
+const filePath = request.file?.path;
+```
+
+2. `For multiple fields`
+```javascript
+const profile_image_path = request.files?.profile_image?.[0]?.path;
+```
+
+3. `For multiple files in one field`
+```javascript
+const paths = request.files?.map(file => file.path);
+```
+
 ### Upload Single File (1 File Only)
 
-> Use upload.single('fieldname') — where `fieldname` is the name  of input file name in your HTML form.
+> Use upload.single('fieldname') — where `fieldname` is the name of input file name in your HTML form.
 
 ```javascript
 app.post('/upload', upload.single('profile_image'), (request, response) => {
