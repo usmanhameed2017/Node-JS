@@ -60,7 +60,7 @@ app.post('/upload', upload.single('profile_image'), (request, response) => {
 </form>
 ```
 
-### Upload Multiple Files (Different Fields)
+### Upload Multiple Files (From Different Fields)
 
 > Use upload.fields() when uploading files from different fields in the same form.
 
@@ -91,7 +91,7 @@ app.post('/upload', upload.fields([{ name: 'profile_image', maxCount: 1 }, { nam
 
 ```javascript
 app.post('/gallery', upload.array('photos', 5), (request, response) => {
-    const photoPaths = request.files.map(file => file.path);
+    const photoPaths = request.files?.map(file => file.path);
     // Save photoPaths array to database
     console.log('Uploaded Photo Paths:', photoPaths);    
     response.send('Multiple files uploaded from the same field');
