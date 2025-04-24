@@ -69,11 +69,11 @@ Paginate method will return these values
 - `totalDocs` (Number) - Total number of documents in collection that match a query
 - `limit` (Number) - Limit that was used.
 - `page` - Current page number.
-- `hasPrevPage` (Bool) . Availability of prev page.
-- `hasNextPage` (Boot) - Availability of next page.
+- `hasPrevPage` (Bool) - Availability of prev page.
+- `hasNextPage` (Bool) - Availability of next page.
 - `prevPage` (Number) - Previous page number if available or NULL
 - `nextPage` - Next page number if available or NULL
-- `pagingCounter` (Number) - The starting index/serial/chronological number Of first document in current page. (Eg: if page-2 and limit=10, then pagingCounterwill be 11)
+- `pagingCounter` (Number) - The starting index/serial/chronological number Of first document in current page. (Eg: if page-2 and limit=10, then pagingCounter will be 11)
 - `totalPages` (Number) - Total number of pages.
 - `offset` (Number) - Only if specified or default page / offset values were used
 
@@ -108,7 +108,7 @@ const userSchema = new mongoose.Schema({
     }
 }, { timestamps:true });
 
-// Inject puligun
+// Inject plugin
 userSchema.plugin(mongoosePaginate);
 
 // Model
