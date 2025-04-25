@@ -68,11 +68,11 @@ Paginate method will return these values
 - `docs` (Array) - Array of documents
 - `totalDocs` (Number) - Total number of documents in collection that match a query
 - `limit` (Number) - Limit that was used.
-- `page` - Current page number.
+- `page` (Number) - Current page number.
 - `hasPrevPage` (Bool) - Availability of prev page.
 - `hasNextPage` (Bool) - Availability of next page.
 - `prevPage` (Number) - Previous page number if available or NULL
-- `nextPage` - Next page number if available or NULL
+- `nextPage` (Number) - Next page number if available or NULL
 - `pagingCounter` (Number) - The starting index/serial/chronological number Of first document in current page. (Eg: if page-2 and limit=10, then pagingCounter will be 11)
 - `totalPages` (Number) - Total number of pages.
 - `offset` (Number) - Only if specified or default page / offset values were used
