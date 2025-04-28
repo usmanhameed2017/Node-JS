@@ -46,10 +46,10 @@ const app = express();
 
 // Middleware setup
 app.use(session({
-  secret: 'your-secret-key', // should be a long, random string
-  resave: false,             // don't save session if unmodified
-  saveUninitialized: true,   // save new sessions
-  cookie: { secure: false }  // use true only if HTTPS is enabled
+  secret: 'your-secret-key', // Should be a long, random string
+  resave: false,             // Don't save session if modified
+  saveUninitialized: true,   // Don't save uninitialized sessions
+  cookie: { secure: false }  // Use true only if HTTPS is enabled
 }));
 
 // Route to set a session
@@ -95,7 +95,7 @@ app.listen(8000, () => console.log('Server running on http://localhost:8000'));
 
 ---
 
-## ⚡ Notes and Best Practices
+## ⚡ Notes & Best Practices
 
 - 🔒 Always keep your `secret` safe and random.
 - 🗅 Avoid using the default in-memory store in production. It is **not designed for scalability**.
