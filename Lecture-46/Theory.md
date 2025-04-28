@@ -53,27 +53,22 @@ app.use(session({
 }));
 
 // Route to set a session
-app.get('/set-session', (req, res) => {
-  req.session.username = 'Usman';
-  res.send('Session has been set!');
+app.get('/set-session', (request, response) => {
+  request.session.username = 'Usman';
+  return response.send('Session has been set!');
 });
 
 // Route to get a session
-app.get('/get-session', (req, res) => {
-  if(req.session.username){
-    res.send(`Hello, ${req.session.username}`);
-  } else {
-    res.send('No session found!');
-  }
+app.get('/get-session', (request, response) => {
+  if(!request.session.username) return response.send('No session found!');
+  return response.send(`Hello, ${request.session.username}`);
 });
 
 // Route to destroy a session
-app.get('/destroy-session', (req, res) => {
-  req.session.destroy(err => {
-    if(err) {
-      return res.send('Error destroying session');
-    }
-    res.send('Session destroyed');
+app.get('/destroy-session', (request, response) => {
+  request.session.destroy(error => {
+    if(error) return response.send('Error destroying session');
+    return response.send('Session destroyed');
   });
 });
 
