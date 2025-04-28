@@ -49,7 +49,12 @@ app.use(session({
   secret: 'your-secret-key', // Should be a long, random string
   resave: false,             // Don't re-save session if unmodified
   saveUninitialized: true,   // Don't save uninitialized sessions
-  cookie: { secure: false }  // Use true only if HTTPS is enabled
+  cookie: { 
+    httpOnly: true,             // Makes the cookie inaccessible to JavaScript (enhances security)
+    secure: false,              // Use `true` only if HTTPS is enabled
+    sameSite:"strict",          // Ensures that cookies are sent only in same-site requests, preventing CSRF attacks
+    maxAge: 7 * 60 * 60 * 1000  // Set session cookie expiration to 7 hours
+  }  
 }));
 
 // Route to set a session
