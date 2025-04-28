@@ -52,8 +52,8 @@ app.use(session({
   cookie: { 
     httpOnly: true,             // Makes the cookie inaccessible to JavaScript (enhances security)
     secure: false,              // Use `true` only if HTTPS is enabled
-    sameSite:"strict",          // Ensures that cookies are sent only in same-site requests, preventing CSRF attacks
-    maxAge: 7 * 60 * 60 * 1000  // Set session cookie expiration to 7 hours
+    sameSite: "strict",         // Ensures that cookies are sent only in same-site requests, preventing CSRF attacks
+    maxAge: 1000 * 60 * 60 * 7  // Set session cookie expiration to 7 hours
   }  
 }));
 
@@ -134,4 +134,81 @@ app.listen(8000, () => console.log('Server running on http://localhost:8000'));
 
 - [`express-session`](https://www.npmjs.com/package/express-session)
 - [`connect-mongo`](https://www.npmjs.com/package/connect-mongo)
-- [`connect-redis`](https://www.npmjs.com/package/connect-redis)
+
+## 📘 SESSION MANAGEMENT WITH MONGODB
+
+### 📄 Using MongoDB to Store Sessions
+
+In some applications, especially those with a large number of users or distributed systems, storing sessions on the server side can be more efficient and scalable. One of the most common approaches for doing this is to use **MongoDB** as a session store. This allows you to store session data in a MongoDB database instead of the default in-memory storage, making sessions persistent even if the server restarts.
+
+### 🔹 Why Use MongoDB for Sessions?
+
+- **Scalability**: If your application is running on multiple servers, storing sessions in a database ensures that session data is shared between all servers.
+- **Persistence**: Sessions are stored in the database, so they persist even if the server crashes or restarts.
+- **Centralized Storage**: All session data is stored in one place, making it easier to manage and monitor.
+
+---
+
+## 🔧 How to Use MongoDB for Session Storage?
+
+To store sessions in MongoDB, you can use the **connect-mongo** package. It provides session storage using MongoDB and integrates easily with **express-session**.
+
+### 📥 Installation
+
+To get started, you need to install the **connect-mongo** package. Run the following command:
+
+```bash
+npm install connect-mongo
+```
+
+---
+
+Once you've installed `connect-mongo` package, you can configure it to store sessions in your `MongoDB database`. 
+- Here's an example of how you can do that:
+
+```javascript
+const express = require('express');
+const session = require('express-session');
+const mongoStore = require('connect-mongo');
+const app = express();
+
+// Use express-session middleware
+app.use(session({
+  secret: 'your-secret-key', // Should be a long, random string
+  resave: false,             // Don't re-save session if unmodified
+  saveUninitialized: true,   // Don't save uninitialized sessions
+  store: mongoStore.create({
+    mongoUrl: 'mongodb://localhost:27017/yourDatabase',  // MongoDB URL
+    collectionName: 'user_sessions' // Specify the collection where sessions will be stored (Default name will be sessions if not specified)
+  }),
+  cookie: { 
+    httpOnly: true,             // Makes the cookie inaccessible to JavaScript (enhances security)
+    secure: false,              // Use `true` only if HTTPS is enabled
+    sameSite: "strict",         // Ensures that cookies are sent only in same-site requests, preventing CSRF attacks
+    maxAge: 1000 * 60 * 60 * 7  // Set session cookie expiration to 7 hours
+  }
+}));
+
+// Route to set a session
+app.get('/set-session', (request, response) => {
+  request.session.username = 'Usman';
+  return response.send('Session has been set!');
+});
+
+// Route to get a session
+app.get('/get-session', (request, response) => {
+  if(!request.session.username) return response.send('No session found!');
+  return response.send(`Hello, ${request.session.username}`);
+});
+
+// Route to destroy a session
+app.get('/destroy-session', (request, response) => {
+  request.session.destroy(error => {
+    if(error) return response.send('Error destroying session');
+    return response.send('Session destroyed');
+  });
+});
+
+// Start server
+app.listen(8000, () => console.log('Server running on http://localhost:8000'));
+```
