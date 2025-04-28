@@ -408,3 +408,11 @@
 - `Multer` is a Node.js middleware primarily used for file uploads.
 
 - It is commonly used with `Express.js` and allows us to upload single or multiple files to the server.
+
+- A `Session` is a way to store information in variables to be used across multiple pages (requests) in a web application. 
+
+- Unlike `client-side` storage (like cookies), session data is stored server-side, and only a `session ID` is shared with the client.
+
+- `express-session` is a middleware for Express.js that manages sessions in your Node.js applications. 
+
+- It creates a `session ID` and stores it as a cookie in the user's browser while keeping session data (payload) on the server-side.
