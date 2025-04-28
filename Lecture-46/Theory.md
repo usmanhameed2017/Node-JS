@@ -47,7 +47,7 @@ const app = express();
 // Middleware setup
 app.use(session({
   secret: 'your-secret-key', // Should be a long, random string
-  resave: false,             // Don't save session if modified
+  resave: false,             // Don't re-save session if unmodified
   saveUninitialized: true,   // Don't save uninitialized sessions
   cookie: { secure: false }  // Use true only if HTTPS is enabled
 }));
