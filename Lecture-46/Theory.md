@@ -48,7 +48,7 @@ const app = express();
 app.use(session({
   secret: 'your-secret-key', // Should be a long, random string
   resave: false,             // Don't re-save session if unmodified
-  saveUninitialized: false,   // Don't save uninitialized sessions
+  saveUninitialized: false,  // Don't save uninitialized sessions
   cookie: { 
     httpOnly: true,             // Makes the cookie inaccessible to JavaScript (enhances security)
     secure: false,              // Use `true` only if HTTPS is enabled
@@ -176,7 +176,7 @@ const app = express();
 app.use(session({
   secret: 'your-secret-key', // Should be a long, random string
   resave: false,             // Don't re-save session if unmodified
-  saveUninitialized: false,   // Don't save uninitialized sessions
+  saveUninitialized: false,  // Don't save uninitialized sessions
   store: mongoStore.create({
     mongoUrl: 'mongodb://localhost:27017/yourDatabase',  // MongoDB URL
     collectionName: 'user_sessions' // Specify the collection where sessions will be stored (Default name will be sessions if not specified)
