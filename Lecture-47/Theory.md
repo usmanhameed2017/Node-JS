@@ -76,9 +76,9 @@ const cookieValue = request.cookies.key;
 
 ---
 
-If the cookie is signed, access it from:
+If the cookie is signed, access it from `signedCookies` property:
 ```javascript
-const signedCookie = request.signedCookies.key;
+const cookieValue = request.signedCookies.key;
 ```
 
 ---
