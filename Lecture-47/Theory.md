@@ -103,7 +103,7 @@ response.clearCookie("key", {
 |------------|-----------------------------------------------------------------------------|-----------------------------------|
 | httpOnly   | Prevents client-side JavaScript from accessing the cookie (security).       | true                              |
 | secure     | Sends cookie only over HTTPS.                                               | true for production               |
-| sameSite   | Restricts cookie to same-site requests to mitigate CSRF.                    | "strict" / "lax"                  |
+| sameSite   | Restricts cookie to same-site requests to mitigate CSRF.                    | "strict" / "lax" / "none"         |
 | maxAge     | Duration (in ms) until the cookie expires.                                  | 1000 * 60 * 60 * 7                |
 | expires    | Absolute date/time when the cookie expires.                                 | new Date(Date.now() + 3600000)    |
 | path       | Limits cookie to specific URL path.                                         | "/admin"                          |
