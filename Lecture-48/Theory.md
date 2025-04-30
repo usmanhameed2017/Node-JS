@@ -83,7 +83,7 @@ app.listen(8000, () => {
         <div class="col-md-4 mx-auto">
             <form action="/" method="post">
                 <!-- Hidden CSRF Token Field -->
-                <input type="hidden" name="_csrf" value="<%= locals?.csrfToken %>">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 
                 <!-- Name Field -->
                 <div class="form-group">
@@ -118,8 +118,5 @@ app.listen(8000, () => {
 ---
 
 ## 📁 Dependencies Used
-
-- **express** – Web framework
 - **cookie-parser** – Parses cookies
 - **csurf** – CSRF token generation and validation
-- **ejs** – Templating engine for rendering the form
