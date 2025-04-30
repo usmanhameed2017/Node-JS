@@ -87,12 +87,7 @@ const cookieValue = request.signedCookies.key;
 
 To clear/delete a cookie from the browser:
 ```javascript
-response.clearCookie("key", {
-  httpOnly: true,
-  secure: true,
-  sameSite: "strict",
-  signed: true
-});
+response.clearCookie("key");
 ```
 
 ---
