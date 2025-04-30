@@ -416,3 +416,21 @@
 - `express-session` is a middleware for Express.js that manages sessions in your Node.js applications. 
 
 - It creates a `session ID` and stores it as a cookie in the user's browser while keeping session data (payload) on the server-side.
+
+- Cookies are small pieces of data stored on the client side and sent along with HTTP requests. 
+
+- In Node.js applications, cookies are commonly used for managing user sessions, remembering preferences, and tracking user behavior.
+
+- It stores authentication tokens or user IDs to maintain login status.
+
+- It can tracks items added to a shopping cart by the user.
+
+- It helps in auto-login features by storing login details securely.
+
+- Cookies are essential for maintaining state in web applications. 
+
+- With the help of cookie-parser, working with cookies in Express becomes simple and secure. 
+
+- Whether you are handling authentication, storing preferences, or implementing flash messages — cookies play a key role in enhancing the user experience.
+
+- Both cookies and sessions can be used to store user-specific temporary data like authentication state or cart items.
