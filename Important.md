@@ -434,3 +434,8 @@
 - Whether you are handling authentication, storing preferences, or implementing flash messages — cookies play a key role in enhancing the user experience.
 
 - Both cookies and sessions can be used to store user-specific temporary data like authentication state or cart items.
+
+- CSRF prevents **unauthorized form submissions**
+- CSRF ensures **requests originate from the same site**
+- CSRF protects against **cross-origin attacks**
+- CSRF verifies **form authenticity**
