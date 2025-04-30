@@ -58,13 +58,13 @@ app.use(cookieParser());
 const csrfProtection = csrf({ cookie: true });
 
 // Render form with CSRF token
-app.get("/", csrfProtection, (req, res) => {
-    res.render("form", { csrfToken: req.csrfToken() });
+app.get("/", csrfProtection, (request, response) => {
+    response.render("form", { csrfToken: request.csrfToken() });
 });
 
 // Handle form submission
-app.post("/", csrfProtection, (req, res) => {
-    res.send(req.body);
+app.post("/", csrfProtection, (request, response) => {
+    response.send(request.body);
 });
 
 // Start server
