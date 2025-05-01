@@ -29,69 +29,263 @@ npm install express
 
 ```javascript
 const express = require("express");
+const userRouter = require("./routes/user.js");
 const app = express();
 
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-// Basic Home Route
-app.get("/", (request, response) => {
-    response.send("Welcome to Express API");
-});
+
 
 // Start Server
-app.listen(8000, () => {
-    console.log("API Server running at http://localhost:8000");
-});
+app.listen(8000, () => console.log("API Server running at http://localhost:8000"));
 ```
 
 ---
 
-## 📌 CRUD API Example — `Users`
+## 📌 CRUD API — `Users`
 
-We'll build basic **CRUD** operations on a dummy user list.
-
+**index.js**
 ```javascript
-let users = [
-    { id: 1, name: "Alice" },
-    { id: 2, name: "Bob" }
-];
+const express = require("express");
+const connectDB = require("./database/connection");
+const userRouter = require("./routes/user");
+const app = express();
 
-// GET all users
-app.get("/api/users", (request, response) => {
-    response.json(users);
+// Database connection
+connectDB("mongodb://localhost:27017/test-db");
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// Register route
+app.use("/api/v1/user", userRouter);
+
+// Start server
+app.listen(8000, () => console.log("API Server running at http://localhost:8000"));
+```
+
+---
+
+**database/connection.js**
+```javascript
+const mongoose = require("mongoose");
+
+// Connect With Mongo DB
+const connectDB = async (url) => {
+    try 
+    {
+        const response = await mongoose.connect(url);
+        console.log("Database connected to", response.connection.host);
+    } 
+    catch(error) 
+    {
+        console.log(error.message);
+    }
+}
+
+module.exports = connectDB;
+```
+
+---
+
+**models/user.js**
+```javascript
+const { Schema, model } = require("mongoose");
+
+// Schema
+const userSchema = new Schema({
+    name:{
+        type:String,
+        trim:true,
+        required:true
+    },
+    age:{
+        type:Number,
+        trim:true,
+        required:true
+    },
+    email:{
+        type:String,
+        trim:true,
+        unique:true,
+        lowercase:true,
+        required:true
+    },
+    gender:{
+        type:String,
+        trim:true,
+        enum:["Male", "Female", "Other"],
+        required:true
+    },
+    profile_pic:{
+        type:String,
+        trim:true
+    },
 });
 
-// GET single user
-app.get("/api/users/:id", (request, response) => {
-    const user = users.find(u => u.id === parseInt(request.params.id));
-    if (!user) return response.status(404).send("User not found");
-    response.json(user);
+// Model
+const User = model("User", userSchema);
+
+module.exports = User;
+```
+
+---
+
+**middleware/multer.js**
+```javascript
+const multer = require("multer");
+
+// Define storage
+const storage = multer.diskStorage({
+    destination:(request, file, cb) => {
+        return cb(null, "./uploads");
+    },
+    filename:(request, file, cb) => {
+        return cb(null, `${Date.now()}-${file.originalname}`);
+    }
 });
 
-// POST new user
-app.post("/api/users", (request, response) => {
-    const newUser = {
-        id: users.length + 1,
-        name: request.body.name
-    };
-    users.push(newUser);
-    response.status(201).json(newUser);
+// Define file filter
+const fileFilter = (request, file, cb) => {
+    if(!file.mimetype.startsWith("image/")) return cb(new Error("Invalid file format"), false);
+    return cb(null, true);
+}
+
+// Specify file limit to 5MB
+const limits = { fileSize: 1024 * 1024 * 5 };
+
+// Initialize multer with options
+const upload = multer({ 
+    storage:storage,
+    fileFilter:fileFilter,
+    limits:limits
 });
 
-// PUT update user
-app.put("/api/users/:id", (request, response) => {
-    const user = users.find(u => u.id === parseInt(request.params.id));
-    if (!user) return response.status(404).send("User not found");
-    user.name = request.body.name;
-    response.json(user);
-});
+module.exports = upload;
+```
 
-// DELETE user
-app.delete("/api/users/:id", (request, response) => {
-    users = users.filter(u => u.id !== parseInt(request.params.id));
-    response.send("User deleted successfully");
-});
+---
+
+**controllers/user.js**
+```javascript
+const mongoose = require("mongoose");
+const User = require("../models/user");
+const fs = require("fs");
+
+// Fetch all users
+const fetchAllUsers = async (request, response) => {
+    try 
+    {
+        const users = await User.find({});
+        return response.status(200).json({ data:users, message:"All users has been fetched successfully" });
+    } 
+    catch (error) 
+    {
+        return response.status(500).json({ data:null, message:error.message });
+    }
+}
+
+// Create new user
+const addUser = async (request, response) => {
+    try 
+    {
+        request.body.profile_pic = request.file?.path || null;
+        const user = await User.create(request.body);
+        return response.status(201).json({ data:user, message:"A new user has been created successfully" });
+    } 
+    catch (error) 
+    {
+        if(request.file?.path) fs.unlinkSync(request.file.path);
+        return response.status(500).json({ data:null, message:error.message });
+    }
+}
+
+// Fetch single user
+const fetchSingleUser = async (request, response) => {
+    if(!mongoose.isValidObjectId(request.params.id)) return response.status(400).json({ data:null, message:"Invalid MongoDB ID" });
+
+    try 
+    {
+        const user = await User.findById(request.params.id);
+        if(!user) return response.status(404).json({ data:null, message:"User not found" });
+        return response.status(200).json({ data:user, message:"User has been fetched successfully" });
+    } 
+    catch (error) 
+    {
+        return response.status(500).json({ data:null, message:error.message });
+    }
+}
+
+// Update user
+const updateUser = async (request, response) => {
+    if(!mongoose.isValidObjectId(request.params.id)) return response.status(400).json({ data:null, message:"Invalid MongoDB ID" });
+
+    try 
+    {
+        const user = await User.findById(request.params.id);
+        if(!user)
+        {
+            if(request.file?.path && fs.existsSync(request.file?.path)) fs.unlinkSync(request.file.path);
+            return response.status(404).json({ data:null, message:"User not found" });
+        }
+    
+        request.body.profile_pic = request.file?.path || user.profile_pic;
+        const updatedUser = await User.findByIdAndUpdate(request.params.id, request.body, { new:true });
+    
+        if(request.file?.path && fs.existsSync(user?.profile_pic)) fs.unlinkSync(user.profile_pic);
+        return response.status(200).json({ data:updatedUser, message:"User has been updated successfully" });        
+    }
+    catch(error) 
+    {
+        if(request.file?.path && fs.existsSync(request.file?.path)) fs.unlinkSync(request.file.path);
+        return response.status(500).json({ data:null, message:error.message });
+    }
+}
+
+// Delete user
+const deleteUser = async (request, response) => {
+    if(!mongoose.isValidObjectId(request.params.id)) return response.status(400).json({ data:null, message:"Invalid MongoDB ID" });
+
+    try 
+    {
+        const user = await User.findByIdAndDelete(request.params.id);
+        if(!user) return response.status(404).json({ data:null, message:"User not found" });
+        
+        if(user?.profile_pic && fs.existsSync(user?.profile_pic)) fs.unlinkSync(user.profile_pic);
+        return response.status(200).json({ data:user, message:"User has been deleted successfully" });
+    }
+    catch(error) 
+    {
+        return response.status(500).json({ data:null, message:error.message });
+    }
+}
+
+module.exports = { fetchAllUsers, addUser, fetchSingleUser, updateUser, deleteUser };
+```
+
+---
+
+**routes/user.js**
+```javascript
+const { Router } = require("express");
+const { fetchAllUsers, addUser, fetchSingleUser, updateUser, deleteUser } = require("../controllers/user");
+const upload = require("../middleware/multer");
+
+// Initialize router
+const userRouter = Router();
+
+// ******* Routes ******* //
+userRouter.route("/")
+.get(fetchAllUsers) // Fetch all users
+.post(upload.single("profile_pic"), addUser); // Add new user
+
+userRouter.route("/:id")
+.get(fetchSingleUser) // Fetch single user
+.put(upload.single("profile_pic"), updateUser) // Update user
+.delete(deleteUser); // Delete user
+
+module.exports = userRouter;
 ```
 
 ---
