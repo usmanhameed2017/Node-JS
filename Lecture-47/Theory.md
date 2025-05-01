@@ -61,7 +61,7 @@ response.cookie("key", "value", {
   secure: true,               // Sends cookie only over HTTPS.
   sameSite: "strict",         // Restricts cookie to same-site requests to prevent CSRF.
   maxAge: 1000 * 60 * 60 * 7, // Duration in milli-seconds until the cookie expires. (7 hours).
-  path: "/specific-URL"       // Limits cookie to specific URL path. (Default path will be "/" which is recommended for authentication).
+  path: "/specific-URL",      // Limits cookie to specific URL path. (Default path will be "/" which is recommended for authentication).
   signed: true                // Ensures the cookie is signed using a secret (provides tamper protection).
 });
 ```
