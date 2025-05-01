@@ -68,9 +68,7 @@ app.post("/", csrfProtection, (request, response) => {
 });
 
 // Start server
-app.listen(8000, () => {
-    console.log("Server running at http://localhost:8000");
-});
+app.listen(8000, () => console.log("Server running at http://localhost:8000"));
 ```
 
 ---
