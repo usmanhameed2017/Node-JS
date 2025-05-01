@@ -111,9 +111,9 @@ You can test your API using tools like:
 | Method | Usage |
 |--------|-------|
 | GET    | Used to request data from a specified resource. |
-| POST   | Create or submit new resources. |
-| PUT    | Update or replace entire existing resource. |
-| PATCH  | Partial updates to an existing part of a resource/object. |
+| POST   | Used to create or submit new resources. |
+| PUT    | Used to update or replace entire existing resource. |
+| PATCH  | Usedd for partial updates to an existing part of a resource/object. |
 | DELETE | Used to delete a specified resource from the server. |
 | HEAD   | Similar to GET, but it only requests the headers of a resource,<br>without the actual body content. |
 
