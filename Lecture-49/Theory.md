@@ -185,7 +185,8 @@ const addUser = async (request, response) => {
 
 // Fetch single user
 const fetchSingleUser = async (request, response) => {
-    if(!mongoose.isValidObjectId(request.params.id)) return response.status(400).json({ data:null, message:"Invalid MongoDB ID" });
+    if(!mongoose.isValidObjectId(request.params.id)) 
+        return response.status(400).json({ data:null, message:"Invalid MongoDB ID" });
 
     try 
     {
@@ -201,7 +202,8 @@ const fetchSingleUser = async (request, response) => {
 
 // Update user
 const updateUser = async (request, response) => {
-    if(!mongoose.isValidObjectId(request.params.id)) return response.status(400).json({ data:null, message:"Invalid MongoDB ID" });
+    if(!mongoose.isValidObjectId(request.params.id)) 
+        return response.status(400).json({ data:null, message:"Invalid MongoDB ID" });
 
     try 
     {
@@ -227,7 +229,8 @@ const updateUser = async (request, response) => {
 
 // Delete user
 const deleteUser = async (request, response) => {
-    if(!mongoose.isValidObjectId(request.params.id)) return response.status(400).json({ data:null, message:"Invalid MongoDB ID" });
+    if(!mongoose.isValidObjectId(request.params.id)) 
+        return response.status(400).json({ data:null, message:"Invalid MongoDB ID" });
 
     try 
     {
