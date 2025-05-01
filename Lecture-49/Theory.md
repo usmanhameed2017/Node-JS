@@ -117,6 +117,27 @@ You can test your API using tools like:
 
 ---
 
+## 📡 HTTP Status Codes Summary
+
+| Code | Meaning                  |
+|------|--------------------------|
+| 100  | Continue                 |
+| 102  | Processing               |
+| 200  | OK                       |
+| 201  | Created                  |
+| 202  | Accepted                 |
+| 307  | Temporary Redirect       |
+| 308  | Permanent Redirect       |
+| 400  | Bad Request              |
+| 401  | Unauthorized             |
+| 402  | Payment Required         |
+| 404  | Not Found                |
+| 500  | Internal Server Error    |
+| 504  | Gateway Timeout          |
+
+---
+
+
 ## 🛡️ Best Practices
 
 - Use **status codes** properly (`200`, `201`, `400`, `404`, etc.)
