@@ -108,12 +108,14 @@ You can test your API using tools like:
 
 ## 🧱 HTTP Methods Summary
 
-| Method | Usage                  |
-|--------|------------------------|
-| GET    | Fetch data             |
-| POST   | Create new data        |
-| PUT    | Update existing data   |
-| DELETE | Remove data            |
+| Method | Usage |
+|--------|-------|
+| GET    | Used to request data from a specified resource. |
+| POST   | Create or submit new resources. |
+| PUT    | Update or replace entire existing resource. |
+| PATCH  | Partial updates to an existing part of a resource/object. |
+| DELETE | Used to delete a specified resource from the server. |
+| HEAD   | Similar to GET, but it only requests the headers of a resource,<br>without the actual body content. |
 
 ---
 
