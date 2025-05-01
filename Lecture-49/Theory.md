@@ -178,7 +178,7 @@ const addUser = async (request, response) => {
     } 
     catch (error) 
     {
-        if(request.file?.path) fs.unlinkSync(request.file.path);
+        if(request.file?.path && fs.existsSync(request.file?.path)) fs.unlinkSync(request.file.path);
         return response.status(500).json({ data:null, message:error.message });
     }
 }
