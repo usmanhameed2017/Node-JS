@@ -22,23 +22,33 @@ npm install multer
 ### Basic Setup With Disk-Storage
 
 ```javascript
-const multer = require('multer');
+const multer = require("multer");
 
-// Define storage
+// Define storage (Required)
 const storage = multer.diskStorage({
-    destination: function (request, file, cb) 
-    {
-        return cb(null, 'uploads/'); // Folder to store files
+    destination:(request, file, cb) => {
+        return cb(null, "./uploads"); // Folder to store files
     },
-    filename: function (request, file, cb) 
-    {
-        const uniqueName = `${Date.now()}-${file.originalname}`;
-        return cb(null, uniqueName); // Unique filename
+    filename:(request, file, cb) => {
+        return cb(null, `${Date.now()}-${file.originalname}`); // Unique filename
     }
 });
 
-// Initialize multer with storage
-const upload = multer({ storage: storage });
+// Define file filter (Optional)
+const fileFilter = (request, file, cb) => {
+    if(!file.mimetype.startsWith("image/")) return cb(new Error("Invalid file format"), false);
+    return cb(null, true);
+}
+
+// Specify file limit to 5MB (Optional)
+const limits = { fileSize: 1024 * 1024 * 5 };
+
+// Initialize multer with options
+const upload = multer({ 
+    storage:storage,        // Required
+    fileFilter:fileFilter,  // Optional
+    limits:limits           // Optional
+});
 
 module.exports = upload;
 ```
