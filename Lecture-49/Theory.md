@@ -139,9 +139,9 @@ const limits = { fileSize: 1024 * 1024 * 5 };
 
 // Initialize multer with options
 const upload = multer({ 
-    storage:storage,
-    fileFilter:fileFilter,
-    limits:limits
+    storage:storage,        // Required
+    fileFilter:fileFilter,  // Optional
+    limits:limits           // Optional
 });
 
 module.exports = upload;
