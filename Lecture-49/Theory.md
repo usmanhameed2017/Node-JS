@@ -118,7 +118,7 @@ module.exports = User;
 ```javascript
 const multer = require("multer");
 
-// Define storage
+// Define storage (Required)
 const storage = multer.diskStorage({
     destination:(request, file, cb) => {
         return cb(null, "./uploads");
@@ -128,13 +128,13 @@ const storage = multer.diskStorage({
     }
 });
 
-// Define file filter
+// Define file filter (Optional)
 const fileFilter = (request, file, cb) => {
     if(!file.mimetype.startsWith("image/")) return cb(new Error("Invalid file format"), false);
     return cb(null, true);
 }
 
-// Specify file limit to 5MB
+// Specify file limit to 5MB (Optional)
 const limits = { fileSize: 1024 * 1024 * 5 };
 
 // Initialize multer with options
