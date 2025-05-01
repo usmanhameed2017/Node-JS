@@ -1,4 +1,4 @@
-# ⚙️ REST API Development with Express.js
+# ⚙️ REST API Development With Express.js
 
 ## 📘 What is an API?
 
@@ -20,7 +20,7 @@ In web development, RESTful APIs allow clients (like frontend apps or Postman) t
 
 ```bash
 npm init -y
-npm install express
+npm install express multer mongoose
 ```
 
 ---
