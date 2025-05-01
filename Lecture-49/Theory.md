@@ -323,5 +323,5 @@ You can test your API using tools like:
 - Use **status codes** properly (`200`, `201`, `400`, `404`, etc.)
 - Always validate user input.
 - Structure your project for scalability (e.g: use `routes/`, `controllers/`, `models/`).
-- Use **middleware** for logging, error handling, etc.
+- Use **middleware** for logging, error handling, authentication and authorization etc.
 - Use **dotenv** for environment variables.
