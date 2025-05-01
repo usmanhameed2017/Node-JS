@@ -439,3 +439,7 @@
 - CSRF ensures **requests originate from the same site**
 - CSRF protects against **cross-origin attacks**
 - CSRF verifies **form authenticity**
+
+- An API (Application Programming Interface) allows two systems or applications to communicate.
+
+- In web development, RESTful APIs allow clients like frontend apps or Postman to interact with backend servers through HTTP requests like `GET`, `POST`, `PUT`, and `DELETE`.
