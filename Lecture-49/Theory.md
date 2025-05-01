@@ -279,9 +279,8 @@ module.exports = userRouter;
 
 You can test your API using tools like:
 
-- [Postman](https://www.postman.com/)
-- [Thunder Client](https://www.thunderclient.com/) (VS Code extension)
-- `curl` (CLI)
+- [Postman](https://www.postman.com/) - (Recommended)
+- [Thunder Client](https://www.thunderclient.com/) - (VS Code extension)
 
 ---
 
