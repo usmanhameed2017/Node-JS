@@ -25,24 +25,6 @@ npm install express multer mongoose
 
 ---
 
-## 🛠️ Basic Setup
-
-```javascript
-const express = require("express");
-const userRouter = require("./routes/user.js");
-const app = express();
-
-// Middleware to parse JSON bodies
-app.use(express.json());
-
-
-
-// Start Server
-app.listen(8000, () => console.log("API Server running at http://localhost:8000"));
-```
-
----
-
 ## 📌 CRUD API — `Users`
 
 **index.js**
