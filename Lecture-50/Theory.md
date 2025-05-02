@@ -1,6 +1,6 @@
 # 🌐 CORS (Cross-Origin Resource Sharing)
 
-## 📌 What is CORS?
+### 📌 What is CORS?
 
 CORS (Cross-Origin Resource Sharing) is a browser security feature that allows or restricts web applications running at one origin (domain) from making requests to another origin.
 
