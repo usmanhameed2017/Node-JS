@@ -39,7 +39,7 @@ app.get("/", (request, response) => {
   response.send("CORS enabled for all origins.");
 });
 
-app.listen(3000, () => console.log("Server running at http://localhost:8000"));
+app.listen(8000, () => console.log("Server running at http://localhost:8000"));
 ```
 
 ---
