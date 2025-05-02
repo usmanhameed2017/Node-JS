@@ -35,13 +35,11 @@ const app = express();
 // Enable CORS for all routes
 app.use(cors());
 
-app.get("/", (req, res) => {
-  res.send("CORS enabled for all origins.");
+app.get("/", (request, response) => {
+  response.send("CORS enabled for all origins.");
 });
 
-app.listen(3000, () => {
-  console.log("Server running at http://localhost:8000");
-});
+app.listen(3000, () => console.log("Server running at http://localhost:8000"));
 ```
 
 ---
@@ -114,18 +112,18 @@ const corsOptions = {
 };
 
 // CORS enabled only for /admins route
-app.get("/admins", cors(corsOptions), (req, res) => {
-  res.send("Admins route with CORS enabled.");
+app.get("/admins", cors(corsOptions), (request, response) => {
+  response.send("Admins route with CORS enabled.");
 });
 
 // CORS enabled only for /users route
-app.get("/users", cors(corsOptions), (req, res) => {
-  res.send("Users route with CORS enabled.");
+app.get("/users", cors(corsOptions), (request, response) => {
+  response.send("Users route with CORS enabled.");
 });
 
 // /productlist route without CORS
-app.get("/productlist", (req, res) => {
-  res.send("Product list route WITHOUT CORS.");
+app.get("/productlist", (request, response) => {
+  response.send("Product list route WITHOUT CORS.");
 });
 ```
 
