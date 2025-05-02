@@ -443,3 +443,11 @@
 - An API (Application Programming Interface) allows two systems or applications to communicate.
 
 - In web development, RESTful APIs allow clients like frontend apps or Postman to interact with backend servers through HTTP requests like `GET`, `POST`, `PUT`, and `DELETE`.
+
+- CORS (Cross-Origin Resource Sharing) is a browser security feature that allows or restricts web applications running at one origin from making requests to another origin.
+
+- If your frontend and backend are hosted on **different origins**, you need to enable CORS to allow communication.
+
+- CORS is essential when your frontend and backend are on different origins.
+
+- Always restrict origins and headers in production for better security.
