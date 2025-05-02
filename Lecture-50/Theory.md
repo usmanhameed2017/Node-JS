@@ -107,7 +107,7 @@ app.get("/users", cors(corsOptions), (request, response) => {
 
 // /productlist route without CORS
 app.get("/productlist", (request, response) => {
-  response.send("Product list route WITHOUT CORS.");
+  response.send("Product list route without CORS.");
 });
 ```
 
