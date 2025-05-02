@@ -47,11 +47,8 @@ app.listen(8000, () => console.log("Server running at http://localhost:8000"));
 ### 🎯 Enable CORS for Specific Origin Only
 
 ```javascript
-const corsOptions = {
-  origin: "http://localhost:5173", // Allow only this origin
-};
 
-app.use(cors(corsOptions));
+app.use(cors({ origin: "http://localhost:5173" })); // Allow only this origin
 ```
 
 ---
@@ -80,19 +77,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-```
-
----
-
-### 🧪 Handling Preflight Requests
-
-Browsers automatically send a **preflight OPTIONS request** before actual requests (for methods like POST/PUT with custom headers).  
-CORS middleware automatically handles this if set up properly.
-
-You can also handle it manually if needed:
-
-```javascript
-app.options("*", cors(corsOptions));
 ```
 
 ---
