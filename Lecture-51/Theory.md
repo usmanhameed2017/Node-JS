@@ -246,6 +246,9 @@ app.listen(8000, () => console.log("Server running at http://localhost:8000"));
 If you want to apply pagination **before a `$lookup`**, you can do it like this:
 
 ```javascript
+// Get page & limit from `query` object
+const { page = 1, limit = 10 } = request.query;
+
 // Aggregation
 const aggregate = User.aggregate([
     { $match: {} }, // Optional filter
@@ -256,7 +259,7 @@ const aggregate = User.aggregate([
     {
         $lookup: {
             from: "authors",
-            localField: "author",
+            localField: "author_id",
             foreignField: "_id",
             as: "author"
         }
@@ -265,8 +268,8 @@ const aggregate = User.aggregate([
 
 // Options
 const options = {
-    page: parseInt(request.query.page) || 1,
-    limit: parseInt(request.query.limit) || 10
+    page: parseInt(page),
+    limit: parseInt(limit)
 };
 
 // Execute query
