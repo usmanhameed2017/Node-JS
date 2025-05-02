@@ -72,7 +72,7 @@ userSchema.plugin(aggregatePaginate);
 
 ---
 
-Paginate method will return these values
+It will return these values
 
 - `docs` (Array) - Array of documents
 - `totalDocs` (Number) - Total number of documents in collection that match a query
