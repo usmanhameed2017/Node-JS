@@ -47,7 +47,6 @@ app.use(cookieParser());
 
 // Routes
 const userRouter = require("./routes/user");
-const staticRouter = require("./routes/static");
 
 // Register routes
 app.use("/api/v1/user", userRouter);
