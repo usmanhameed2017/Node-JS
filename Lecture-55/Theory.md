@@ -21,7 +21,43 @@ npm install passport passport-google-oauth20 passport-facebook jsonwebtoken dote
 
 ---
 
-### 🏘 Step 01: Setup Model
+### ⏳ Step 01: Initialize Passport
+`app.js`
+```javascript
+const express = require("express");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const passport = require("passport");
+require("./config/passport");
+
+// Express app
+const app = express();
+
+// Middleware configuration
+app.use(cors({ 
+    origin:"*", 
+    credentials:true, 
+    methods:["GET", "POST", "PUT", "PATCH", "DELETE"] 
+}));
+
+app.use(passport.initialize());
+app.use(express.urlencoded({ extended:true, limit:"20kb" }));
+app.use(express.json({ limit:"20kb" }));
+app.use(cookieParser());
+
+// Routes
+const userRouter = require("./routes/user");
+const staticRouter = require("./routes/static");
+
+// Register routes
+app.use("/api/v1/user", userRouter);
+
+module.exports = app;
+```
+
+---
+
+### 🏘 Step 02: Setup Model
 `models/user.js`
 ```javascript
 const { Schema, model } = require("mongoose");
@@ -76,7 +112,7 @@ module.exports = User;
 
 ---
 
-### 🔐 Step 02: Configure .env
+### 🔐 Step 03: Configure .env
 `.env`
 ```javascript
 GOOGLE_CLIENT_ID=your_google_client_id
@@ -90,7 +126,7 @@ JWT_SECRET=your_jwt_secret
 
 ---
 
-### ⚙️ Step 03: Passport Configuration
+### ⚙️ Step 04: Passport Configuration
 `config/passport.js`
 ```javascript
 const passport = require('passport');
@@ -162,7 +198,7 @@ async (accessToken, refreshToken, profile, done) => {
 
 ---
 
-### 👛 Step 04: Token Generator
+### 👛 Step 05: Token Generator
 `utils/generateToken.js`
 ```javascript
 const jwt = require('jsonwebtoken');
@@ -190,7 +226,7 @@ module.exports = generateToken;
 
 ---
 
-### 🔁 Step 05: Routes
+### 🔁 Step 06: Routes
 `routes/user.js`
 ```javascript
 const { Router } = require("express");
@@ -211,7 +247,7 @@ userRouter.get('/auth/facebook/callback', passport.authenticate('facebook', { se
 
 ---
 
-### ⚙️ Step 06: Controllers
+### ⚙️ Step 07: Controllers
 `controllers/user.js`
 ```javascript
 const User = require("../models/user");
