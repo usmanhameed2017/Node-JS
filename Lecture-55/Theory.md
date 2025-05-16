@@ -16,7 +16,7 @@
 
 - Install required packages
 ```bash
-npm install passport passport-google-oauth20 passport-facebook jsonwebtoken dotenv
+npm install passport passport-google-oauth20 passport-facebook jsonwebtoken dotenv cookie-parser
 ```
 
 ---
@@ -170,11 +170,19 @@ const jwt = require('jsonwebtoken');
 const generateToken = (user) => {
     if (!user) return null;
 
-    return jwt.sign({
-        _id: user._id,
-        name: user.name,
-        email: user.email
-    }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    try 
+    {
+        return jwt.sign({
+            _id: user._id,
+            name: user.name,
+            email: user.email
+        }, process.env.JWT_SECRET, { expiresIn: '1h' });        
+    } 
+    catch(error) 
+    {
+        console.log(error.message);
+        return null;
+    }
 };
 
 module.exports = generateToken;
