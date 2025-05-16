@@ -22,6 +22,7 @@ npm install passport passport-google-oauth20 passport-facebook jsonwebtoken dote
 ---
 
 ### 🏘 Step 01: Setup Model
+`models/user.js`
 ```javascript
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
@@ -76,6 +77,7 @@ module.exports = User;
 ---
 
 ### 🔐 Step 02: Configure .env
+`.env`
 ```javascript
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
@@ -89,6 +91,7 @@ JWT_SECRET=your_jwt_secret
 ---
 
 ### ⚙️ Step 03: Passport Configuration
+`config/passport.js`
 ```javascript
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -180,7 +183,7 @@ module.exports = generateToken;
 ---
 
 ### 🔁 Step 05: Routes
-`routes/user`
+`routes/user.js`
 ```javascript
 const { Router } = require("express");
 const { googleLogin, facebookLogin } = require("../controllers/user");
@@ -201,7 +204,7 @@ userRouter.get('/auth/facebook/callback', passport.authenticate('facebook', { se
 ---
 
 ### ⚙️ Step 06: Controllers
-`controllers/user`
+`controllers/user.js`
 ```javascript
 const User = require("../models/user");
 const { generateToken } = require("../utils/authToken");
