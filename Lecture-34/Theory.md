@@ -74,7 +74,7 @@ app.use(express.json());
 app.set("view engine", "ejs");
 
 // Route
-app.get((request, response) => response.render("home"));
+app.get("/", (request, response) => response.render("home"));
 
 // Socket instance
 const io = new Server(server); // Bind web socket server with express server
