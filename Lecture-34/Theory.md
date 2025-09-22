@@ -77,12 +77,6 @@ app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended:false }));
 app.use(express.json());
 
-// Set template engine
-app.set("view engine", "ejs");
-
-// Route
-app.get((request, response) => response.render("home"));
-
 // Socket middleware for authentication
 io.use(socketAuthentication);
 
