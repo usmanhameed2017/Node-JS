@@ -202,10 +202,10 @@ const connectSocket = (io) => {
         // Extract user object
         const { user } = socket;
 
-        // User login
+        // Validate user
         if(!user) return;
 
-        // Save mapping (Multiple device login)
+        // Save mapping
         if(!onlineUsers.has(user._id)) onlineUsers.set(user._id, new Set());
         onlineUsers.get(user._id).add(socket.id);     
 
