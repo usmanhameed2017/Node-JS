@@ -159,7 +159,7 @@ const connectSocket = (io) => {
 
             // Find group members
             const group = await Group.findById(conversationId).lean();
-            if (!group) return;
+            if(!group) return;
 
             // Broadcast to all group members
             group.members.forEach((memberId) => {
@@ -186,7 +186,7 @@ const connectSocket = (io) => {
 module.exports = connectSocket;
 ```
 
-> Note: If you want to allow same account to be logged-in within multiple devices and let the realtime messages appear on multiple devices to same user, then use this setup instead.
+> Note: If you want to allow same account to be logged-in within multiple devices and let the realtime messages appear on multiple devices to the same user, then use this setup instead.
 
 **src/service/socket.js**
 ```javascript
@@ -209,7 +209,7 @@ const connectSocket = (io) => {
         if(!onlineUsers.has(user._id)) onlineUsers.set(user._id, new Set());
         onlineUsers.get(user._id).add(socket.id);     
 
-        // // Update status in DB
+        // Update status in DB
         const data = await User.findByIdAndUpdate(user._id, { onlineStatus:"Online" }, { new:true });
         io.emit("user-online", data);
         console.log("New client connected:", socket.id);       
@@ -232,7 +232,7 @@ const connectSocket = (io) => {
 
             // Find group members
             const group = await Group.findById(conversationId).lean();
-            if (!group) return;
+            if(!group) return;
 
             // Broadcast to all group members
             group.members.forEach((memberId) => {
