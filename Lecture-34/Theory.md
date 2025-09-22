@@ -77,11 +77,11 @@ app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended:false }));
 app.use(express.json());
 
-// Share io instance across all controllers
-app.use((request, response, next) => {
-    request.io = io;
-    next();
-});
+// Set template engine
+app.set("view engine", "ejs");
+
+// Route
+app.get((request, response) => response.render("home"));
 
 // Socket middleware for authentication
 io.use(socketAuthentication);
