@@ -145,7 +145,7 @@ const connectSocket = (io) => {
         socket.on("private-message", (data) => {
             const { from, to } = data;
 
-            // Get socket IDs for sending messages to specific socket
+            // Broadcast message to receiver and sender socket
             const receiverSocketId = onlineUsers.get(to); 
             if(receiverSocketId) io.to(receiverSocketId).emit("private-message", data);
 
@@ -190,7 +190,6 @@ module.exports = connectSocket;
 
 **src/service/socket.js**
 ```javascript
-const Group = require("../models/group");
 const User = require("../models/user");
 
 // Global store (in-memory map)
@@ -212,34 +211,8 @@ const connectSocket = (io) => {
         // Update status in DB
         const data = await User.findByIdAndUpdate(user._id, { onlineStatus:"Online" }, { new:true });
         io.emit("user-online", data);
-        console.log("New client connected:", socket.id);       
+        console.log("New client connected:", socket.id);            
 
-        // Handle private messages (One to One)
-        socket.on("private-message", (data) => {
-            const { from, to } = data;
-
-            // Get socket IDs of receiver and sender
-            const receiverSockets = onlineUsers.get(to) || [];
-            receiverSockets.forEach((id) => io.to(id).emit("private-message", data));
-
-            const senderSockets = onlineUsers.get(from) || [];
-            senderSockets.forEach((id) => io.to(id).emit("private-message", data));            
-        });
-
-        // Handle group messages
-        socket.on("group-message", async (data) => {
-            const { conversationId } = data;
-
-            // Find group members
-            const group = await Group.findById(conversationId).lean();
-            if(!group) return;
-
-            // Broadcast to all group members
-            group.members.forEach((memberId) => {
-                const sockets = onlineUsers.get(memberId.toString()) || [];
-                sockets.forEach((id) => io.to(id).emit("group-message", data));
-            });
-        });       
 
         // Disconnect
         socket.on("disconnect", async () => {
@@ -406,8 +379,19 @@ const sendPrivateMessage = async (request, response) => {
 
     try 
     {
+        // Insert into database
         const chat = await Chat.create(request.body);
         if(!chat) throw new ApiError(400, "Failed to send message");
+
+        // Broadcast to receiver socket
+        const receiverSockets = onlineUsers.get(receiverId) || [];
+        receiverSockets.forEach((id) => request.io.to(id).emit("private-message", chat));
+
+        // Broadcast to sender socket
+        const senderSockets = onlineUsers.get(senderId) || [];
+        senderSockets.forEach((id) => request.io.to(id).emit("private-message", chat));
+
+        // Response
         return response.status(200).json(new ApiResponse(200, chat, "Message has been sent"));
     } 
     catch(error) 
@@ -416,7 +400,7 @@ const sendPrivateMessage = async (request, response) => {
     }
 };
 
-// Send group message (one to one chat)
+// Send group message
 const sendGroupMessage = async (request, response) => {
     request.body.from = request.user?._id;
 
@@ -426,17 +410,25 @@ const sendGroupMessage = async (request, response) => {
     try 
     {
         // Find group
-        const group = await Group.findById(request.body?.conversationId);
+        const group = await Group.findById(request.body?.conversationId).lean();
+        if(!group) throw new ApiError(404, "Group not found");
 
         // If the sender is not a member of a group
-        if(!group.members.includes(request.user?._id)) throw new ApiError(400, "Only members can send a mesage");
+        const isMember = group.members.some(memberId => memberId.toString() === request.user._id.toString());
+        if(!isMember) throw new ApiError(400, "Only members can send a message");
 
-        const chat = await Chat.create(request.body);
-        if(!chat) throw new ApiError(400, "Failed to send message");
+        // Insert into database and get data with sender name
+        const chat = await (await Chat.create(request.body)).populate("from", "name");
+        if(!chat) throw new ApiError(400, "Failed to send message");        
 
-        // Get chat data with sender name
-        const chatData = await Chat.findById(chat._id).populate("from", "name");
-        return response.status(200).json(new ApiResponse(200, chatData, "Message has been sent"));
+        // Broadcast to all group members
+        group.members.forEach((memberId) => {
+            const sockets = onlineUsers.get(memberId.toString()) || [];
+            sockets.forEach((id) => request.io.to(id).emit("group-message", chat));
+        });
+
+        // Response
+        return response.status(200).json(new ApiResponse(200, chat, "Message has been sent"));
     } 
     catch(error) 
     {
