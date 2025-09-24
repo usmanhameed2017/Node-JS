@@ -244,7 +244,7 @@ const connectSocket = (io) => {
     });    
 };
 
-module.exports = connectSocket;
+module.exports = { connectSocket, onlineUsers };
 ```
 
 ---
@@ -364,6 +364,7 @@ const Group = require("../models/group");
 const ApiError = require("../utils/ApiError");
 const ApiResponse = require("../utils/ApiResponse");
 const generateConversationId = require("../utils/generateConversationId");
+const { onlineUsers } = require("../service/socket");
 
 // Send private message (one to one chat)
 const sendPrivateMessage = async (request, response) => {
