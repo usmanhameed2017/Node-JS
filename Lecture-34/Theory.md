@@ -53,7 +53,8 @@ npm i socket.io
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
-const connectSocket = require("./service/socket");
+const socketAuthentication = require("./middlewares/socket");
+const SocketIOService = require("./service/socket");
 
 // Cors options
 const corsOptions = {
@@ -81,7 +82,16 @@ app.use(express.json());
 io.use(socketAuthentication);
 
 // Socket connection
-connectSocket(io);
+const socketio = new SocketIOService(io);
+socketio.connect();
+
+// ************* IMPORT ROUTES ************* //
+const chatRouter = require("./routes/chat");
+const groupRouter = require("./routes/group");
+
+// Registered routes
+app.use("/api/v1/chat", chatRouter);
+app.use("/api/v1/group", groupRouter);
 
 // Start server
 server.listen(8000, () => console.log("Server is started and running at http://localhost:8000"));
@@ -92,159 +102,145 @@ server.listen(8000, () => console.log("Server is started and running at http://l
 **src/middleware/socket.js**
 
 ```javascript
-const jwt = require("jsonwebtoken");
+const ApiError = require("../utils/ApiError");
+const { verifyAccessToken } = require("../utils/auth");
 
-// Establish socket connection only when user is authenticated
+// Socket authentication
 const socketAuthentication = (socket, next) => {
     try 
     {
         const { authToken } = socket.handshake.auth;
-        if(!authToken) return next(new Error("Auth token is missing"));
+        if(!authToken) throw new ApiError(401, "Auth token is missing");
 
-        const user = jwt.verify(authToken, process.ENV.JWT_SECRET);
-        if(!user) return next(new Error("Invalid access token"));
+        const user = verifyAccessToken(authToken);
+        if(!user) throw new ApiError(400, "Invalid access token");
 
         socket.user = user || null;
-        return next();         
+        return next();    
     } 
     catch (error) 
     {
         console.log(error.message);
     }
-}
+};
+
+module.exports = socketAuthentication;
 ```
 
 ---
 
 **src/service/socket.js**
 ```javascript
-const Group = require("../models/group");
 const User = require("../models/user");
+const Group = require("../models/group");
 
-// Global store (in-memory map)
-const onlineUsers = new Map();
+// Socket Service Blue Print
+class SocketIOService
+{
+    // Constructor
+    constructor(io)
+    {
+        this.io = io;
+    }
 
-// ************* SOCKET CONNECTION ************* //
-const connectSocket = (io) => {
-    io.on("connection", async (socket) => {  
-        // Extract user object
-        const { user } = socket;
+    // Socket connection
+    connect()
+    {
+        this.io.on("connection", async (socket) => {
+            // Join public room
+            socket.join("public");
+            console.log("New client connected:", socket.id);
 
-        // Validate user
-        if(!user) return;
-        
-        // Save mapping
-        onlineUsers.set(user._id, socket.id);  
+            // Extract user object
+            const { user } = socket;
 
-        // Update status in DB
-        const data = await User.findByIdAndUpdate(user._id, { onlineStatus:"Online" }, { new:true });
-        io.emit("user-online", data);
-        console.log("New client connected:", socket.id);
-
-        // Handle private messages (One to One)
-        socket.on("private-message", (data) => {
-            const { from, to } = data;
-
-            // Broadcast message to receiver and sender socket
-            const receiverSocketId = onlineUsers.get(to); 
-            if(receiverSocketId) io.to(receiverSocketId).emit("private-message", data);
-
-            const senderSocketId = onlineUsers.get(from);
-            if(senderSocketId) io.to(senderSocketId).emit("private-message", data);           
-        });
-
-        // Handle group messages
-        socket.on("group-message", async (data) => {
-            const { conversationId } = data;
-
-            // Find group members
-            const group = await Group.findById(conversationId).lean();
-            if(!group) return;
-
-            // Broadcast to all group members
-            group.members.forEach((memberId) => {
-                const sockets = onlineUsers.get(memberId.toString()) || [];
-                sockets.forEach((id) => io.to(id).emit("group-message", data));
-            });
-        });       
-
-        // Disconnect
-        socket.on("disconnect", async () => {
+            // Validate user
             if(!user) return;
             
-            // Remove mapping from online users
-            onlineUsers.delete(user._id);
+            // Join private room for user (one-to-one chat)
+            const roomId = `user:${user._id}`;
+            socket.join(roomId);
 
-            // Update status in DB
-            const data = await User.findByIdAndUpdate(user._id, { onlineStatus: "Offline" }, { new: true });
-            io.emit("user-offline", data);            
-            console.log("Socket disconnected", socket.id);
-        });
-    });    
-};
+            // Join all group rooms
+            const groups = await Group.find({ members: user._id }).select("_id");  
+            groups.forEach(group => socket.join(`group:${group._id}`));            
 
-module.exports = connectSocket;
-```
-
-> Note: If you want to allow same account to be logged-in within multiple devices and let the realtime messages appear on multiple devices to the same user, then use this setup instead.
-
-**src/service/socket.js**
-```javascript
-const User = require("../models/user");
-
-// Global store (in-memory map)
-const onlineUsers = new Map();
-
-// ************* SOCKET CONNECTION ************* //
-const connectSocket = (io) => {
-    io.on("connection", async (socket) => {
-        // Extract user object
-        const { user } = socket;
-
-        // Validate user
-        if(!user) return;
-
-        // Save mapping
-        if(!onlineUsers.has(user._id)) onlineUsers.set(user._id, new Set());
-        onlineUsers.get(user._id).add(socket.id);     
-
-        // Update status in DB
-        const data = await User.findByIdAndUpdate(user._id, { onlineStatus:"Online" }, { new:true });
-        io.emit("user-online", data);
-        console.log("New client connected:", socket.id);            
-
-
-        // Disconnect
-        socket.on("disconnect", async () => {
-            if(!user) return;
-
-            // Remove mapping from online users
-            const sockets = onlineUsers.get(user._id);
-            if(sockets) 
+            // Mark status in DB as online if the first socket is connected that associated with the room ID
+            const roomSockets = await this.io.in(roomId).fetchSockets();
+            if(roomSockets.length === 1)
             {
-                sockets.delete(socket.id);
-
-                // If no socket online with their respective user ID
-                if(sockets.size === 0)
+                try 
                 {
-                    // Delete online user from map
-                    onlineUsers.delete(user._id);
-
-                    // Update status in DB
-                    const data = await User.findByIdAndUpdate(user._id, { onlineStatus: "Offline" }, { new: true });
-                    io.emit("user-offline", data);
+                    const data = await User.findByIdAndUpdate(user._id, { onlineStatus:"Online" }, { new:true });
+                    this.io.to("public").emit("user-online", data);
+                } 
+                catch(error) 
+                {
+                    console.log(`Failed to update status: ${error.message}`);
                 }
             }
 
-            // Update status in DB
-            const data = await User.findByIdAndUpdate(user._id, { onlineStatus: "Offline" }, { new: true });
-            io.emit("user-offline", data);            
-            console.log("Socket disconnected", socket.id);
-        });
-    });    
-};
+            // Disconnect
+            socket.on("disconnect", async () => {
+                // Validate user
+                if(!user) return;
 
-module.exports = { connectSocket, onlineUsers };
+                // Mark status in DB as offline if there's no sockets remaining that associated with the room ID
+                const remainingRoomSockets = await this.io.in(roomId).fetchSockets();
+                if(remainingRoomSockets.length === 0)
+                {
+                    try 
+                    {
+                        const data = await User.findByIdAndUpdate(user._id, { onlineStatus: "Offline" }, { new: true });
+                        this.io.to("public").emit("user-offline", data);
+                    } 
+                    catch(error) 
+                    {
+                        console.log(`Failed to update status: ${error.message}`);
+                    }
+                }
+                console.log("Client disconnected", socket.id);
+            });
+        });    
+    }
+
+    // Broadcast to public room sockets
+    public(emitMessage, payload = null)
+    {
+        // Validate
+        if(!this.io) return console.log("IO instance is missing");
+        if(!emitMessage) return console.log("Please specify socket emitter message");
+        
+        // Emit for public sockets
+        this.io.to("public").emit(emitMessage, payload);
+    }
+
+    // Broadcast to private room sockets (One to one)
+    private(from, to, emitMessage, payload = null) 
+    {
+        // Validate
+        if(!this.io) return console.log("IO instance is missing");
+        if(!from) return console.log("Sender socket is missing");
+        if(!to) return console.log("Receiver socket is missing");
+        if(!emitMessage) return console.log("Please specify socket emitter message");
+
+        // Emit for sender and receiver only
+        this.io.to(`user:${to}`).to(`user:${from}`).emit(emitMessage, payload);
+    }
+
+    // Broadcast to group room sockets
+    group(groupId, emitMessage, payload = null)
+    {
+        // Validate
+        if(!this.io) return console.log("IO instance is missing");
+        if(!emitMessage) return console.log("Please specify socket emitter message");
+
+        // Emit for group members only
+        this.io.to(`group:${groupId}`).emit(emitMessage, payload);
+    }
+}
+
+module.exports = SocketIOService;
 ```
 
 ---
@@ -364,9 +360,9 @@ const Group = require("../models/group");
 const ApiError = require("../utils/ApiError");
 const ApiResponse = require("../utils/ApiResponse");
 const generateConversationId = require("../utils/generateConversationId");
-const { onlineUsers } = require("../service/socket");
+const SocketIOService = require("../service/socket");
 
-// Send private message (one to one chat)
+// Send private message (one-to-one chat)
 const sendPrivateMessage = async (request, response) => {
     const senderId = request.user?._id;
     const receiverId = request.body?.to || null;
@@ -384,13 +380,9 @@ const sendPrivateMessage = async (request, response) => {
         const chat = await Chat.create(request.body);
         if(!chat) throw new ApiError(400, "Failed to send message");
 
-        // Broadcast to receiver socket
-        const receiverSockets = onlineUsers.get(receiverId) || [];
-        receiverSockets.forEach((id) => request.io.to(id).emit("private-message", chat));
-
-        // Broadcast to sender socket
-        const senderSockets = onlineUsers.get(senderId) || [];
-        senderSockets.forEach((id) => request.io.to(id).emit("private-message", chat));
+        // Broadcast
+        const broadcast = new SocketIOService(request.io);
+        broadcast.private(senderId, receiverId, "private-message", chat);
 
         // Response
         return response.status(200).json(new ApiResponse(200, chat, "Message has been sent"));
@@ -411,7 +403,7 @@ const sendGroupMessage = async (request, response) => {
     try 
     {
         // Find group
-        const group = await Group.findById(request.body?.conversationId).lean();
+        const group = await Group.findById(request.body?.conversationId);
         if(!group) throw new ApiError(404, "Group not found");
 
         // If the sender is not a member of a group
@@ -420,13 +412,15 @@ const sendGroupMessage = async (request, response) => {
 
         // Insert into database and get data with sender name
         const chat = await (await Chat.create(request.body)).populate("from", "name");
-        if(!chat) throw new ApiError(400, "Failed to send message");        
+        if(!chat) throw new ApiError(400, "Failed to send message");
+
+        // Update group's last message with the latest message
+        group.lastMessage = chat?._id;
+        await group.save();
 
         // Broadcast to all group members
-        group.members.forEach((memberId) => {
-            const sockets = onlineUsers.get(memberId.toString()) || [];
-            sockets.forEach((id) => request.io.to(id).emit("group-message", chat));
-        });
+        const broadcast = new SocketIOService(request.io);
+        broadcast.group(group._id, "group-message", chat);
 
         // Response
         return response.status(200).json(new ApiResponse(200, chat, "Message has been sent"));
@@ -677,17 +671,18 @@ function PrivateChats()
         .catch((error) => setError(error.message));
     }, [selectedUser?._id]); 
 
-    // Handle incoming messages in real time
-    const incomingMessages = useCallback((data) => {
+    // Listen for incoming messages in real time
+    useSocket("private-message", useCallback((data) => {
         // Only accept messages if they belong to the current chat
-        if(data.from === selectedUser?._id || data.to === selectedUser?._id) 
+        if(data.from === selectedUser?._id) 
         {
             setPrivateMessages((prev) => [...prev, data]);
         }
-    }, [selectedUser?._id]);
-
-    // Listen for incoming messages in real time
-    useSocket("private-message", incomingMessages);
+        else
+        {
+            // Message appear on chat list as a message badge
+        }
+    }, [selectedUser?._id]));
 
     return(
         <>
@@ -726,17 +721,18 @@ function GroupChats()
         .catch((error) => setError(error.message));
     }, [selectedGroup?._id]); 
 
-    // Handle incoming messages in real time
-    const incomingMessages = useCallback((data) => {
+    // Listen for incoming messages in real time
+    useSocket("group-message", useCallback((data) => {
         // Accept only currect selected group mesages
         if(data.conversationId === selectedGroup?._id) 
         {
             setGroupMessages((prev) => [...prev, data]);
         }
-    }, [selectedGroup?._id]);
-
-    // Listen for incoming messages in real time
-    useSocket("group-message", incomingMessages);
+        else
+        {
+            // Message appear on chat list as a message badge
+        }
+    }, [selectedGroup?._id]));
 
     return(
         <>
