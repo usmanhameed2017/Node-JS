@@ -646,23 +646,71 @@ export default useSocket;
 
 ---
 
+**src/context/chat.jsx**
+```javascript
+import { useState, createContext, useContext, useRef } from 'react';
+
+// Create chat context
+const ChatContext = createContext();
+
+function ChatProvider({ children }) 
+{
+    // Global states
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedGroup, setSelectedGroup] = useState(null);
+    const [privateMessages, setPrivateMessages] = useState([]);
+    const [groupMessages, setGroupMessages] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+
+    // Global references
+    const privateConversationRef = useRef(null);
+    const groupConversationRef = useRef(null);
+
+    return (
+        <ChatContext.Provider value={{ selectedUser, setSelectedUser, selectedGroup, setSelectedGroup, 
+        privateMessages, setPrivateMessages, groupMessages, setGroupMessages, showModal, setShowModal, 
+        privateConversationRef, groupConversationRef }}>
+            { children }
+        </ChatContext.Provider>
+    );
+}
+
+// Custom hook
+export const useChat = () => useContext(ChatContext);
+
+export default ChatProvider;
+```
+
+---
+
+**src/utils/generateConversationId.js**
+```javascript
+const generateConversationId = (senderId, receiverId) => {
+    return [senderId.toString(), receiverId.toString()].sort().join("-");
+};
+
+export default generateConversationId;
+```
+
 **src/components/PrivateChats.jsx**
 ```javascript
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import styles from "./style.module.css";
 import { useChat } from "../../context/chat";
 import useSocket from "../../hooks/useSocket";
 import axios from "axios";
+import generateConversationId from "../../utils/generateConversationId";
 
 function PrivateChats() 
 {
     // Global States
-    const { selectedUser, privateMessages, setPrivateMessages } = useChat();
+    const { selectedUser, privateMessages, setPrivateMessages, privateConversationRef } = useChat();
     const [error, setError] = useState("");
 
     // Fetch chats
     useEffect(() => {
         if(!selectedUser?._id) return;
+        privateConversationRef.current = generateConversationId(userData?._id, selectedUser?._id);
         setPrivateMessages([]);
         setError("");
 
@@ -674,7 +722,7 @@ function PrivateChats()
     // Listen for incoming messages in real time
     useSocket("private-message", useCallback((data) => {
         // Only accept messages if they belong to the current chat
-        if(data.from === selectedUser?._id) 
+        if(data.conversationId === privateConversationRef.current)
         {
             setPrivateMessages((prev) => [...prev, data]);
         }
@@ -682,7 +730,7 @@ function PrivateChats()
         {
             // Message appear on chat list as a message badge
         }
-    }, [selectedUser?._id]));
+    }, []));
 
     return(
         <>
@@ -698,21 +746,23 @@ export default PrivateChats;
 
 **src/components/GroupMessage.jsx**
 ```javascript
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import styles from "./style.module.css";
 import { useChat } from "../../context/chat";
 import useSocket from "../../hooks/useSocket";
 import axios from "axios";
+import generateConversationId from "../../utils/generateConversationId";
 
 function GroupChats() 
 {
     // Global States
-    const { selectedGroup, groupMessages, setGroupMessages } = useChat();
+    const { selectedGroup, groupMessages, setGroupMessages, groupConversationRef } = useChat();
     const [error, setError] = useState("");
 
     // Fetch chats
     useEffect(() => {
         if(!selectedGroup?._id) return;
+        groupConversationRef.current = generateConversationId(userData?._id, selectedUser?._id);
         setGroupMessages([]);
         setError("");
 
@@ -724,7 +774,7 @@ function GroupChats()
     // Listen for incoming messages in real time
     useSocket("group-message", useCallback((data) => {
         // Accept only currect selected group mesages
-        if(data.conversationId === selectedGroup?._id) 
+        if(data.conversationId === groupConversationRef.current) 
         {
             setGroupMessages((prev) => [...prev, data]);
         }
@@ -732,7 +782,7 @@ function GroupChats()
         {
             // Message appear on chat list as a message badge
         }
-    }, [selectedGroup?._id]));
+    }, []));
 
     return(
         <>
