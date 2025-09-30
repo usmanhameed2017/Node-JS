@@ -38,7 +38,7 @@ module.exports = db;
 
 ---
 
-### Create API End Points
+### 📌 Create API End Points
 
 - Now, you can create API end points using `db` instance.
 
