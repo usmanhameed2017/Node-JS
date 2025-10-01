@@ -139,8 +139,11 @@ app.get("/users", async (request, response) => {
 app.post("/users", async (request, response) => {
     try 
     {
+        // Create
         const user = await User.create(request.body);
         if(!user) return response.status(400).json({ message: "Failed to create a user", success:false });
+
+        // Response
         return response.status(201).json({ message:"User created", data:user, success:true });
     } 
     catch (error) 
