@@ -58,12 +58,12 @@ const sequelize = require("../connection");
 const User = sequelize.define("User", {
     fname:{
         type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: "Unknown"
+        allowNull: false
     },
     lname:{
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: "-"
     },
     age:{
         type: DataTypes.TINYINT,
@@ -140,8 +140,8 @@ app.post("/users", async (request, response) => {
     try 
     {
         const user = await User.create(request.body);
-        if(!user) return response.status(400).json({ message: "Failed to add a user", success:false });
-        return response.status(201).json({ message:"Users added", data:user, success:true });
+        if(!user) return response.status(400).json({ message: "Failed to create a user", success:false });
+        return response.status(201).json({ message:"User created", data:user, success:true });
     } 
     catch (error) 
     {
