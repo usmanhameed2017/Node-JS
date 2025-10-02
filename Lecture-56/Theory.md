@@ -87,15 +87,11 @@ app.post("/users", (request, response) => {
 
 // Get single user
 app.get("/users/:id", (request, response) => {
-    // Extract ID
-    const id = request.params.id;
-    if(!id) return response.status(404).json({ message:"User ID is missing", success:false });
-
     // Query
     const query = "SELECT * FROM users WHERE id=?";
 
     // Execute
-    db.query(query, [id], (error, data) => {
+    db.query(query, [request.params.id], (error, data) => {
         if(error) return response.status(500).json({ message:error.message, success:false });
         if(data.length <= 0) return response.status(404).json({ message:"User not found", success:false });
         return response.status(200).json({ data:data, message:"User has been fetched successfully", success:true });
@@ -104,10 +100,6 @@ app.get("/users/:id", (request, response) => {
 
 // Update user
 app.put("/users/:id", (request, response) => {
-    // Extract ID
-    const id = request.params.id;
-    if(!id) return response.status(404).json({ message:"User ID is missing", success:false });
-
     // Extract properties
     const { name, age, email, gender } = request.body;
 
@@ -115,7 +107,7 @@ app.put("/users/:id", (request, response) => {
     const query = "UPDATE users SET name=?, age=?, email=?, gender=? WHERE id=?";
 
     // Execute
-    db.query(query, [name, age, email, gender, id], (error, data) => {
+    db.query(query, [name, age, email, gender, request.params.id], (error, data) => {
         if(error) return response.status(500).json({ message:error.message, success:false });
         if(data.affectedRows === 0) return response.status(404).json({ message:"User not found", success:false });
         return response.status(200).json({ data:data.affectedRows, message:"User has been updated successfully", success:true });
@@ -124,15 +116,11 @@ app.put("/users/:id", (request, response) => {
 
 // Delete user
 app.delete("/users/:id", (request, response) => {
-    // Extract ID
-    const id = request.params.id;
-    if(!id) return response.status(404).json({ message:"User ID is missing", success:false });
-
     // Query
     const query = "DELETE FROM users WHERE id=?";
 
     // Execute
-    db.query(query, [id], (error, data) => {
+    db.query(query, [request.params.id], (error, data) => {
         if(error) return response.status(500).json({ message:error.message, success:false });
         if(data.affectedRows === 0) return response.status(404).json({ message:"User not found", success:false });
         return response.status(200).json({ data:data.affectedRows, message:"User has been deleted successfully", success:true });
