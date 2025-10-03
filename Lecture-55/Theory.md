@@ -117,15 +117,15 @@ module.exports = User;
 ### 🔐 Step 03: Configure .env
 `🔐 .env`
 ```javascript
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-GOOGLE_CALLBACK_URL=http://localhost:8000/api/v1/user/auth/google/callback
+GOOGLE_CLIENT_ID='your_google_client_id'
+GOOGLE_CLIENT_SECRET='your_google_client_secret'
+GOOGLE_CALLBACK_URL='http://localhost:8000/api/v1/user/auth/google/callback'
 
-FACEBOOK_APP_ID=your_facebook_app_id
-FACEBOOK_APP_SECRET=your_facebook_app_secret
-FACEBOOK_CALLBACK_URL=http://localhost:8000/api/v1/user/auth/facebook/callback
+FACEBOOK_APP_ID='your_facebook_app_id'
+FACEBOOK_APP_SECRET='your_facebook_app_secret'
+FACEBOOK_CALLBACK_URL='http://localhost:8000/api/v1/user/auth/facebook/callback'
 
-JWT_SECRET=your_jwt_secret
+JWT_SECRET='your_jwt_secret'
 ```
 
 ---
