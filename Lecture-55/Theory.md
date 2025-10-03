@@ -68,10 +68,12 @@ const bcrypt = require("bcrypt");
 // Schema
 const schema = new Schema({
     gid:{
-        type:String
+        type:String,
+        unique:true
     },
     fid:{
-        type:String
+        type:String,
+        unique:true
     },
     name:{ 
         type:String, 
@@ -84,6 +86,10 @@ const schema = new Schema({
         required:true,
         trim:true,
         lowercase:true
+    },
+    profile_image:{
+        type:String,
+        trim:true
     },
     password:{
         type:String,
@@ -159,15 +165,14 @@ async (accessToken, refreshToken, profile, done) => {
             fname: profile?.name?.givenName,
             lname: profile?.name?.familyName,
             email: profile?.emails?.[0]?.value,
-            username: profile?.emails?.[0]?.value,
             profile_image: profile?.photos?.[0]?.value,
-            password:"GoogleLogin"
+            password:null
         });
         return done(null, user);
     } 
     catch(error) 
     {
-        return done(error.message, null);
+        return done(error, null);
     }
 }));
 
