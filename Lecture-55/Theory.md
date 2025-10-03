@@ -155,17 +155,22 @@ async (accessToken, refreshToken, profile, done) => {
 
     try 
     {
+        // Extract properties
+        const gid = profile?.id;
+        const name = `${profile?.name?.givenName} ${profile?.name?.familyName}`;
+        const email = profile?.emails?.[0]?.value;
+        const profile_image = profile?.photos?.[0]?.value;
+
         // If user already exist in database
-        const existingUser = await User.findOne({ gid: profile.id });
-        if (existingUser) return done(null, existingUser);
+        const existingUser = await User.findOne({ $or:[{ gid:gid }, { email:email }] });
+        if(existingUser) return done(null, existingUser);
     
         // Create new user
         const createUser = await User.create({
-            gid:profile?.id,
-            fname: profile?.name?.givenName,
-            lname: profile?.name?.familyName,
-            email: profile?.emails?.[0]?.value,
-            profile_image: profile?.photos?.[0]?.value,
+            gid:gid,
+            name:name,
+            email:email,
+            profile_image:profile_image,
             password:null
         });
         return done(null, user);
@@ -187,17 +192,23 @@ passport.use(new FacebookStrategy({
 async (accessToken, refreshToken, profile, done) => {
     try 
     {
+        // Extract properties
+        const fid = profile?.id;
+        const name = profile?.displayName;
+        const email = profile?.emails?.[0]?.value;
+        const profile_image = profile?.photos?.[0]?.value;
+
         // Check if user already exists
-        const existingUser = await User.findOne({ fid: profile.id });
-        if (existingUser) return done(null, existingUser);
+        const existingUser = await User.findOne({ $or:[{ fid:fid }, { email:email }] });
+        if(existingUser) return done(null, existingUser);
 
         // Create new user
         const user = await User.create({
-            fid: profile?.id,
-            name: profile?.displayName,
-            email: profile?.emails?.[0]?.value,
-            profilePic: profile?.photos?.[0]?.value,
-            password: 'FacebookLogin'
+            fid:fid,
+            name:name,
+            email:email,
+            profilePic:profile_image,
+            password:null
         });
 
         return done(null, user);
@@ -265,7 +276,7 @@ userRouter.get('/auth/facebook/callback', passport.authenticate('facebook', { se
 ```javascript
 const User = require("../models/user");
 const { generateToken } = require("../utils/authToken");
-const { cookie_option } = require("../constants");
+const { cookieOptions } = require("../constants");
 
 // Login as gmail
 const googleLogin = async (request, response) => {
@@ -273,12 +284,12 @@ const googleLogin = async (request, response) => {
 
     // Generate access token
     const accessToken = generateToken(request.user);
-    if(!accessToken) return response.status(500).json({ message:"Access token generation failed", success:false });
+    if(!accessToken) return response.status(500).json({ message:"Failed to generate access token", success:false });
 
     // Send response
     return response.status(200)
-    .cookie("accessToken", accessToken, cookie_option)
-    .redirect("http://localhost:5173/users");
+    .cookie("accessToken", accessToken, cookieOptions)
+    .redirect("http://localhost:5173/home");
 }
 
 // Login as facebook
@@ -287,12 +298,12 @@ const facebookLogin = (request, response) => {
 
     // Generate access token
     const accessToken = generateToken(request.user);
-    if (!accessToken) return response.status(500).json({ message: "Access token generation failed", success: false });
+    if (!accessToken) return response.status(500).json({ message: "Failed to generate access token", success: false });
 
     // Send response
     return response.status(200)
-    .cookie("accessToken", accessToken, cookie_option)
-    .redirect("http://localhost:5173/users");
+    .cookie("accessToken", accessToken, cookieOptions)
+    .redirect("http://localhost:5173/home");
 }
 
 module.exports = { googleLogin, facebookLogin };
