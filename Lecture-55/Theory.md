@@ -22,13 +22,13 @@ npm install passport passport-google-oauth20 passport-facebook jsonwebtoken dote
 ---
 
 ### ⏳ Step 01: Initialize Passport
-`app.js`
+`📂 app.js`
 ```javascript
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
-require("./config/passport");
+require("./service/social-auth");
 
 // Express app
 const app = express();
@@ -40,7 +40,10 @@ app.use(cors({
     methods:["GET", "POST", "PUT", "PATCH", "DELETE"] 
 }));
 
+// Initialize passport
 app.use(passport.initialize());
+
+// Middlewares
 app.use(express.urlencoded({ extended:true, limit:"20kb" }));
 app.use(express.json({ limit:"20kb" }));
 app.use(cookieParser());
@@ -57,7 +60,7 @@ module.exports = app;
 ---
 
 ### 🏘 Step 02: Setup Model
-`models/user.js`
+`📂 models/user.js`
 ```javascript
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
@@ -112,13 +115,15 @@ module.exports = User;
 ---
 
 ### 🔐 Step 03: Configure .env
-`.env`
+`🔐 .env`
 ```javascript
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_CLIENT_ID='your_google_client_id'
+GOOGLE_CLIENT_SECRET='your_google_client_secret'
+GOOGLE_CALLBACK_URL='http://localhost:8000/api/v1/user/auth/google/callback'
 
-FACEBOOK_APP_ID=your_facebook_app_id
-FACEBOOK_APP_SECRET=your_facebook_app_secret
+FACEBOOK_APP_ID='your_facebook_app_id'
+FACEBOOK_APP_SECRET='your_facebook_app_secret'
+FACEBOOK_CALLBACK_URL='http://localhost:8000/api/v1/user/auth/facebook/callback'
 
 JWT_SECRET=your_jwt_secret
 ```
@@ -126,7 +131,7 @@ JWT_SECRET=your_jwt_secret
 ---
 
 ### ⚙️ Step 04: Passport Configuration
-`config/passport.js`
+`📂 service/social-auth.js`
 ```javascript
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -138,7 +143,7 @@ const User = require('../models/user');
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: '/api/v1/user/auth/google/callback',
+    callbackURL: process.env.GOOGLE_CALLBACK_URL,
 }, 
 async (accessToken, refreshToken, profile, done) => {
 
@@ -149,10 +154,13 @@ async (accessToken, refreshToken, profile, done) => {
         if (existingUser) return done(null, existingUser);
     
         // Create new user
-        const user = await User.create({
-            gid: profile.id,
-            name: profile.displayName,
-            email: profile.emails[0].value,
+        const createUser = await User.create({
+            gid:profile?.id,
+            fname: profile?.name?.givenName,
+            lname: profile?.name?.familyName,
+            email: profile?.emails?.[0]?.value,
+            username: profile?.emails?.[0]?.value,
+            profile_image: profile?.photos?.[0]?.value,
             password:"GoogleLogin"
         });
         return done(null, user);
@@ -168,8 +176,8 @@ async (accessToken, refreshToken, profile, done) => {
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: '/api/v1/user/auth/facebook/callback',
-    profileFields: ['id', 'displayName', 'emails']
+    callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+    profileFields: ["id", "displayName", "emails", "photos"]
 }, 
 async (accessToken, refreshToken, profile, done) => {
     try 
@@ -180,9 +188,10 @@ async (accessToken, refreshToken, profile, done) => {
 
         // Create new user
         const user = await User.create({
-            fid: profile.id,
-            name: profile.displayName,
-            email: profile.emails?.[0]?.value,
+            fid: profile?.id,
+            name: profile?.displayName,
+            email: profile?.emails?.[0]?.value,
+            profilePic: profile?.photos?.[0]?.value,
             password: 'FacebookLogin'
         });
 
@@ -198,7 +207,7 @@ async (accessToken, refreshToken, profile, done) => {
 ---
 
 ### 👛 Step 05: Token Generator
-`utils/generateToken.js`
+`📂 utils/generateToken.js`
 ```javascript
 const jwt = require('jsonwebtoken');
 
@@ -226,7 +235,7 @@ module.exports = generateToken;
 ---
 
 ### 🔁 Step 06: Routes
-`routes/user.js`
+`📂 routes/user.js`
 ```javascript
 const { Router } = require("express");
 const { googleLogin, facebookLogin } = require("../controllers/user");
@@ -236,18 +245,18 @@ const passport = require("passport");
 const userRouter = Router();
 
 // Login as google
-userRouter.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-userRouter.get('/auth/google/callback', passport.authenticate('google', { session: false }), googleLogin);
+userRouter.route('/auth/google').get(passport.authenticate('google', { scope:['profile', 'email'], prompt:"select_account" }));
+userRouter.route('/auth/google/callback').get(passport.authenticate('google', { session: false }), googleLogin);
 
 // Login as facebook
-userRouter.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }));
+userRouter.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
 userRouter.get('/auth/facebook/callback', passport.authenticate('facebook', { session: false }), facebookLogin);
 ```
 
 ---
 
 ### ⚙️ Step 07: Controllers
-`controllers/user.js`
+`📂 controllers/user.js`
 ```javascript
 const User = require("../models/user");
 const { generateToken } = require("../utils/authToken");
@@ -257,13 +266,13 @@ const { cookie_option } = require("../constants");
 const googleLogin = async (request, response) => {
     if(!request.user) return response.status(404).json({ message:"User not found", success:false });
 
-    // Generate token
-    const token = generateToken(request.user);
-    if(!token) return response.status(500).json({ message:"Token generation failed", success:false });
+    // Generate access token
+    const accessToken = generateToken(request.user);
+    if(!accessToken) return response.status(500).json({ message:"Access token generation failed", success:false });
 
     // Send response
     return response.status(200)
-    .cookie("token", token, cookie_option)
+    .cookie("accessToken", accessToken, cookie_option)
     .redirect("http://localhost:5173/users");
 }
 
@@ -271,13 +280,13 @@ const googleLogin = async (request, response) => {
 const facebookLogin = (request, response) => {
     if(!request.user) return response.status(404).json({ message:"User not found", success:false });
 
-    // Generate token
-    const token = generateToken(request.user);
-    if (!token) return response.status(500).json({ message: "Token generation failed", success: false });
+    // Generate access token
+    const accessToken = generateToken(request.user);
+    if (!accessToken) return response.status(500).json({ message: "Access token generation failed", success: false });
 
     // Send response
     return response.status(200)
-    .cookie("token", token, cookie_option)
+    .cookie("accessToken", accessToken, cookie_option)
     .redirect("http://localhost:5173/users");
 }
 
