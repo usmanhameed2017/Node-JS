@@ -66,7 +66,7 @@ app.listen(8000, () => console.log("Server is started and running at http://loca
 
 - Use an **App Password** instead.
 
-- Generate App Password from: [https://myaccount.google.com/apppasswords].
+- Generate App Password from [here](https://myaccount.google.com/apppasswords).
 
 ---
 
@@ -100,5 +100,3 @@ attachments: [
 - Nodemailer makes email sending super easy.
 
 - service: `gmail` is a shortcut for Gmail SMTP.
-
-- Don’t forget to generate App Password from [here](https://myaccount.google.com/apppasswords).
