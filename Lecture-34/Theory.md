@@ -6,35 +6,35 @@
 
 - Here are some key points about Socket.IO:
 
-### Real-time Communication
+### 💬 Real-time Communication
 
 - It allows instant data exchange between users, making it perfect for chat apps, live notifications, and multiplayer games.
 
-### Two-way Connection
+### 🔄 Two-way Connection
 
 - Both the server and client can send and receive messages at the same time.
 
-### Fast and Efficient
+### 🚀 Fast and Efficient
 
 - It reduces delays, making apps more interactive and responsive.
 
-### Automatic Reconnection
+### ♻️ Automatic Reconnection
 
 - If the connection is lost, it tries to reconnect automatically.
 
-### Easy to Use
+### 🧩 Easy to Use
 
 - Provides simple methods to send and receive messages.
 
-### Supports Rooms & Namespaces
+### 🏠 Supports Rooms & Namespaces
  
 - Allows grouping of users in different chat rooms or sections.
 
 > Note: Since WebSocket relies on the **HTTP protocol** internally, you need to use the **HTTP module** to create a server. This means you must bind your **Express server** with the **Socket.IO server** to ensure proper communication.
 
-### Some Useful Methods Of Socket.io
+### 💡 Some Useful Methods Of Socket.IO
 
-- **Connect/Disconnect socket**
+#### Connect & Disconnect socket
 ```javascript
 io.on("connection", (socket) => {
     console.log(`Socket connected! ${socket.id}`);
@@ -46,7 +46,9 @@ io.on("connection", (socket) => {
 });
 ```
 
-- **Join room**
+---
+
+#### Join room
 ```javascript
 io.on("connection", (socket) => {
     console.log(`Socket connected! ${socket.id}`);
@@ -56,7 +58,9 @@ io.on("connection", (socket) => {
 });
 ```
 
-- **Send message to all connected sockets**
+---
+
+#### Send message to all connected sockets
 ```javascript
 io.on("connection", (socket) => {
     console.log(`Socket connected! ${socket.id}`);
@@ -66,7 +70,9 @@ io.on("connection", (socket) => {
 });
 ```
 
-- **Send private message to specific socket. (one-to-one chat)**
+---
+
+#### Send private message to specific socket. (one-to-one chat)
 ```javascript
 io.on("connection", (socket) => {
     console.log(`Socket connected! ${socket.id}`);
@@ -76,7 +82,9 @@ io.on("connection", (socket) => {
 });
 ```
 
-- **Send group message**
+---
+
+#### Send group message
 ```javascript
 io.on("connection", (socket) => {
     console.log(`Socket connected! ${socket.id}`);
@@ -86,7 +94,9 @@ io.on("connection", (socket) => {
 });
 ```
 
-- **Fetch all sockets of a specific room**
+---
+
+#### Fetch all sockets of a specific room
 ```javascript
 io.on("connection", async (socket) => {
     console.log(`Socket connected! ${socket.id}`);
@@ -96,7 +106,9 @@ io.on("connection", async (socket) => {
 });
 ```
 
-- **Explicitly join specific group/room**
+---
+
+#### Explicitly join specific room
 ```javascript
 io.on("connection", async (socket) => {
     console.log(`Socket connected! ${socket.id}`);
@@ -109,11 +121,13 @@ io.on("connection", async (socket) => {
 });
 ```
 
-## PRACTICAL IMPLEMENTATION OF CHAT APP USING SOCKET.IO
+---
 
-### SERVER SIDE
+## 💬 PRACTICAL IMPLEMENTATION OF CHAT APP USING SOCKET.IO
 
-#### INSTALLATION
+### 🖥️ SERVER SIDE
+
+#### ⚙️ INSTALLATION
 
 - To install **socket.io** in your Node.js application; type this command in terminal.
 
