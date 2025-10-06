@@ -4,7 +4,7 @@
 
 - It works with email services like Gmail, Yahoo, Outlook, etc.
 
-- Generate App Password from [here](https://myaccount.google.com/apppasswords).
+- Generate App Password from `https://myaccount.google.com/apppasswords`.
 
 ---
 
