@@ -32,6 +32,83 @@
 
 > Note: Since WebSocket relies on the **HTTP protocol** internally, you need to use the **HTTP module** to create a server. This means you must bind your **Express server** with the **Socket.IO server** to ensure proper communication.
 
+### Some Useful Methods Of Socket.io
+
+- **Connect/Disconnect socket**
+```javascript
+io.on("connection", (socket) => {
+    console.log(`Socket connected! ${socket.id}`);
+
+    // Disconnect
+    socket.on("disconnect", () => {
+        console.log(`Socket disconnected! ${socket.id}`);
+    });
+});
+```
+
+- **Join room**
+```javascript
+io.on("connection", (socket) => {
+    console.log(`Socket connected! ${socket.id}`);
+
+    // Join room
+    socket.join("room:user:2017");
+});
+```
+
+- **Send message to all connected sockets**
+```javascript
+io.on("connection", (socket) => {
+    console.log(`Socket connected! ${socket.id}`);
+
+    // Emit message to all connected sockets
+    io.emit("greetings", { message:"Hello everyone!" });
+});
+```
+
+- **Send private message to specific socket. (one-to-one chat)**
+```javascript
+io.on("connection", (socket) => {
+    console.log(`Socket connected! ${socket.id}`);
+
+    // Private message
+    io.to("room:user:2017").emit("private-message", { message:"Hello buddy!" });
+});
+```
+
+- **Send group message**
+```javascript
+io.on("connection", (socket) => {
+    console.log(`Socket connected! ${socket.id}`);
+
+    // Group message
+    io.to("room:group:786xyz").emit("group-message", { message:"Hello everyone!" });
+});
+```
+
+- **Fetch all sockets of a specific room**
+```javascript
+io.on("connection", async (socket) => {
+    console.log(`Socket connected! ${socket.id}`);
+
+    // Fetch sockets of a specific room
+    const userSockets = await io.in("room:user:2017").fetchSockets();
+});
+```
+
+- **Explicitly join specific group/room**
+```javascript
+io.on("connection", async (socket) => {
+    console.log(`Socket connected! ${socket.id}`);
+
+    // Making one user to join the group or room.
+    io.in("room:user:2017").socketsJoin("room:group:786xyz");
+
+    // Making multiple users to join the group or room.
+    io.in(["room:user:2017", "room:user:2018", "room:user:2019"]).socketsJoin("room:group:786xyz");
+});
+```
+
 ## PRACTICAL IMPLEMENTATION OF CHAT APP USING SOCKET.IO
 
 ### SERVER SIDE
