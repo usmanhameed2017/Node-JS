@@ -4,6 +4,8 @@
 
 - It works with email services like Gmail, Yahoo, Outlook, etc.
 
+- Generate App Password from [here](https://myaccount.google.com/apppasswords).
+
 ---
 
 ### 📦 Installation
@@ -99,4 +101,4 @@ attachments: [
 
 - service: `gmail` is a shortcut for Gmail SMTP.
 
-- Don’t forget to enable less secure apps or generate App Passwords if needed.
+- Don’t forget to generate App Password from [here](https://myaccount.google.com/apppasswords).
