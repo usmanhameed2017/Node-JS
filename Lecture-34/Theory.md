@@ -50,11 +50,41 @@ io.on("connection", (socket) => {
 
 #### Join room
 ```javascript
+// Method:01
 io.on("connection", (socket) => {
     console.log(`Socket connected! ${socket.id}`);
 
     // Join room
     socket.join("room:user:2017");
+});
+
+// Method:02
+io.on("connection", (socket) => {
+    console.log(`Socket connected! ${socket.id}`);
+
+    // Copy all connected sockets of room:user:2017 into the room:group:786xyz
+    io.in("room:user:2017").socketsJoin("room:group:786xyz");
+});
+```
+
+---
+
+#### Leave room
+```javascript
+// Method:01
+io.on("connection", (socket) => {
+    console.log(`Socket connected! ${socket.id}`);
+
+    // Leave room
+    socket.leave("room:user:2017");
+});
+
+// Method:02
+io.on("connection", (socket) => {
+    console.log(`Socket connected! ${socket.id}`);
+
+    // Remove all connected sockets of room:user:2017 from the room:group:786xyz
+    io.in("room:user:2017").socketsLeave("room:group:786xyz");
 });
 ```
 
