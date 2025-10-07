@@ -59,11 +59,11 @@ io.on("connection", (socket) => {
 });
 
 // Method:02
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
     console.log(`Socket connected! ${socket.id}`);
 
     // Copy all connected sockets of room:user:2017 into the room:group:786xyz
-    io.in("room:user:2017").socketsJoin("room:group:786xyz");
+    await io.in("room:user:2017").socketsJoin("room:group:786xyz");
 });
 ```
 
@@ -80,11 +80,11 @@ io.on("connection", (socket) => {
 });
 
 // Method:02
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
     console.log(`Socket connected! ${socket.id}`);
 
     // Remove all connected sockets of room:user:2017 from the room:group:786xyz
-    io.in("room:user:2017").socketsLeave("room:group:786xyz");
+    await io.in("room:user:2017").socketsLeave("room:group:786xyz");
 });
 ```
 
