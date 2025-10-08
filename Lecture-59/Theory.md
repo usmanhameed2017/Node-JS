@@ -102,6 +102,7 @@ app.get("/users", async (request, response) => {
     let data = cache.get("usersCache");
     if(!data)
     {
+        // Database call
         data = await User.find({});
         cache.set("usersCache", data);
     }
@@ -121,7 +122,7 @@ app.listen(3000, () => console.log("Server running on port 3000"));
 - For large-scale caching, prefer **Redis** or **Memcached**.
 
 ### 🧩 Best Practice Tips
-✅ Use meaningful cache keys.
+✅ Use meaningful name for cache keys.
 
 ✅ Set a realistic TTL to balance freshness vs. performance.
 
