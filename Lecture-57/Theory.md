@@ -211,3 +211,34 @@ app.delete("/users/:id", async (request, response) => {
     }
 });
 ```
+
+---
+
+> Note: For **Primary Key** & **Foreign Key** relationship and table referencing:
+
+```javascript
+// User model
+const User = sequelize.define("User", {
+    id: { 
+        type: DataTypes.INTEGER,
+        primaryKey: true, 
+        autoIncrement: true
+    },
+    name: DataTypes.STRING
+});
+
+// Post model
+const Post = sequelize.define("Post", {
+    id: { 
+        type: DataTypes.INTEGER, 
+        primaryKey: true,
+        autoIncrement: true
+    },
+    title: DataTypes.STRING,
+    content: DataTypes.TEXT
+});
+
+// Referencing
+User.hasMany(Post, { foreignKey: "userId" });
+Post.belongsTo(User, { foreignKey: "userId" });
+```
