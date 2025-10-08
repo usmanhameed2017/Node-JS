@@ -67,7 +67,7 @@ const cache = new NodeCache({ stdTTL: 60 });
 const app = express();
 
 // Route
-app.get("/users", async (request,, response) => {
+app.get("/users", async (request, response) => {
     // Check cache
     const cachedData = cache.get("usersCache");
     if(cachedData) return response.status(200).json({ message:"Users fetched", data:cachedData, success:true });
@@ -97,7 +97,7 @@ const cache = new NodeCache({ stdTTL: 60 });
 const app = express();
 
 // Route
-app.get("/users", async (request,, response) => {
+app.get("/users", async (request, response) => {
     // Check cache
     let data = cache.get("usersCache");
     if(!data)
