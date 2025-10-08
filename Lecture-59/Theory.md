@@ -122,8 +122,11 @@ app.listen(3000, () => console.log("Server running on port 3000"));
 
 ### 🧩 Best Practice Tips
 ✅ Use meaningful cache keys.
+
 ✅ Set a realistic TTL to balance freshness vs. performance.
+
 ✅ Periodically monitor getStats() for cache efficiency.
+
 ✅ Avoid storing large datasets in memory.
 
 🔹 `node-cache` is a powerful yet lightweight solution for improving speed and efficiency in small to medium-sized Node.js applications.
