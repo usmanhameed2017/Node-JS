@@ -6,7 +6,7 @@
 
 - One effective optimization is minifying HTML responses — removing unnecessary spaces, comments, and line breaks from the rendered output.
 
-- That’s where express-minify-html-terser comes in. It’s a lightweight middleware that automatically minifies HTML sent by your Express server before sending it to the client.
+- That’s where **express-minify-html-terser** comes in. It’s a lightweight middleware that automatically minifies HTML sent by your Express server before sending it to the client.
 
 - Normally, your HTML files contain:
 ```html
