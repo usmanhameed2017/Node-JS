@@ -326,3 +326,85 @@ const updateArrayCache = async (key, newItem, seconds = 300) => {
 
 module.exports = { setCache, getCache, deleteCache, updateArrayCache };
 ```
+
+---
+
+- Now, you can use these helpers in your code to reduce your extra lines of code and focus more on logic without needing to parse data everytime.
+
+`📂 src/index.js`
+```javascript
+require("dotenv").config();
+const express = require("express");
+const connectDB = require("./Database/connect");
+const User = require("./models/user");
+const redis = require("./redis/connection");
+const { getCache, setCache, updateArrayCache } = require("./redis/cache");
+
+// Express app
+const app = express();
+
+// Middlewares
+app.use(express.urlencoded({ extended:false, limit:"50kb" }));
+app.use(express.json({ limit:"50kb" }));
+
+// Database connection
+connectDB();
+
+/* ================================ ROUTES ================================ */
+// Create user
+app.post("/user", async (request, response) => {
+    // Insert into database
+    const user = await User.create(request.body);
+
+    // Update cache
+    await updateArrayCache("users", user);
+
+    // Response
+    return response.status(201).json({ message:"User created successfully", data:user, success:true });
+});
+
+// Get all users
+app.get("/user", async (request, response) => {
+    // Get data from Cache
+    const cachedData = await getCache("users");
+    if(cachedData)
+    {
+        // Serving from cache
+        console.log("Serving from Cache");
+        return response.status(200).json({ message:"Users have been fetched successfully", data:cachedData, success:true });
+    }
+
+    // Fetch fresh data from DB (Database call)
+    const users = await User.find({});
+    await setCache("users", users, 300); // Expires in 60 seconds.
+
+    // Serving from database
+    console.log("Serving from DB");
+    return response.status(200).json({ message:"Users have been fetched successfully", data:users, success:true });
+});
+
+// Get single user
+app.get("/user/:id", async (request, response) => {
+    const id = request.params.id;
+
+    // Get data from Cache
+    const cachedData = await getCache(`user:${id}`);
+    if(cachedData)
+    {
+        // Serving from cache
+        console.log("Serving from Cache");
+        return response.status(200).json({ message:"User has been fetched successfully", data:cachedData, success:true })
+    }
+
+    // Fetch fresh data from DB (Database call)
+    const user = await User.findById(id);
+    await setCache(`user:${id}`, user, 300);
+
+    // Serving from database 
+    console.log("Serving from DB");
+    return response.status(200).json({ message:"User has been fetched successfully", data:user, success:true });
+});
+
+// Start server
+app.listen(8000, () => console.log("Server is started and running at port:8000"));
+```
