@@ -376,7 +376,7 @@ app.get("/user", async (request, response) => {
 
     // Fetch fresh data from DB (Database call)
     const users = await User.find({});
-    await setCache("users", users, 300); // Expires in 60 seconds.
+    await setCache("users", users, 300); // Expires in 5 minutes.
 
     // Serving from database
     console.log("Serving from DB");
@@ -398,7 +398,7 @@ app.get("/user/:id", async (request, response) => {
 
     // Fetch fresh data from DB (Database call)
     const user = await User.findById(id);
-    await setCache(`user:${id}`, user, 300);
+    await setCache(`user:${id}`, user, 300); // Expires in 5 minutes.
 
     // Serving from database 
     console.log("Serving from DB");
