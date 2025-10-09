@@ -218,7 +218,7 @@ app.get("/user/:id", async (request, response) => {
 
     // Fetch fresh data from DB (Database call)
     const user = await User.findById(id);
-    await redis.set(`userCache:${id}`, JSON.stringify(user), "EX", 60);
+    await redis.set(`userCache:${id}`, JSON.stringify(user), "EX", 60); // Expires in 60 seconds.
 
     // Serving from database 
     console.log("Serving from DB");
@@ -227,4 +227,71 @@ app.get("/user/:id", async (request, response) => {
 
 // Start server
 app.listen(8000, () => console.log("Server is started and running at port:8000"));
+```
+
+> Note: For your ease, you can create your custom helper functions for caching operations that handles parsing internally and returns only a valid data.
+
+`📂 src/redis/cache.js`
+```javascript
+const redis = require("./connection");
+
+// Set Cache
+const setCache = async (key, value, seconds) => {
+    if(!key || !value) return;
+
+    try
+    {
+        // Check for type
+        const data = typeof value === "string" ? value : JSON.stringify(value);
+
+        // Set key with expiry time
+        if(seconds)
+        {
+            await redis.set(key, data, "EX", seconds);
+        }
+        else
+        {
+            await redis.set(key, data); // No expiry
+        }
+    }
+    catch(error)
+    {
+        console.log("Failed to set cache", error.message);
+        return;
+    }
+};
+
+// Get Cache
+const getCache = async (key) => {
+    if(!key) return null;
+
+    try 
+    {
+        const data = await redis.get(key);
+        if(!data) return null;
+        return JSON.parse(data);
+    } 
+    catch(error) 
+    {
+        console.log("Failed to get cache", error.message);
+        return null;
+    }
+};
+
+// Delete Cache
+const deleteCache = async (key) => {
+    if(!key) return;
+
+    try 
+    {
+        await redis.del(key);
+    } 
+    catch(error) 
+    {
+        console.log("Failed to delete cache", error.message);
+        return;
+    }
+};
+
+module.exports = { setCache, getCache, deleteCache };
 ```
