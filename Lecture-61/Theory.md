@@ -237,7 +237,7 @@ const redis = require("./connection");
 
 // Set Cache
 const setCache = async (key, value, seconds) => {
-    if(!key || !value) return;
+    if(!key || !value) return false;
 
     try
     {
@@ -248,16 +248,18 @@ const setCache = async (key, value, seconds) => {
         if(seconds)
         {
             await redis.set(key, data, "EX", seconds);
+            return true;
         }
         else
         {
             await redis.set(key, data); // No expiry
+            return true;
         }
     }
     catch(error)
     {
         console.log("Failed to set cache", error.message);
-        return;
+        return false;
     }
 };
 
@@ -280,18 +282,47 @@ const getCache = async (key) => {
 
 // Delete Cache
 const deleteCache = async (key) => {
-    if(!key) return;
+    if(!key) return false;
 
     try 
     {
         await redis.del(key);
+        return true;
     } 
     catch(error) 
     {
         console.log("Failed to delete cache", error.message);
-        return;
+        return false;
     }
 };
 
-module.exports = { setCache, getCache, deleteCache };
+// Update Array Cache
+const updateArrayCache = async (key, newItem, seconds = 300) => {
+    if(!key) return false;
+
+    try 
+    {
+        // Update cached array
+        const cachedData = await getCache(key);
+        let updatedData = [];
+        if(cachedData && Array.isArray(cachedData) && cachedData.length > 0) 
+        {
+            updatedData = [...cachedData, newItem]; // Append data
+        } 
+        else
+        {
+            updatedData = [newItem]; // Start fresh array
+        }
+
+        await setCache(key, updatedData, seconds);
+        return true;
+    } 
+    catch(error) 
+    {
+        console.log("Failed to update array cache", error.message);
+        return false;
+    }
+};
+
+module.exports = { setCache, getCache, deleteCache, updateArrayCache };
 ```
