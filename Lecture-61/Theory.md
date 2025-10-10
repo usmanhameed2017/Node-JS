@@ -36,6 +36,26 @@ await redis.del("key");
 
 // Flush all keys
 await redis.flushall();
+
+// Check if key exists
+await redis.exists(key);
+
+// Set expiry
+await redit.expire(key, seconds);
+
+// For setting list
+redis.pipeline();
+pipeline.rpush(key, JSON.stringify(value));
+pipeline.expire(key, seconds);
+await pipeline.exec();
+
+// For getting list
+const items = await redis.lrange(key, 0, -1); // Get all items in a list
+return items.map(item => JSON.parse(item));
+
+// For appending new item to list
+await redis.rpush(key, JSON.stringify(newItem));
+await redis.expire(key, seconds);
 ```
 
 ### 🌐 Create a Free Redis Cloud Account
@@ -229,53 +249,92 @@ app.get("/user/:id", async (request, response) => {
 app.listen(8000, () => console.log("Server is started and running at port:8000"));
 ```
 
-> Note: For your ease, you can create your custom helper functions for caching operations that handles parsing internally and returns only a valid data.
+> Note: For your ease, you can create your custom helper functions for caching operations that handles parsing internally and uses native redis methods for maximum optimization.
 
 `📂 src/redis/cache.js`
 ```javascript
 const redis = require("./connection");
 
-// Set Cache
-const setCache = async (key, value, seconds) => {
-    if(!key || !value) return false;
+// Set String Cache
+const setStringCache = async (key, value, seconds = 60) => {
+    if(!key || value === undefined || value === null) return false;
 
-    try
+    try 
     {
-        // Check for type
-        const data = typeof value === "string" ? value : JSON.stringify(value);
+        // Remove old data for extra safety check
+        if(await redis.exists(key)) await redis.del(key);
 
-        // Set key with expiry time
-        if(seconds)
-        {
-            await redis.set(key, data, "EX", seconds);
-            return true;
-        }
-        else
-        {
-            await redis.set(key, data); // No expiry
-            return true;
-        }
-    }
-    catch(error)
+        // Set new string
+        await redis.set(key, JSON.stringify(value), "EX", seconds);
+        return true;
+    } 
+    catch (error) 
     {
-        console.log("Failed to set cache", error.message);
+        console.log("Failed to set string cache", error.message);
         return false;
     }
 };
 
-// Get Cache
-const getCache = async (key) => {
+// Get String Cache
+const getStringCache = async (key) => {
     if(!key) return null;
 
     try 
     {
         const data = await redis.get(key);
-        if(!data) return null;
         return JSON.parse(data);
     } 
     catch(error) 
     {
-        console.log("Failed to get cache", error.message);
+        console.log("Failed to get string in cache", error.message);
+        return null;
+    }
+};
+
+// Set Cache List
+const setListCache = async (key, value, seconds = 300) => {
+    if(!key || value === undefined || value === null) return false;
+
+    try 
+    {
+        // Remove old data for extra safety check
+        if(await redis.exists(key)) await redis.del(key);
+
+        // Normalize into array
+        const items = Array.isArray(value) ? value : [value];
+        if(items.length === 0) return [];
+
+        // Pipeline for performance
+        const pipeline = redis.pipeline();
+        items.forEach(item => pipeline.rpush(key, JSON.stringify(item)));
+
+        // Expire inside pipeline
+        pipeline.expire(key, seconds);
+
+        // Execute
+        await pipeline.exec();
+        return true;
+    } 
+    catch (error) 
+    {
+        console.log("Failed to set list in cache", error.message);
+        return false;
+    }
+};
+
+// Get List Cache
+const getListCache = async (key) => {
+    if(!key) return null;
+
+    try 
+    {
+        const items = await redis.lrange(key, 0, -1);
+        if(!items || items.length === 0) return null;
+        return items.map(item => JSON.parse(item));
+    } 
+    catch(error) 
+    {
+        console.log("Failed to get list cache", error.message);
         return null;
     }
 };
@@ -296,35 +355,29 @@ const deleteCache = async (key) => {
     }
 };
 
-// Update Array Cache
-const updateArrayCache = async (key, newItem, seconds = 300) => {
-    if(!key) return false;
-
+// Add new item to Redis list
+const addToListCache = async (key, newItem, seconds = 300) => {
     try 
     {
-        // Update cached array
-        const cachedData = await getCache(key);
-        let updatedData = [];
-        if(cachedData && Array.isArray(cachedData) && cachedData.length > 0) 
-        {
-            updatedData = [...cachedData, newItem]; // Append data
-        } 
-        else
-        {
-            updatedData = [newItem]; // Start fresh array
-        }
-
-        await setCache(key, updatedData, seconds);
+        await redis.rpush(key, JSON.stringify(newItem));
+        await redis.expire(key, seconds);
         return true;
     } 
     catch(error) 
     {
-        console.log("Failed to update array cache", error.message);
+        console.log("Failed to push item to Redis list", error.message);
         return false;
     }
 };
 
-module.exports = { setCache, getCache, deleteCache, updateArrayCache };
+module.exports = { 
+    setStringCache,
+    getStringCache,
+    setListCache, 
+    getListCache, 
+    deleteCache,
+    addToListCache 
+};
 ```
 
 ---
@@ -337,8 +390,7 @@ require("dotenv").config();
 const express = require("express");
 const connectDB = require("./Database/connect");
 const User = require("./models/user");
-const redis = require("./redis/connection");
-const { getCache, setCache, updateArrayCache } = require("./redis/cache");
+const { getListCache, setListCache, addToListCache, getStringCache, setStringCache } = require("./redis/cache");
 
 // Express app
 const app = express();
@@ -356,8 +408,8 @@ app.post("/user", async (request, response) => {
     // Insert into database
     const user = await User.create(request.body);
 
-    // Update cache
-    await updateArrayCache("users", user);
+    // Update list cache
+    await addToListCache("users", user);
 
     // Response
     return response.status(201).json({ message:"User created successfully", data:user, success:true });
@@ -366,7 +418,7 @@ app.post("/user", async (request, response) => {
 // Get all users
 app.get("/user", async (request, response) => {
     // Get data from Cache
-    const cachedData = await getCache("users");
+    const cachedData = await getListCache("users");
     if(cachedData)
     {
         // Serving from cache
@@ -376,7 +428,7 @@ app.get("/user", async (request, response) => {
 
     // Fetch fresh data from DB (Database call)
     const users = await User.find({});
-    await setCache("users", users, 300); // Expires in 5 minutes.
+    await setListCache("users", users, 60); // Expires in 60 seconds.
 
     // Serving from database
     console.log("Serving from DB");
@@ -388,7 +440,7 @@ app.get("/user/:id", async (request, response) => {
     const id = request.params.id;
 
     // Get data from Cache
-    const cachedData = await getCache(`user:${id}`);
+    const cachedData = await getStringCache(`user:${id}`);
     if(cachedData)
     {
         // Serving from cache
@@ -398,7 +450,7 @@ app.get("/user/:id", async (request, response) => {
 
     // Fetch fresh data from DB (Database call)
     const user = await User.findById(id);
-    await setCache(`user:${id}`, user, 300); // Expires in 5 minutes.
+    await setStringCache(`user:${id}`, user, 60); // Expires in 60 seconds.
 
     // Serving from database 
     console.log("Serving from DB");
