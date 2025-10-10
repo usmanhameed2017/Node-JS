@@ -262,7 +262,8 @@ const setStringCache = async (key, value, seconds = 60) => {
     try 
     {
         // Remove old data for extra safety check
-        if(await redis.exists(key)) await redis.del(key);
+        const isExist = await redis.exists(key);
+        if(isExist) await redis.del(key);
 
         // Set new string
         await redis.set(key, JSON.stringify(value), "EX", seconds);
@@ -298,7 +299,8 @@ const setListCache = async (key, value, seconds = 300) => {
     try 
     {
         // Remove old data for extra safety check
-        if(await redis.exists(key)) await redis.del(key);
+        const isExist = await redis.exists(key);
+        if(isExist) await redis.del(key);
 
         // Normalize into array
         const items = Array.isArray(value) ? value : [value];
@@ -339,18 +341,78 @@ const getListCache = async (key) => {
     }
 };
 
+// Update Item in List Cache
+const updateInListCache = async (key, updatedItem) => {
+    if(!key || !updatedItem || !updatedItem._id) return false;
+
+    try 
+    {
+        const isExist = await redis.exists(key);
+        if(!isExist) return false;
+
+        const items = await redis.lrange(key, 0, -1);
+
+        for(let i = 0; i < items.length; i++) 
+        {
+            const parsed = JSON.parse(items[i]);
+            if(String(parsed._id) === String(updatedItem._id)) 
+            {
+                // Replace existing item at index i
+                await redis.lset(key, i, JSON.stringify(updatedItem));
+                return true;
+            }
+        }
+        return false; // Item not found
+    } 
+    catch (error) 
+    {
+        console.log("Failed to update item in list cache", error.message);
+        return false;
+    }
+};
+
 // Delete Cache
 const deleteCache = async (key) => {
     if(!key) return false;
 
     try 
     {
+        const isExist = await redis.exists(key);
+        if(!isExist) return false;
         await redis.del(key);
         return true;
     } 
     catch(error) 
     {
         console.log("Failed to delete cache", error.message);
+        return false;
+    }
+};
+
+// Delete From List Cache
+const deleteFromListCache = async (key, id) => {
+    if(!key) return false;
+
+    try 
+    {
+        const isExist = await redis.exists(key);
+        if(!isExist) return false;
+
+        const items = await redis.lrange(key, 0, -1);
+        for(const item of items) 
+        {
+            const parsed = JSON.parse(item);
+            if(String(parsed._id) === String(id)) 
+            {
+                await redis.lrem(key, 1, item); // Remove first matching occurrences
+                return true;
+            }
+        }
+        return false;  // Item not found
+    } 
+    catch(error) 
+    {
+        console.log("Failed to delete from list cache", error.message);
         return false;
     }
 };
@@ -374,8 +436,10 @@ module.exports = {
     setStringCache,
     getStringCache,
     setListCache, 
-    getListCache, 
+    getListCache,
+    updateInListCache,
     deleteCache,
+    deleteFromListCache,
     addToListCache 
 };
 ```
@@ -390,7 +454,7 @@ require("dotenv").config();
 const express = require("express");
 const connectDB = require("./Database/connect");
 const User = require("./models/user");
-const { getListCache, setListCache, addToListCache, getStringCache, setStringCache } = require("./redis/cache");
+const { getListCache, setListCache, addToListCache, getStringCache, setStringCache, deleteCache, deleteFromListCache, updateInListCache } = require("./redis/cache");
 
 // Express app
 const app = express();
@@ -455,6 +519,40 @@ app.get("/user/:id", async (request, response) => {
     // Serving from database 
     console.log("Serving from DB");
     return response.status(200).json({ message:"User has been fetched successfully", data:user, success:true });
+});
+
+// Update user
+app.put("/user/:id", async (request, response) => {
+    const id = request.params.id;
+
+    // Update in database
+    const user = await User.findByIdAndUpdate(id, request.body, { new:true });
+
+    // Update in single user cache
+    await setStringCache(`user:${id}`, user);
+
+    // Update in list
+    await updateInListCache("users", user);
+
+    // Response
+    return response.status(200).json({ message:"User has been deleted successfully", data:user, success:true });
+});
+
+// Delete user
+app.delete("/user/:id", async (request, response) => {
+    const id = request.params.id;
+
+    // Delete from database
+    const user = await User.findByIdAndDelete(id);
+
+    // Delete from single user cache
+    await deleteCache(`user:${id}`);
+
+    // Delete from list
+    await deleteFromListCache("users", id);
+
+    // Response
+    return response.status(200).json({ message:"User has been deleted successfully", data:user, success:true });
 });
 
 // Start server
