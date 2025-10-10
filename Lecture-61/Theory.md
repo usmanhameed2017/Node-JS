@@ -56,6 +56,12 @@ return items.map(item => JSON.parse(item));
 // For appending new item to list
 await redis.rpush(key, JSON.stringify(newItem));
 await redis.expire(key, seconds);
+
+// Increment count
+await redis.incr(key);
+
+// Decrement count
+await redis.decr(key);
 ```
 
 ### 🌐 Create a Free Redis Cloud Account
