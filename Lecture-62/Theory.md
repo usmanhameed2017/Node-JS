@@ -6,7 +6,7 @@
 
 - This creates a problem — since **Socket.IO rooms and events are stored in memory**, different workers cannot share socket data.
 
-- To solve this, we use the Redis Adapter. It allows all Socket.IO instances to communicate through Redis **Pub/Sub**, ensuring that events like emit, broadcast, and join room work seamlessly across all workers and distributed servers too.
+- To solve this, we use the Redis Adapter. It allows all Socket.IO instances to communicate through **Redis Pub/Sub**, ensuring that events like emit, broadcast, and join room work seamlessly across all workers and distributed servers too.
 
 ### 🧠 Core Concept
 
