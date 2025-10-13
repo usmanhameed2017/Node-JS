@@ -261,8 +261,8 @@ app.listen(8000, () => console.log("Server is started and running at port:8000")
 ```javascript
 const redis = require("./connection");
 
-// Set String Cache
-const setStringCache = async (key, value, seconds = 60) => {
+// Set Cache
+const setCache = async (key, value, seconds = 60) => {
     if(!key || value === undefined || value === null) return false;
 
     try 
@@ -282,8 +282,8 @@ const setStringCache = async (key, value, seconds = 60) => {
     }
 };
 
-// Get String Cache
-const getStringCache = async (key) => {
+// Get Cache
+const getCache = async (key) => {
     if(!key) return null;
 
     try 
@@ -348,7 +348,7 @@ const getListCache = async (key) => {
 };
 
 // Update Item in List Cache
-const updateInListCache = async (key, updatedItem) => {
+const updateInListCache = async (key, id, updatedItem) => {
     if(!key || !updatedItem || !updatedItem._id) return false;
 
     try 
@@ -361,7 +361,7 @@ const updateInListCache = async (key, updatedItem) => {
         for(let i = 0; i < items.length; i++) 
         {
             const parsed = JSON.parse(items[i]);
-            if(String(parsed._id) === String(updatedItem._id)) 
+            if(String(parsed._id) === String(id)) 
             {
                 // Replace existing item at index i
                 await redis.lset(key, i, JSON.stringify(updatedItem));
@@ -439,8 +439,8 @@ const addToListCache = async (key, newItem, seconds = 300) => {
 };
 
 module.exports = { 
-    setStringCache,
-    getStringCache,
+    setCache,
+    getCache,
     setListCache, 
     getListCache,
     updateInListCache,
@@ -460,7 +460,7 @@ require("dotenv").config();
 const express = require("express");
 const connectDB = require("./Database/connect");
 const User = require("./models/user");
-const { getListCache, setListCache, addToListCache, getStringCache, setStringCache, deleteCache, deleteFromListCache, updateInListCache } = require("./redis/cache");
+const { getListCache, setListCache, addToListCache, getCache, setCache, deleteCache, deleteFromListCache, updateInListCache } = require("./redis/cache");
 
 // Express app
 const app = express();
@@ -510,7 +510,7 @@ app.get("/user/:id", async (request, response) => {
     const id = request.params.id;
 
     // Get data from Cache
-    const cachedData = await getStringCache(`user:${id}`);
+    const cachedData = await getCache(`user:${id}`);
     if(cachedData)
     {
         // Serving from cache
@@ -520,7 +520,7 @@ app.get("/user/:id", async (request, response) => {
 
     // Fetch fresh data from DB (Database call)
     const user = await User.findById(id);
-    await setStringCache(`user:${id}`, user, 60); // Expires in 60 seconds.
+    await setCache(`user:${id}`, user, 60); // Expires in 60 seconds.
 
     // Serving from database 
     console.log("Serving from DB");
@@ -535,10 +535,10 @@ app.put("/user/:id", async (request, response) => {
     const user = await User.findByIdAndUpdate(id, request.body, { new:true });
 
     // Update in single user cache
-    await setStringCache(`user:${id}`, user);
+    await setCache(`user:${id}`, user);
 
     // Update in list
-    await updateInListCache("users", user);
+    await updateInListCache("users", id, user);
 
     // Response
     return response.status(200).json({ message:"User has been deleted successfully", data:user, success:true });
