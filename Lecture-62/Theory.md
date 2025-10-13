@@ -183,7 +183,7 @@ else
 ### 🧱 Architecture Diagram
 ```javascript
         ┌──────────────────┐
-        │   LoadBalancer   │
+        │   Load Balancer  │
         └───────┬──────────┘
                 │
  ┌──────────────┴────────────────┐
