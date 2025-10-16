@@ -224,7 +224,10 @@ const User = sequelize.define("User", {
         primaryKey: true, 
         autoIncrement: true
     },
-    name: DataTypes.STRING
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
 });
 
 // Post model
@@ -234,11 +237,31 @@ const Post = sequelize.define("Post", {
         primaryKey: true,
         autoIncrement: true
     },
-    title: DataTypes.STRING,
-    content: DataTypes.TEXT
+    title: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    content: {
+        type: DataTypes.TEXT,
+        allowNull: false
+    },
+    userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: "Users",
+            key: "id"
+        }
+    }
 });
 
-// Referencing
+// Referencing & Associations
 User.hasMany(Post, { foreignKey: "userId" });
 Post.belongsTo(User, { foreignKey: "userId" });
+
+// Query:01
+const users = await User.findAll({ include: Post });
+
+// Query:02
+const user = await User.findByPk(7, { include: Post });
 ```
