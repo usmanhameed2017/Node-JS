@@ -263,5 +263,132 @@ Post.belongsTo(User, { foreignKey: "userId" });
 const users = await User.findAll({ include: Post });
 
 // Query:02
-const user = await User.findByPk(7, { include: Post });
+const user = await User.findByPk(7, { include: { model: Post, attributes: ["title", "content"] } });
+```
+
+---
+
+### 📕 Server Side Pagination
+
+- For server-side pagination, you need to pass three parameters to sequelize's special method `findAndCountAll`.
+1. page
+2. limit
+3. offset
+
+- `findAndCountAll` will return `count` and `rows`, so that you can prepare your pagination options similar to `mongoose-pgainate-v2.`
+
+```javascript
+app.get("/user", async (request, response) => {
+    // Get pagination query params
+    const page = parseInt(request.query.page) || 1;
+    const limit = parseInt(request.query.limit) || 10;
+    const offset = (page - 1) * limit;
+    const search = request.query.search.trim() || ""; // For searching (Optional)
+
+    // Search filter (Optional)
+    const where = search ? { name: { [Op.like]: `%${search}%` } } : {};
+
+    // Fetch products
+    const { count, rows } = await User.findAndCountAll({ 
+        where, include: { model: Post, attributes: ["title"] },
+        limit, offset, order: [["createdAt", "DESC"]]
+    });
+    
+    // Calculate pages
+    const totalPages = Math.ceil(count / limit);
+
+    // Prepare pagination options
+    const pagination = {
+        docs: rows,
+        totalDocs: count,
+        limit,
+        totalPages,
+        page,
+        pagingCounter: offset + 1,
+        hasPrevPage: page > 1,
+        hasNextPage: page < totalPages,
+        prevPage: page > 1 ? page - 1 : null,
+        nextPage: page < totalPages ? page + 1 : null,        
+    };
+
+    // Response
+    return response.status(200).json({ message:"Users have been fetched", data:pagination:, success:true });
+});
+```
+
+---
+
+### ⛓ Pre-Save Hook & Model Level Methods
+
+- You can use `beforeSave` hook within model to hash password efficiently.
+
+- You can also use static methods within model level to keep your controller clean from extra logic.
+
+```javascript
+const { DataTypes } = require("sequelize");
+const sequelize = require("../connection");
+const bcrypt = require("bcrypt");
+
+// Define schema
+const User = sequelize.define("User", {
+    name:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    age:{
+        type: DataTypes.TINYINT,
+        allowNull:false
+    },
+    email:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+            isLowercase: true,
+            isEmail: true
+        }
+    },
+    password:{
+        type: DataTypes.STRING,
+        allowNull: false
+    }
+}, 
+{ 
+    timestamps:true,
+    hooks:{
+        beforeSave: async function(user)
+        {
+            if(user.changed("password"))
+            {
+                try 
+                {
+                    user.password = await bcrypt.hash(user.password, 10);
+                    return true;
+                } 
+                catch(error) 
+                {
+                    console.log(error.message);
+                    return false;
+                }
+            }
+        }
+    }    
+});
+
+// Compare password
+User.prototype.matchPassword = async function(password) 
+{
+    if(!password) return false;
+    try 
+    {
+        return await bcrypt.compare(password, this.password);
+    } 
+    catch(error) 
+    {
+        console.log(error.message);
+        return false;
+    }
+};
+
+module.exports = User;
 ```
