@@ -275,9 +275,13 @@ const user = await User.findByPk(7, { include: { model: Post, attributes: ["titl
 2. limit
 3. offset
 
-- `findAndCountAll` will return `count` and `rows`, so that you can prepare your pagination options similar to `mongoose-pgainate-v2.`
+- `findAndCountAll` will return `count` and `rows`, so that you can prepare your pagination options similar to `mongoose-paginate-v2.`
 
 ```javascript
+const User = require("../models/user");
+const Post = require("../models/post");
+const { Op } = require("sequelize");
+
 app.get("/user", async (request, response) => {
     // Get pagination query params
     const page = parseInt(request.query.page) || 1;
@@ -288,7 +292,7 @@ app.get("/user", async (request, response) => {
     // Search filter (Optional)
     const where = search ? { name: { [Op.like]: `%${search}%` } } : {};
 
-    // Fetch products
+    // Fetch users with pagination
     const { count, rows } = await User.findAndCountAll({ 
         where, include: { model: Post, attributes: ["title"] },
         limit, offset, order: [["createdAt", "DESC"]]
