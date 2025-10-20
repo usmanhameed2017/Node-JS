@@ -214,7 +214,9 @@ app.delete("/users/:id", async (request, response) => {
 
 ---
 
-> Note: For **Primary Key** & **Foreign Key** relationship and table referencing:
+### 🔑 Primary Key & Foreign Key Relationship
+
+- For **Primary Key** & **Foreign Key** relationship and table referencing, you need to use **references** attribute.
 
 ```javascript
 // User model
