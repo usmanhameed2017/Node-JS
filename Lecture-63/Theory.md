@@ -83,7 +83,7 @@ app.post("/api/v1/payment/stripe", (request, response) => {
         if(!session) throw new ApiError(400, "Stripe session creation failed");
 
         // Response
-        response.status(200).json(new ApiResponse(200, session.url, "Checkout url generated"));
+        return response.status(200).json(new ApiResponse(200, session.url, "Checkout url generated"));
         /*
             Note: You can also redirect users directly from server
             return response.status(303).redirect(session.url);
