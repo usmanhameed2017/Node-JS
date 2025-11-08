@@ -1,4 +1,4 @@
-# 💳 STRIPE PAYMENT GATEWAY INEGRATION
+# 💳 STRIPE PAYMENT GATEWAY INTEGRATION
 
 **Stripe** is a powerful and developer-friendly payment processing platform that enables businesses to securely accept online payments. It supports multiple payment methods, including credit/debit cards, digital wallets (like Apple Pay and Google Pay), and various local payment options.
 
