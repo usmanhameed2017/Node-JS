@@ -17,6 +17,14 @@ Install the **stripe** package.
 npm install stripe
 ```
 
+#### 🔐 Step:03 Environment Variables
+
+Setup your environment variables.
+```javascript
+STRIPE_PUBLISHABLE_KEY="YourStripePublishableKey"
+STRIPE_SECRET_KEY="YourStripeSecretKey"
+```
+
 ---
 
 #### 🧠 Codebase Integration
