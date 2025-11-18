@@ -438,6 +438,25 @@ const addToListCache = async (key, newItem, seconds = 300) => {
     }
 };
 
+// Delete cache by pattern
+const deleteCacheByPattern = async (pattern) => {
+    if(!pattern) return false;
+
+    try 
+    {
+        const keys = await redis.keys(pattern);
+        if(keys.length === 0) return false;
+
+        await redis.del(...keys);
+        return true;
+    }
+    catch(error)
+    {
+        console.log("Failed to delete cache by pattern", error.message);
+        return false;
+    }
+};
+
 module.exports = { 
     setCache,
     getCache,
@@ -446,7 +465,8 @@ module.exports = {
     updateInListCache,
     deleteCache,
     deleteFromListCache,
-    addToListCache 
+    addToListCache,
+    deleteCacheByPattern
 };
 ```
 
