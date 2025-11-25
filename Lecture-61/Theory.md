@@ -561,7 +561,7 @@ app.put("/user/:id", async (request, response) => {
     await updateInListCache("users", id, user);
 
     // Response
-    return response.status(200).json({ message:"User has been deleted successfully", data:user, success:true });
+    return response.status(200).json({ message:"User has been updated successfully", data:user, success:true });
 });
 
 // Delete user
