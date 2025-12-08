@@ -173,7 +173,7 @@ async (accessToken, refreshToken, profile, done) => {
             profile_image:profile_image,
             password:null
         });
-        return done(null, user);
+        return done(null, createUser);
     } 
     catch(error) 
     {
@@ -203,7 +203,7 @@ async (accessToken, refreshToken, profile, done) => {
         if(existingUser) return done(null, existingUser);
 
         // Create new user
-        const user = await User.create({
+        const createUser = await User.create({
             fid:fid,
             name:name,
             email:email,
@@ -211,7 +211,7 @@ async (accessToken, refreshToken, profile, done) => {
             password:null
         });
 
-        return done(null, user);
+        return done(null, createUser);
     } 
     catch(error) 
     {
