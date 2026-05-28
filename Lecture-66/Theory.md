@@ -753,17 +753,7 @@ You can use scripts like:
 pm2 start npm --name "ecommerce-api" -- run start
 ```
 
-This automatically uses:
-
-```bash
-.env.production
-```
-
-if your config loads environment based on:
-
-```javascript
-process.env.NODE_ENV
-```
+This automatically uses **.env.production** if your config loads environment based on: **process.env.NODE_ENV**.
 
 ---
 
