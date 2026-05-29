@@ -126,8 +126,7 @@ const worker = new Worker("emailQueue", async (job) => {
         const { fullName, email, otp_code } = data;
 
         // Send welcome email
-        await sendEmail(email, 'OTP Verification', `<h1> Hello ${fullName}! Here is your OTP ${otp_code} <h1/>`);
-        console.log(`Job ID ${id} has completed!`);         
+        await sendEmail(email, 'OTP Verification', `<h1> Hello ${fullName}! Here is your OTP ${otp_code} <h1/>`);      
     }
 
     // Send welcome email
@@ -137,9 +136,11 @@ const worker = new Worker("emailQueue", async (job) => {
         const { fullName, email } = data;
 
         // Send welcome email
-        await sendEmail(email, 'Registration', `<h1> Thank you ${fullName} for signing up <h1/>`);
-        console.log(`Job ID ${id} has completed!`);     
+        await sendEmail(email, 'Registration', `<h1> Thank you ${fullName} for signing up <h1/>`);    
     }
+
+    // Log
+    console.log(`Job ID ${id} has completed!`); 
 }, { connection: redisConfigOptions, concurrency: 5 });
 
 // Attach events
