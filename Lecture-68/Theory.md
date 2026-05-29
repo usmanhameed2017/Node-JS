@@ -123,10 +123,10 @@ const worker = new Worker("emailQueue", async (job) => {
     if(name === "sendOTPEmail")
     {
         // Destructure from data object
-        const { fullName, email, otp_code } = data;
+        const { fullName, email, otp } = data;
 
         // Send welcome email
-        await sendEmail(email, 'OTP Verification', `<h1> Hello ${fullName}! Here is your OTP ${otp_code} <h1/>`);      
+        await sendEmail(email, 'OTP Verification', `<h1> Hello ${fullName}! Here is your OTP ${otp} <h1/>`);      
     }
 
     // Send welcome email
