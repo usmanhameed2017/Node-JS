@@ -182,7 +182,7 @@ app.route("/signup").post(async (request, response) => {
 // Verify OTP
 app.route("/verify-otp").post(async (request, response) => {
     const { fullName, email, otp } = request.body;
-    if(otp !== process.env.OTP) return response.status(400).json({ message: "Invalid OTP", data: null });
+    if(otp !== Number(process.env.OTP)) return response.status(400).json({ message: "Invalid OTP", data: null });
 
     // Add to queue
     await emailQueue.add("sendWelcomeEmail", { fullName, email });
