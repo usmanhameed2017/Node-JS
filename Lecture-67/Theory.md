@@ -1,4 +1,4 @@
-# QUEUE SYSTEM IN REDIS
+# 📩 QUEUE SYSTEM IN REDIS
 
 ### ⚙ Installation
 ```bash
@@ -89,7 +89,7 @@ app.listen(port, () => console.log(`Server is listening at port:${port}`));
 
 ---
 
-### FIFO & LIFO Pattern
+### 📜 FIFO & LIFO Pattern
 
 1. **FIFO** rpush() -> lpop()
 
