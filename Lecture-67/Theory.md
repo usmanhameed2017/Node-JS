@@ -1,5 +1,13 @@
 # 📩 QUEUE SYSTEM IN REDIS
 
+Redis queues are commonly used for:
+
+- Background jobs
+- Email processing
+- Notification systems
+- Task scheduling
+- Microservice communication
+
 ### ⚙ Installation
 ```bash
 npm i express redis dotenv
