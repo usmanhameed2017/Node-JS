@@ -107,8 +107,6 @@ app.listen(port, () => console.log(`Server is listening at port:${port}`));
 
 3. **LIFO** lpush() -> lpop()
 
----
-
 ## 📌 Redis Queue Commands
 
 | Command    | Purpose                |
@@ -119,8 +117,6 @@ app.listen(port, () => console.log(`Server is listening at port:${port}`));
 | `rpop()`   | Remove item from right |
 | `llen()`   | Get queue size         |
 | `lrange()` | Get all queue items    |
-
----
 
 ## 📌 Check Queue Length
 
@@ -152,8 +148,6 @@ console.log(data);
 * Notification systems
 * Background jobs
 
----
-
 ## 📌 Limitation of Raw Redis Queue
 
 Raw Redis queues are simple but have limitations:
@@ -172,8 +166,6 @@ For production systems, developers often use:
 * Agenda
 
 These libraries are built on top of Redis.
-
----
 
 # ✅ Summary
 
