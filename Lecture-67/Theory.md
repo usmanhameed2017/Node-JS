@@ -10,7 +10,7 @@ Redis queues are commonly used for:
 
 ### ⚙ Installation
 ```bash
-npm i express redis dotenv
+npm i express ioredis dotenv
 ```
 
 ---
