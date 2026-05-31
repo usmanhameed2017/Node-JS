@@ -36,7 +36,7 @@ It is widely used for building scalable and production-grade Node.js application
 
 ### ⚙ Installation
 ```bash
-npm i express redis bullmq dotenv
+npm i express ioredis bullmq dotenv
 ```
 
 ---
