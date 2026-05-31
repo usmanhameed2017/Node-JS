@@ -1,4 +1,4 @@
-# PUB/SUB WITH REDIS
+# 🔄 PUB/SUB WITH REDIS
 
 - **Pub/Sub** also known as **publisher** and **subscriber**.
 
