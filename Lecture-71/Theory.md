@@ -132,13 +132,13 @@ const apolloServer = new ApolloServer({
         }        
 
         type Query {
-            fetchUsers(page: Int! limit: Int!): UserPagination
+            fetchUsers(page: Int limit: Int): UserPagination
         }
     `,
     
     resolvers: {
         Query: {
-            fetchUsers: async (_, { page, limit }) => {
+            fetchUsers: async (_, { page = 1, limit = 10 }) => {
                 const users = await User.aggregatePaginate([
                     { $match: {} },
 
