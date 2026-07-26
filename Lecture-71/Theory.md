@@ -132,7 +132,7 @@ const apolloServer = new ApolloServer({
         }        
 
         type Query {
-            fetchUsers(page: Int limit: Int): UserPagination
+            fetchUsers(page: Int, limit: Int): UserPagination
         }
     `,
     
