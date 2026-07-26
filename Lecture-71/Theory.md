@@ -1,6 +1,4 @@
-# GraphQL (Node.js)
-
-## What is GraphQL?
+# GRAPHQL
 
 GraphQL is a query language for APIs and a runtime for executing those
 queries.
