@@ -127,26 +127,37 @@ const apolloServer = new ApolloServer({
             totalPages: Int!
             page: Int!
             limit: Int!
-            hasNextPage: Boolean!
             hasPrevPage: Boolean!
+            hasNextPage: Boolean!
+            prevPage: Int
+            nextPage: Int
         }        
 
         type Query {
             fetchUsers(page: Int, limit: Int): UserPagination
+            fetchUserById(_id: ID!): User
         }
     `,
     
     resolvers: {
         Query: {
+            // Fetch all users with pagination
             fetchUsers: async (_, { page = 1, limit = 10 }) => {
                 const users = await User.aggregatePaginate([
-                    { $match: {} },
+                    // Sort
+                    { $sort: { createdAt: -1 } },
 
                     // Projection
                     { $project: { _id: 1, name: 1, age: 1, email: 1 } }
                 ], { page, limit });
                 return users;
             },
+
+            // Fetch single user
+            fetchUserById: async (_, { _id }) => {
+                const user = await User.findById(_id).lean();
+                return user;
+            }            
         }
     }
 });
