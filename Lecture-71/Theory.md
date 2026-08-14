@@ -19,12 +19,12 @@ data it needs.
 
 ### Apollo Server Installation
 ``` bash
-npm install @apollo/server graphql
+npm install @apollo/server @as-integrations/express5 graphql
 ```
 
 ### For Express integration
 ``` bash
-npm install @as-integrations/express5 express dotenv cors mongoose mongoose-aggregate-paginate-v2
+npm install express dotenv cors mongoose mongoose-aggregate-paginate-v2
 ```
 
 ------------------------------------------------------------------------
