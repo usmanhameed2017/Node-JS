@@ -6,16 +6,6 @@
 
 **Example**:
 
-Customer
-   │
-   └── orders[]
-          │
-          └── Order
-                │
-                └── products[]
-                       │
-                       └── Product
-
 Here, Customer contains an array of Order objects, and each Order contains an array of Product objects.
 
 The important part is that we can use one custom type inside another.
