@@ -1,10 +1,20 @@
 # GRAPHQL NESTED TYPES
 
-- In GraphQL, real-world data often contains nested objects and arrays of objects.
+In GraphQL, real-world data often contains nested objects and arrays of objects.
 
-- GraphQL handles this by defining separate types for each object and then connecting those types together.
+GraphQL handles this by defining separate types for each object and then connecting those types together.
 
 **Example**:
+
+Customer
+   │
+   └── orders[]
+          │
+          └── Order
+                │
+                └── products[]
+                       │
+                       └── Product
 
 Here, Customer contains an array of Order objects, and each Order contains an array of Product objects.
 
