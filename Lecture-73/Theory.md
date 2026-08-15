@@ -1,6 +1,7 @@
 # GRAPHQL MUTATION
 
 **Mutation** is used to modify data in GraphQL. Just like REST APIs use POST, PUT/PATCH, and DELETE for changing data, GraphQL uses Mutation for these operations.
+
 Mutation can be used to:
 
 - Create new data
