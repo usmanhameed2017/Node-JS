@@ -216,7 +216,56 @@ const { expressMiddleware } = require("@as-integrations/express5");
 })();
 ```
 
-# GraphQL Flow
+> Note: GraphQL intentionally allows commas to be omitted, and commas are basically treated as insignificant whitespace.
+
+**So these two are equivalent**:
+```javascript
+type User {
+    _id: ID!,
+    name: String!,
+    age: Int!,
+    email: String!
+},
+
+type UserPagination {
+    docs: [User],
+    totalDocs: Int!,
+    totalPages: Int!,
+    page: Int!,
+    limit: Int!,
+    hasPrevPage: Boolean!,
+    hasNextPage: Boolean!,
+    prevPage: Int,
+    nextPage: Int
+} 
+```
+
+**And**:
+
+```javascript
+type User {
+    _id: ID!
+    name: String!
+    age: Int!
+    email: String!
+}
+
+type UserPagination {
+    docs: [User]
+    totalDocs: Int!
+    totalPages: Int!
+    page: Int!
+    limit: Int!
+    hasPrevPage: Boolean!
+    hasNextPage: Boolean!
+    prevPage: Int
+    nextPage: Int
+} 
+```
+
+> GraphQL commas are optional and are treated like whitespace. They can be used for readability, but they are not required.
+
+## GraphQL Flow
 
     Client
        │
