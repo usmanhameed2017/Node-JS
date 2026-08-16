@@ -101,6 +101,18 @@ const typeDefs = `
         age: Int!
         email: String!
     }
+
+    type UserPagination {
+        docs: [User]
+        totalDocs: Int!
+        totalPages: Int!
+        page: Int!
+        limit: Int!
+        hasPrevPage: Boolean!
+        hasNextPage: Boolean!
+        prevPage: Int
+        nextPage: Int
+    }     
 `;
 
 module.exports = { typeDefs };
@@ -109,7 +121,7 @@ module.exports = { typeDefs };
 `📂 graphql/user/queries.js`
 ```javascript
 const queries = `
-    fetchAllUsers: [User]
+    fetchAllUsers: UserPagination!
     fetchUser(id: ID!): User
 `;
 
