@@ -11,14 +11,19 @@ The User module is divided into separate files:
 `typeDefs.js` → Contains the User type definition.
 
 `queries.js` → Contains User-related **query definitions**.
+
 `mutations.js` → Contains User-related **mutation definitions**.
+
 `resolvers.js` → Contains the actual business logic for **queries** and **mutations**.
+
 `index.js` → Combines all User-related GraphQL components into one module.
+
 The main `graphql/index.js` file then imports the User module and combines its definitions and resolvers with the main GraphQL schema.
 This approach follows the idea of **separation of concerns**, where each file has a specific responsibility.
 
 If we later add features such as **Product**, **Order**, or **Customer**, we can create separate modules for them:
 
+```javascript
 graphql/
 ├── index.js
 ├── user/
@@ -39,6 +44,7 @@ graphql/
     ├── queries.js
     ├── mutations.js
     └── resolvers.js
+```
 
 This makes the codebase cleaner, easier to navigate, easier to debug, and easier to scale.
 The important idea is: each feature owns its GraphQL **types**, **queries**, **mutations**, and **resolvers**, while the main `graphql/index.js` acts as the place where all modules are combined.
