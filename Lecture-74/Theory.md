@@ -121,7 +121,7 @@ module.exports = { typeDefs };
 `📂 graphql/user/queries.js`
 ```javascript
 const queries = `
-    fetchAllUsers: UserPagination!
+    fetchAllUsers(page: Int, limit: Int): UserPagination!
     fetchUser(id: ID!): User
 `;
 
@@ -146,8 +146,14 @@ const User = require("../../models/userModel");
 // Queires
 const queries = {
     // Fetch all users
-    fetchAllUsers: async () => {
-        const users = await User.find({}).limit(5);
+    fetchAllUsers: async (_, { page = 1, limit = 10 }) => {
+        const users = await User.aggregatePaginate([
+            //Sort
+            { $sort: { createdAt: -1 } },
+
+            // Projection
+            { $project: { name: 1, age: 1, email: 1 } }
+        ], { page, limit });
         return users;
     },
 
