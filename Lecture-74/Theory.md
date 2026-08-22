@@ -24,21 +24,21 @@ This approach follows the idea of **separation of concerns**, where each file ha
 If we later add features such as **Product**, **Order**, or **Customer**, we can create separate modules for them:
 
 ```javascript
-graphql/
+📂 graphql/
 ├── index.js
-├── user/
+├── 📂 user/
 │   ├── index.js
 │   ├── typeDefs.js
 │   ├── queries.js
 │   ├── mutations.js
 │   └── resolvers.js
-├── product/
+├── 📂 product/
 │   ├── index.js
 │   ├── typeDefs.js
 │   ├── queries.js
 │   ├── mutations.js
 │   └── resolvers.js
-└── order/
+└── 📂 order/
     ├── index.js
     ├── typeDefs.js
     ├── queries.js
