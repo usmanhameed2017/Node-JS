@@ -1,4 +1,4 @@
-# MIDDLEWARE IN GRAPHQL FOR AUTHENTICATION & AUTHORIZATION
+# AUTHENTICATION & AUTHORIZATION IN GRAPHQL 
 
 To implement user authentication in **GraphQL**, we can use `context` property through GraphQL configuration.
 
