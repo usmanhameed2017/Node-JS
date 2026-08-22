@@ -157,7 +157,7 @@ const { authorization } = require("../middleware/auth");
 // Queires
 const queries = {
     // Fetch all users
-    fetchAllUsers: async (parent, { page = 1, limit = 10 }, context, info) => {
+    fetchAllUsers: async (parent, { page = 1, limit = 10 }, context) => {
         // Authorize admin
         const { request, response } = context;
         authorization(request, response, ["admin"]);
