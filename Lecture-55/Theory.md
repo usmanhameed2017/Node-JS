@@ -189,12 +189,12 @@ async (accessToken, refreshToken, profile, done) => {
         const email = profile?.emails?.[0]?.value;
         const profile_image = profile?.photos?.[0]?.value;
 
+        // Validate metadata
+        if(!fid || !email) throw new ApiError(400, "Facebook did not provide the required account information");
+
         // Check if user already exists
         let user = await User.findOne({ fid });
         if(user) return done(null, user);
-
-        // Validate metadata
-        if(!fid || !email) throw new ApiError(400, "Facebook did not provide the required account information");
 
         // Check whether email is already registered via normal auth
         user = await User.findOne({ email });
