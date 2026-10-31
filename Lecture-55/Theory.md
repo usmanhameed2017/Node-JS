@@ -315,7 +315,7 @@ const googleLogin = async (request, response) => {
 const facebookLogin = (request, response) => {
     // Validate
     const user = request.user;
-    if(!user) throw new ApiError(401, "Google authentication failed");
+    if(!user) throw new ApiError(401, "Facebook authentication failed");
     if(user.status !== "active") throw new ApiError(403, "Your account is not eligible for login");
 
     // Generate access token
