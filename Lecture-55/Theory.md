@@ -35,8 +35,8 @@ const app = express();
 
 // Middleware configuration
 app.use(cors({ 
-    origin:"*", 
-    credentials:true, 
+    origin: "*", 
+    credentials: true, 
     methods:["GET", "POST", "PUT", "PATCH", "DELETE"] 
 }));
 
@@ -44,8 +44,8 @@ app.use(cors({
 app.use(passport.initialize());
 
 // Middlewares
-app.use(express.urlencoded({ extended:true, limit:"20kb" }));
-app.use(express.json({ limit:"20kb" }));
+app.use(express.urlencoded({ extended: true, limit: "20kb" }));
+app.use(express.json({ limit: "20kb" }));
 app.use(cookieParser());
 
 // Routes
@@ -65,40 +65,29 @@ module.exports = app;
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
 
+// Password condition
+function isPasswordRequired()
+{
+    return !this.gid && !this.fid;
+}
+
 // Schema
-const schema = new Schema({
-    gid:{
-        type:String,
-        unique:true
-    },
-    fid:{
-        type:String,
-        unique:true
-    },
-    name:{ 
-        type:String, 
-        required:true,
-        trim:true
-    },
-    email:{ 
-        type:String, 
-        unique:true,
-        required:true,
-        trim:true,
-        lowercase:true
-    },
-    profile_image:{
-        type:String,
-        trim:true
-    },
-    password:{
-        type:String,
-        required:true
-    }
+const userSchema = new Schema({
+    gid: { type: String, trim: true },
+    fid: { type: String, trim: true },
+    name: { type: String, required: true, trim: true },
+    email: { type: String, unique: true, required: true, trim: true, lowercase: true },
+    profile_image: { type: String, trim: true },
+    password: { type: String, required: isPasswordRequired },
+    status: { type: String, trim: true, enum: ["pending", "active", "flagged"], default: "pending" },
 }, { timestamps:true });
 
+// Social authentication indexes
+userSchema.index({ gid: 1 }, { unique: true, sparse: true });
+userSchema.index({ fid: 1 }, { unique: true, sparse: true });
+
 // Hash password
-schema.pre("save", async function(next) {
+userSchema.pre("save", async function(next) {
     if(!this.isModified("password")) return next();
     try 
     {
@@ -108,12 +97,12 @@ schema.pre("save", async function(next) {
     catch(error) 
     {
         console.log(error.message);
-        return null;
+        throw new Error(`Failed to hash password: ${error.message}`);
     }
 });
 
 // Model
-const User = model("User", schema);
+const User = model("User", userSchema);
 
 module.exports = User;
 ```
@@ -143,7 +132,7 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const User = require('../models/user');
-
+const ApiError = require('../utils/ApiError');
 
 // Google
 passport.use(new GoogleStrategy({
@@ -163,26 +152,26 @@ async (accessToken, refreshToken, profile, done) => {
         const email = profile?.emails?.[0]?.value;
         const profile_image = profile?.photos?.[0]?.value;
 
+        // Validate metadata
+        if(!gid || !email) throw new ApiError(400, "Google did not provide the required account information");
+
         // If user already exist in database
-        const existingUser = await User.findOne({ $or:[{ gid:gid }, { email:email }] });
-        if(existingUser) return done(null, existingUser);
+        let user = await User.findOne({ gid });
+        if(user) return done(null, user);
+
+        // Check whether email is already registered via normal auth
+        user = await User.findOne({ email });
+        if(user) throw new ApiError(409, "An account with this email already exists. Please sign in using your existing login method");
     
         // Create new user
-        const createUser = await User.create({
-            gid:gid,
-            name:name,
-            email:email,
-            profile_image:profile_image,
-            password:null
-        });
-        return done(null, createUser);
+        const user = await User.create({ gid, name, email, profile_image, status: "active" });
+        return done(null, user);
     } 
     catch(error) 
     {
         return done(error, null);
     }
 }));
-
 
 // Facebook
 passport.use(new FacebookStrategy({
@@ -201,25 +190,49 @@ async (accessToken, refreshToken, profile, done) => {
         const profile_image = profile?.photos?.[0]?.value;
 
         // Check if user already exists
-        const existingUser = await User.findOne({ $or:[{ fid:fid }, { email:email }] });
-        if(existingUser) return done(null, existingUser);
+        let user = await User.findOne({ fid });
+        if(user) return done(null, user);
+
+        // Validate metadata
+        if(!fid || !email) throw new ApiError(400, "Facebook did not provide the required account information");
+
+        // Check whether email is already registered via normal auth
+        user = await User.findOne({ email });
+        if(user) throw new ApiError(409, "An account with this email already exists. Please sign in using your existing login method");
 
         // Create new user
-        const createUser = await User.create({
-            fid:fid,
-            name:name,
-            email:email,
-            profilePic:profile_image,
-            password:null
-        });
-
-        return done(null, createUser);
+        const user = await User.create({ fid, name, email, profile_image, status: "active" });
+        return done(null, user);
     } 
     catch(error) 
     {
         return done(error, null);
     }
 }));
+
+// Google initializers and callbacks
+const googleAuthInit = passport.authenticate('google', {
+    scope: ['profile', 'email'], 
+    prompt: "select_account" 
+});
+
+const googleAuthCallback = passport.authenticate('google', {
+    session: false, 
+    failureRedirect: `frontendDomain/login` 
+});
+
+// Facebook initializers and callbacks
+const facebookAuthInit = passport.authenticate('facebook', {
+    scope: ['email'], 
+    prompt: "select_account" 
+});
+
+const facebookAuthCallback = passport.authenticate('facebook', {
+    session: false, 
+    failureRedirect: `frontendDomain/login` 
+});
+
+module.exports = { googleAuthInit, googleAuthCallback, facebookAuthInit, facebookAuthCallback };
 ```
 
 ---
@@ -257,18 +270,18 @@ module.exports = generateToken;
 ```javascript
 const { Router } = require("express");
 const { googleLogin, facebookLogin } = require("../controllers/user");
-const passport = require("passport");
+const { googleAuthInit, googleAuthCallback, facebookAuthInit, facebookAuthCallback } = require("../service/social-auth");
 
 // Router instance
 const userRouter = Router();
 
-// Login as google
-userRouter.route('/auth/google').get(passport.authenticate('google', { scope:['profile', 'email'], prompt:"select_account" }));
-userRouter.route('/auth/google/callback').get(passport.authenticate('google', { session: false }), googleLogin);
+// Login as Google
+userRouter.route('/auth/google').get(googleAuthInit);
+userRouter.route('/auth/google/callback').get(googleAuthCallback, googleLogin);
 
-// Login as facebook
-userRouter.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
-userRouter.get('/auth/facebook/callback', passport.authenticate('facebook', { session: false }), facebookLogin);
+// Login as Facebook
+userRouter.get('/auth/facebook', facebookAuthInit);
+userRouter.get('/auth/facebook/callback', facebookAuthCallback, facebookLogin);
 ```
 
 ---
@@ -279,14 +292,18 @@ userRouter.get('/auth/facebook/callback', passport.authenticate('facebook', { se
 const User = require("../models/user");
 const { generateToken } = require("../utils/authToken");
 const { cookieOptions } = require("../constants");
+const ApiError = require("../utils/ApiError");
 
-// Login as gmail
+// Login as Google
 const googleLogin = async (request, response) => {
-    if(!request.user) return response.status(404).json({ message:"User not found", success:false });
+    // Validate
+    const user = request.user;
+    if(!user) throw new ApiError(401, "Google authentication failed");
+    if(user.status !== "active") throw new ApiError(403, "Your account is not eligible for login");
 
     // Generate access token
-    const accessToken = generateToken(request.user);
-    if(!accessToken) return response.status(500).json({ message:"Failed to generate access token", success:false });
+    const accessToken = generateToken(user);
+    if(!accessToken) throw new ApiError(500, "Failed to generate access token");
 
     // Send response
     return response.status(200)
@@ -294,13 +311,16 @@ const googleLogin = async (request, response) => {
     .redirect("http://localhost:5173/home");
 }
 
-// Login as facebook
+// Login as Facebook
 const facebookLogin = (request, response) => {
-    if(!request.user) return response.status(404).json({ message:"User not found", success:false });
+    // Validate
+    const user = request.user;
+    if(!user) throw new ApiError(401, "Google authentication failed");
+    if(user.status !== "active") throw new ApiError(403, "Your account is not eligible for login");
 
     // Generate access token
-    const accessToken = generateToken(request.user);
-    if (!accessToken) return response.status(500).json({ message: "Failed to generate access token", success: false });
+    const accessToken = generateToken(user);
+    if(!accessToken) throw new ApiError(500, "Failed to generate access token");
 
     // Send response
     return response.status(200)
